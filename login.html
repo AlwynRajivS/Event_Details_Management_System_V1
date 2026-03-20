@@ -1,0 +1,217 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Login | ECE-EMS</title>
+<link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&family=Space+Grotesk:wght@400;500;600;700&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#f4f6fb;--surface:#fff;--surface2:#f0f3fa;
+  --border:#e2e8f4;--text:#1a2340;--text2:#4a5878;--muted:#8896b3;
+  --blue:#2563eb;--blue-lt:#eff4ff;--blue-mid:#bfcfff;
+  --green:#059669;--green-lt:#ecfdf5;
+  --red:#dc2626;--red-lt:#fef2f2;
+  --shadow:0 1px 4px rgba(37,99,235,0.07),0 4px 16px rgba(37,99,235,0.06);
+  --shadow-lg:0 8px 32px rgba(37,99,235,0.12);
+}
+*{margin:0;padding:0;box-sizing:border-box;}
+body{font-family:'Outfit',sans-serif;background:var(--bg);color:var(--text);min-height:100vh;display:flex;flex-direction:column;}
+
+/* BANNER */
+.banner{background:linear-gradient(135deg,#1e40af 0%,#2563eb 35%,#4338ca 70%,#3730a3 100%);position:relative;overflow:hidden;padding:0 40px;display:flex;align-items:center;justify-content:space-between;min-height:76px;flex-shrink:0;}
+.banner::before{content:'';position:absolute;inset:0;background-image:radial-gradient(circle at 15% 50%,rgba(255,255,255,0.07) 0%,transparent 50%),radial-gradient(circle at 85% 30%,rgba(99,102,241,0.35) 0%,transparent 45%),repeating-linear-gradient(45deg,transparent,transparent 28px,rgba(255,255,255,0.025) 28px,rgba(255,255,255,0.025) 29px);pointer-events:none;}
+.banner::after{content:'';position:absolute;bottom:0;left:0;right:0;height:2px;background:linear-gradient(90deg,rgba(255,255,255,0),rgba(255,255,255,0.3),rgba(255,255,255,0));}
+.banner-left{display:flex;align-items:center;gap:16px;position:relative;z-index:1;}
+.banner-logo{width:50px;height:50px;border-radius:12px;background:rgba(255,255,255,0.15);border:1.5px solid rgba(255,255,255,0.25);display:flex;align-items:center;justify-content:center;font-size:24px;backdrop-filter:blur(4px);box-shadow:0 2px 12px rgba(0,0,0,0.15);}
+.banner-college{font-family:'Space Grotesk',sans-serif;font-size:11px;font-weight:600;letter-spacing:1.2px;color:rgba(255,255,255,0.7);text-transform:uppercase;margin-bottom:2px;}
+.banner-title{font-family:'Space Grotesk',sans-serif;font-size:20px;font-weight:700;color:#fff;line-height:1.1;}
+.banner-subtitle{font-size:12px;color:rgba(255,255,255,0.6);margin-top:2px;}
+.banner-right{position:relative;z-index:1;}
+.banner-badge{padding:5px 14px;border-radius:20px;background:rgba(255,255,255,0.15);border:1.5px solid rgba(255,255,255,0.25);color:#fff;font-size:12px;font-weight:700;backdrop-filter:blur(4px);}
+
+/* CENTER AREA */
+.center{flex:1;display:flex;align-items:center;justify-content:center;padding:32px 24px;}
+
+/* LOGIN CARD */
+.login-card{background:var(--surface);border:1.5px solid var(--border);border-radius:24px;padding:40px 44px;width:100%;max-width:440px;box-shadow:var(--shadow-lg);}
+.login-icon{width:60px;height:60px;background:var(--blue-lt);border-radius:18px;display:flex;align-items:center;justify-content:center;font-size:28px;margin-bottom:22px;border:1.5px solid var(--blue-mid);}
+.login-title{font-family:'Space Grotesk',sans-serif;font-size:24px;font-weight:700;margin-bottom:4px;}
+.login-sub{color:var(--muted);font-size:13px;margin-bottom:30px;}
+
+.login-field{display:flex;flex-direction:column;gap:5px;margin-bottom:16px;}
+.login-field label{font-size:11px;font-weight:700;letter-spacing:0.7px;color:var(--text2);text-transform:uppercase;}
+.login-field input{padding:11px 14px;background:var(--surface2);border:1.5px solid var(--border);border-radius:10px;color:var(--text);font-family:'Outfit',sans-serif;font-size:14px;outline:none;transition:all 0.18s;}
+.login-field input:focus{border-color:var(--blue);background:#fff;box-shadow:0 0 0 3px rgba(37,99,235,0.08);}
+.login-field input.err{border-color:var(--red);background:var(--red-lt);}
+
+.login-err{background:var(--red-lt);border:1.5px solid #fecaca;border-radius:10px;padding:10px 14px;font-size:13px;color:var(--red);margin-bottom:14px;display:none;display:flex;gap:8px;align-items:flex-start;}
+.login-err.show{display:flex;}
+
+.login-btn{width:100%;padding:13px;background:var(--blue);color:#fff;border:none;border-radius:10px;font-family:'Outfit',sans-serif;font-size:15px;font-weight:700;cursor:pointer;transition:all 0.18s;display:flex;align-items:center;justify-content:center;gap:9px;margin-top:4px;}
+.login-btn:hover{background:#1d4ed8;transform:translateY(-1px);box-shadow:0 4px 16px rgba(37,99,235,0.35);}
+.login-btn:disabled{opacity:0.6;cursor:not-allowed;transform:none;}
+
+.login-hint{margin-top:18px;padding:12px 14px;background:var(--surface2);border-radius:10px;font-size:12px;color:var(--muted);text-align:center;line-height:1.6;}
+.login-hint strong{color:var(--text2);}
+
+/* ROLE REDIRECT BADGES */
+.role-pills{display:flex;gap:8px;flex-wrap:wrap;justify-content:center;margin-top:14px;}
+.role-pill{padding:4px 12px;border-radius:20px;font-size:11px;font-weight:600;background:var(--surface2);color:var(--muted);border:1px solid var(--border);}
+
+/* LOADING OVERLAY */
+#loadingOverlay{position:fixed;inset:0;background:rgba(244,246,251,0.85);z-index:999;display:none;flex-direction:column;align-items:center;justify-content:center;gap:14px;backdrop-filter:blur(4px);}
+#loadingOverlay.show{display:flex;}
+.spinner{width:40px;height:40px;border:3px solid var(--blue-mid);border-top-color:var(--blue);border-radius:50%;animation:spin 0.8s linear infinite;}
+@keyframes spin{to{transform:rotate(360deg);}}
+.loading-text{font-family:'Space Grotesk',sans-serif;font-size:14px;font-weight:600;color:var(--text2);}
+</style>
+</head>
+<body>
+
+<!-- BANNER -->
+<div class="banner">
+  <div class="banner-left">
+    <div class="banner-logo">🎓</div>
+    <div>
+      <div class="banner-college">KCET — Kamaraj College of Engineering & Technology</div>
+      <div class="banner-title">ECE Event Management System</div>
+      <div class="banner-subtitle">Department of Electronics &amp; Communication Engineering</div>
+    </div>
+  </div>
+  <div class="banner-right">
+    <div class="banner-badge">🔐 Secure Login</div>
+  </div>
+</div>
+
+<!-- LOADING OVERLAY -->
+<div id="loadingOverlay">
+  <div class="spinner"></div>
+  <div class="loading-text" id="loadingText">Verifying credentials...</div>
+</div>
+
+<!-- LOGIN FORM -->
+<div class="center">
+  <div class="login-card">
+    <div class="login-icon">🔐</div>
+    <div class="login-title">Welcome Back</div>
+    <div class="login-sub">Sign in to access the ECE Event Management System</div>
+
+    <div class="login-field">
+      <label>Email Address</label>
+      <input id="loginEmail" type="email" placeholder="your@email.edu" autocomplete="username"
+             onkeydown="if(event.key==='Enter')document.getElementById('loginPass').focus()">
+    </div>
+    <div class="login-field">
+      <label>Password</label>
+      <input id="loginPass" type="password" placeholder="Your password" autocomplete="current-password"
+             onkeydown="if(event.key==='Enter')doLogin()">
+    </div>
+
+    <div class="login-err" id="loginErr"><span>❌</span><span id="loginErrMsg">Invalid credentials</span></div>
+
+    <button class="login-btn" id="loginBtn" onclick="doLogin()">
+      🔐 Sign In
+    </button>
+
+    <div class="login-hint">
+      <strong>Default password</strong> for students: reg no in lowercase &nbsp;·&nbsp; e.g. <code>21ece001</code><br>
+      Default admin: <code>admin@ece.edu</code> / <code>admin@123</code>
+    </div>
+
+    <div class="role-pills">
+      <span class="role-pill">👨‍🎓 Student</span>
+      <span class="role-pill">👨‍🏫 Faculty</span>
+      <span class="role-pill">🏛️ HOD</span>
+      <span class="role-pill">👑 Chairperson</span>
+      <span class="role-pill">⚙️ Admin</span>
+    </div>
+  </div>
+</div>
+
+<script>
+/* ── CONFIG ── */
+const GAS_URL = 'https://script.google.com/macros/s/AKfycbyR1oGba7bAmwP37wVU48Z1KqEOWihHs8i144eP2a3Ry_20eVOg7vQLHwuKW8j60ywyew/exec';
+
+/* ── ROLE → PAGE MAP ── */
+const ROLE_REDIRECT = {
+  'Student':     'student.html',
+  'Faculty':     'faculty.html',
+  'HOD':         'hod.html',
+  'Chairperson': 'hod.html',    // chairperson uses same approval UI as HOD
+  'Admin':       'admin.html'
+};
+
+/* ── If already logged in, redirect immediately ── */
+(function autoRedirect() {
+  const raw = sessionStorage.getItem('ems_user');
+  if (!raw) return;
+  try {
+    const u = JSON.parse(raw);
+    const dest = ROLE_REDIRECT[u.Role];
+    if (dest) window.location.href = dest;
+  } catch {}
+})();
+
+/* ── API ── */
+async function api(action, params = {}) {
+  try {
+    const res = await fetch(GAS_URL, {
+      method: 'POST',
+      headers: { 'Content-Type': 'text/plain' },
+      body: JSON.stringify({ action, ...params })
+    });
+    return await res.json();
+  } catch (e) {
+    return { success: false, message: 'Network error: ' + e.message };
+  }
+}
+
+/* ── SHOW / HIDE ERROR ── */
+function showErr(msg) {
+  document.getElementById('loginErrMsg').textContent = msg;
+  document.getElementById('loginErr').classList.add('show');
+}
+function hideErr() {
+  document.getElementById('loginErr').classList.remove('show');
+}
+
+/* ── LOADING ── */
+function showLoading(text = 'Verifying credentials...') {
+  document.getElementById('loadingText').textContent = text;
+  document.getElementById('loadingOverlay').classList.add('show');
+}
+function hideLoading() {
+  document.getElementById('loadingOverlay').classList.remove('show');
+}
+
+/* ── LOGIN ── */
+async function doLogin() {
+  hideErr();
+  const email = document.getElementById('loginEmail').value.trim();
+  const pass  = document.getElementById('loginPass').value;
+  const btn   = document.getElementById('loginBtn');
+
+  if (!email || !pass) { showErr('Please enter your email and password.'); return; }
+
+  btn.innerHTML = '⏳ Signing in...'; btn.disabled = true;
+  showLoading('Verifying credentials...');
+
+  const res = await api('login', { email, password: pass });
+  hideLoading();
+  btn.innerHTML = '🔐 Sign In'; btn.disabled = false;
+
+  if (!res.success) { showErr(res.message || 'Invalid email or password.'); return; }
+
+  // Store user in sessionStorage — all pages read from here
+  sessionStorage.setItem('ems_user', JSON.stringify(res.user));
+
+  // Redirect based on role
+  const dest = ROLE_REDIRECT[res.user.Role];
+  if (!dest) { showErr('Unknown role: ' + res.user.Role + '. Contact admin.'); return; }
+
+  showLoading('Redirecting to ' + res.user.Role + ' portal...');
+  setTimeout(() => { window.location.href = dest; }, 400);
+}
+</script>
+</body>
+</html>

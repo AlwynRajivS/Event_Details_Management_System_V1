@@ -1,0 +1,531 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Leaderboard | ECE-EMS</title>
+<link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&family=Space+Grotesk:wght@400;500;600;700&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#f0f4ff;--surface:#fff;--surface2:#f0f3fa;--surface3:#e8eeff;
+  --border:#dde5f8;--text:#0f1f45;--text2:#3a4d7a;--muted:#7b8db8;
+  --blue:#2056d3;--blue2:#1a44b8;--blue-lt:#eef2ff;--blue-mid:#c7d5ff;
+  --cyan:#0284c7;--cyan-lt:#e0f4ff;
+  --green:#059669;--green-lt:#ecfdf5;
+  --gold:#d97706;--gold-lt:#fffbeb;--gold-mid:#fde68a;
+  --red:#dc2626;--red-lt:#fef2f2;
+  --silver:#64748b;--bronze:#b45309;
+  --shadow:0 1px 3px rgba(32,86,211,0.06),0 4px 16px rgba(32,86,211,0.08);
+  --shadow-lg:0 8px 32px rgba(32,86,211,0.14);
+  --radius:12px;--radius-lg:18px;--radius-xl:24px;
+}
+*{margin:0;padding:0;box-sizing:border-box;}
+body{font-family:'Outfit',sans-serif;background:var(--bg);color:var(--text);min-height:100vh;font-size:14px;}
+
+/* ── BANNER ── */
+.banner{background:linear-gradient(135deg,#0f2d8a 0%,#1a44b8 30%,#2056d3 60%,#3b6ef7 100%);position:relative;overflow:hidden;padding:0 40px;display:flex;align-items:center;justify-content:space-between;min-height:76px;}
+.banner::before{content:'';position:absolute;inset:0;background-image:radial-gradient(circle at 10% 50%,rgba(255,255,255,0.07) 0%,transparent 55%),radial-gradient(circle at 88% 25%,rgba(99,130,255,0.3) 0%,transparent 45%),repeating-linear-gradient(45deg,transparent,transparent 28px,rgba(255,255,255,0.02) 28px,rgba(255,255,255,0.02) 29px);pointer-events:none;}
+.banner::after{content:'';position:absolute;bottom:0;left:0;right:0;height:2px;background:linear-gradient(90deg,transparent,rgba(255,255,255,0.35),transparent);}
+.banner-left{display:flex;align-items:center;gap:16px;position:relative;z-index:1;}
+.banner-logo{width:50px;height:50px;border-radius:12px;background:rgba(255,255,255,0.15);border:1.5px solid rgba(255,255,255,0.25);display:flex;align-items:center;justify-content:center;font-size:24px;backdrop-filter:blur(4px);box-shadow:0 2px 12px rgba(0,0,0,0.12);flex-shrink:0;}
+.banner-college{font-family:'Space Grotesk',sans-serif;font-size:11px;font-weight:600;letter-spacing:1.2px;color:rgba(255,255,255,0.65);text-transform:uppercase;margin-bottom:2px;}
+.banner-title{font-family:'Space Grotesk',sans-serif;font-size:20px;font-weight:700;color:#fff;line-height:1.1;}
+.banner-subtitle{font-size:12px;color:rgba(255,255,255,0.55);margin-top:2px;}
+.banner-right{display:flex;align-items:center;gap:10px;position:relative;z-index:1;}
+.banner-badge{padding:5px 14px;border-radius:20px;background:rgba(255,255,255,0.15);border:1.5px solid rgba(255,255,255,0.25);color:#fff;font-size:12px;font-weight:700;backdrop-filter:blur(4px);display:flex;align-items:center;gap:6px;}
+.banner-badge-dot{width:7px;height:7px;border-radius:50%;background:#4ade80;box-shadow:0 0 6px #4ade80;animation:blink 2s infinite;}
+@keyframes blink{0%,100%{opacity:1;transform:scale(1);}50%{opacity:0.5;transform:scale(1.3);}}
+.back-btn{padding:7px 16px;border-radius:8px;background:rgba(255,255,255,0.15);border:1.5px solid rgba(255,255,255,0.25);color:#fff;font-family:'Outfit',sans-serif;font-size:12px;font-weight:600;cursor:pointer;transition:all 0.18s;text-decoration:none;display:flex;align-items:center;gap:6px;}
+.back-btn:hover{background:rgba(255,255,255,0.25);}
+
+/* ── MAIN LAYOUT ── */
+.main{padding:28px 40px;max-width:1300px;margin:0 auto;}
+
+/* ── PAGE HEADER ── */
+.page-header{text-align:center;margin-bottom:32px;}
+.page-header-icon{font-size:44px;margin-bottom:8px;filter:drop-shadow(0 4px 12px rgba(32,86,211,0.25));}
+.page-title{font-family:'Space Grotesk',sans-serif;font-size:32px;font-weight:700;color:var(--text);letter-spacing:-0.5px;margin-bottom:6px;}
+.page-sub{color:var(--muted);font-size:14px;}
+
+/* ── PODIUM ── */
+.podium-wrap{display:flex;justify-content:center;align-items:flex-end;gap:16px;margin-bottom:36px;padding:0 20px;}
+.podium-item{display:flex;flex-direction:column;align-items:center;}
+.podium-card{background:var(--surface);border-radius:var(--radius-lg);padding:20px 22px;text-align:center;border:2px solid var(--border);position:relative;width:180px;box-shadow:var(--shadow);transition:transform 0.2s;}
+.podium-card:hover{transform:translateY(-3px);}
+.podium-card.gold{border-color:var(--gold);background:linear-gradient(160deg,#fffdf5 0%,#fff8e1 100%);}
+.podium-card.silver{border-color:#94a3b8;background:linear-gradient(160deg,#f8fafc 0%,#f1f5f9 100%);}
+.podium-card.bronze{border-color:var(--bronze);background:linear-gradient(160deg,#fffaf5 0%,#fef3e2 100%);}
+.podium-medal{font-size:34px;margin-bottom:6px;display:block;}
+.podium-name{font-family:'Space Grotesk',sans-serif;font-weight:700;font-size:14px;color:var(--text);margin-bottom:2px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+.podium-reg{font-family:'JetBrains Mono',monospace;font-size:11px;color:var(--muted);margin-bottom:10px;}
+.podium-score{font-family:'Space Grotesk',sans-serif;font-size:38px;font-weight:700;line-height:1;margin-bottom:4px;}
+.podium-card.gold   .podium-score{color:var(--gold);}
+.podium-card.silver .podium-score{color:var(--silver);}
+.podium-card.bronze .podium-score{color:var(--bronze);}
+.podium-meta{font-size:11px;color:var(--muted);}
+.podium-stand{width:180px;display:flex;justify-content:center;}
+.stand{border-radius:6px 6px 0 0;width:160px;}
+.stand.gold{height:72px;background:linear-gradient(135deg,#f59e0b,#d97706);}
+.stand.silver{height:52px;background:linear-gradient(135deg,#94a3b8,#64748b);}
+.stand.bronze{height:38px;background:linear-gradient(135deg,#d97706,#b45309);}
+
+/* ── TABS ── */
+.tabs{display:flex;gap:3px;background:var(--surface2);border:1.5px solid var(--border);border-radius:var(--radius);padding:4px;margin-bottom:24px;width:fit-content;margin-left:auto;margin-right:auto;}
+.tab{padding:9px 22px;border:none;border-radius:9px;background:transparent;color:var(--text2);cursor:pointer;font-family:'Outfit',sans-serif;font-size:13px;font-weight:500;transition:all 0.18s;white-space:nowrap;}
+.tab.active{background:var(--blue);color:#fff;box-shadow:0 2px 10px rgba(32,86,211,0.3);}
+.tab:hover:not(.active){background:var(--border);color:var(--text);}
+.panel{display:none;}.panel.active{display:block;}
+
+/* ── TABLE CARD ── */
+.table-card{background:var(--surface);border:1.5px solid var(--border);border-radius:var(--radius-lg);overflow:hidden;box-shadow:var(--shadow);}
+.table-head-bar{display:flex;align-items:center;justify-content:space-between;padding:16px 22px;border-bottom:1.5px solid var(--border);background:var(--surface2);}
+.table-head-title{font-family:'Space Grotesk',sans-serif;font-size:15px;font-weight:700;color:var(--text);}
+.filter-row{display:flex;gap:8px;}
+.filter-sel{padding:6px 12px;background:var(--surface);border:1.5px solid var(--border);border-radius:8px;color:var(--text);font-family:'Outfit',sans-serif;font-size:12px;outline:none;cursor:pointer;}
+.filter-sel:focus{border-color:var(--blue);}
+
+/* ── COLUMN HEADERS ── */
+.col-header{display:grid;padding:9px 22px;font-size:10px;font-weight:700;letter-spacing:0.8px;color:var(--muted);text-transform:uppercase;background:var(--surface2);border-bottom:1.5px solid var(--border);}
+.col-students{grid-template-columns:64px 1fr 110px 90px 80px 100px 90px;}
+.col-sections{grid-template-columns:64px 1fr 130px 100px 110px;}
+.col-categories{grid-template-columns:1fr 200px 100px;}
+
+/* ── ROWS ── */
+.lb-row{display:grid;align-items:center;padding:13px 22px;border-bottom:1px solid var(--border);transition:background 0.15s;animation:rowIn 0.3s ease both;}
+.lb-row:last-child{border-bottom:none;}
+.lb-row:hover{background:var(--blue-lt);}
+.lb-row.is-me{background:#eef5ff;border-left:3px solid var(--blue);}
+@keyframes rowIn{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:translateY(0)}}
+
+/* ── RANK BADGE ── */
+.rank-badge{width:38px;height:38px;border-radius:10px;display:flex;align-items:center;justify-content:center;font-family:'Space Grotesk',sans-serif;font-size:15px;font-weight:700;flex-shrink:0;}
+.rank-1{background:linear-gradient(135deg,#fbbf24,#d97706);color:#fff;box-shadow:0 2px 8px rgba(217,119,6,0.35);}
+.rank-2{background:linear-gradient(135deg,#94a3b8,#64748b);color:#fff;box-shadow:0 2px 8px rgba(100,116,139,0.3);}
+.rank-3{background:linear-gradient(135deg,#d97706,#b45309);color:#fff;box-shadow:0 2px 8px rgba(180,83,9,0.3);}
+.rank-n{background:var(--surface2);color:var(--muted);border:1.5px solid var(--border);}
+
+/* ── AVATAR ── */
+.avatar{width:36px;height:36px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-weight:700;font-size:14px;color:#fff;flex-shrink:0;}
+
+/* ── SCORE BAR ── */
+.score-bar{height:5px;background:var(--surface2);border-radius:3px;overflow:hidden;margin-top:5px;}
+.score-fill{height:100%;border-radius:3px;transition:width 1.2s cubic-bezier(0.4,0,0.2,1);}
+
+/* ── BADGES ── */
+.badge{padding:3px 10px;border-radius:20px;font-size:11px;font-weight:600;}
+.b-blue{background:var(--blue-lt);color:var(--blue);}
+.b-gold{background:var(--gold-lt);color:var(--gold);}
+.b-green{background:var(--green-lt);color:var(--green);}
+.b-muted{background:var(--surface2);color:var(--muted);}
+.you-tag{display:inline-block;padding:2px 8px;border-radius:10px;background:rgba(32,86,211,0.12);color:var(--blue);font-size:10px;font-weight:700;margin-left:5px;vertical-align:middle;}
+
+/* ── CATEGORY ROW ── */
+.cat-row{display:flex;align-items:center;padding:14px 22px;border-bottom:1px solid var(--border);gap:14px;}
+.cat-row:last-child{border-bottom:none;}
+.cat-icon-box{width:42px;height:42px;border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:20px;flex-shrink:0;}
+.cat-bar-wrap{flex:1;}
+.cat-label{font-weight:600;font-size:13px;margin-bottom:5px;}
+.cat-bar{height:8px;background:var(--surface2);border-radius:4px;overflow:hidden;}
+.cat-fill{height:100%;border-radius:4px;transition:width 1.2s cubic-bezier(0.4,0,0.2,1);}
+
+/* ── EMPTY / LOADING ── */
+.empty{text-align:center;padding:52px;color:var(--muted);font-size:13px;}
+.loading-row{text-align:center;padding:40px;color:var(--muted);}
+
+/* ── STAT STRIP ── */
+.stat-strip{display:grid;grid-template-columns:repeat(auto-fit,minmax(160px,1fr));gap:14px;margin-bottom:28px;}
+.stat-box{background:var(--surface);border:1.5px solid var(--border);border-radius:var(--radius);padding:16px 18px;box-shadow:var(--shadow);display:flex;align-items:center;gap:12px;}
+.stat-icon{font-size:28px;flex-shrink:0;}
+.stat-val{font-family:'Space Grotesk',sans-serif;font-size:24px;font-weight:700;color:var(--blue);line-height:1;}
+.stat-lbl{font-size:11px;color:var(--muted);margin-top:2px;}
+
+/* ── TOAST ── */
+#toastBox{position:fixed;bottom:24px;right:24px;z-index:9999;display:flex;flex-direction:column;gap:8px;}
+.toast{padding:12px 18px;border-radius:10px;font-size:13px;font-weight:600;box-shadow:var(--shadow-lg);animation:slideIn 0.3s ease;display:flex;align-items:center;gap:10px;}
+.toast.error{background:#fff;border-left:4px solid var(--red);color:var(--red);}
+.toast.info{background:#fff;border-left:4px solid var(--blue);color:var(--blue);}
+@keyframes slideIn{from{transform:translateX(100%);opacity:0}to{transform:translateX(0);opacity:1}}
+
+@media(max-width:900px){
+  .main{padding:16px 16px;}
+  .podium-card{width:140px;}
+  .stand{width:120px;}
+  .col-students{grid-template-columns:48px 1fr 80px 70px 60px 70px;}
+  .lb-row.col-students{grid-template-columns:48px 1fr 80px 70px 60px 70px;}
+  .banner{padding:0 16px;}
+}
+</style>
+</head>
+<body>
+
+<!-- BANNER -->
+<div class="banner">
+  <div class="banner-left">
+    <div class="banner-logo">🎓</div>
+    <div>
+      <div class="banner-college">KCET — Kamaraj College of Engineering & Technology</div>
+      <div class="banner-title">ECE Event Management System</div>
+      <div class="banner-subtitle">Department of Electronics &amp; Communication Engineering</div>
+    </div>
+  </div>
+  <div class="banner-right">
+    <a href="index.html" class="back-btn">← Back</a>
+    <div class="banner-badge"><div class="banner-badge-dot"></div>Leaderboard</div>
+  </div>
+</div>
+
+<div id="toastBox"></div>
+
+<div class="main">
+
+  <!-- PAGE HEADER -->
+  <div class="page-header">
+    <div class="page-header-icon">🏆</div>
+    <div class="page-title">ECE Event Leaderboard</div>
+    <div class="page-sub">Live rankings based on verified event participations &amp; achievements</div>
+  </div>
+
+  <!-- STAT STRIP -->
+  <div class="stat-strip" id="statStrip">
+    <div class="stat-box"><div class="stat-icon">👥</div><div><div class="stat-val" id="statStudents">—</div><div class="stat-lbl">Active Students</div></div></div>
+    <div class="stat-box"><div class="stat-icon">📋</div><div><div class="stat-val" id="statEvents">—</div><div class="stat-lbl">Total Submissions</div></div></div>
+    <div class="stat-box"><div class="stat-icon">✅</div><div><div class="stat-val" id="statVerified">—</div><div class="stat-lbl">Verified</div></div></div>
+    <div class="stat-box"><div class="stat-icon">⭐</div><div><div class="stat-val" id="statScore">—</div><div class="stat-lbl">Total Points</div></div></div>
+  </div>
+
+  <!-- TOP 3 PODIUM -->
+  <div class="podium-wrap" id="podium">
+    <!-- Silver -->
+    <div class="podium-item">
+      <div class="podium-card silver" id="pod2">
+        <span class="podium-medal">🥈</span>
+        <div class="podium-name">—</div>
+        <div class="podium-reg">—</div>
+        <div class="podium-score">—</div>
+        <div class="podium-meta">—</div>
+      </div>
+      <div class="podium-stand"><div class="stand silver"></div></div>
+    </div>
+    <!-- Gold (centre, tallest) -->
+    <div class="podium-item">
+      <div class="podium-card gold" id="pod1">
+        <span class="podium-medal">🥇</span>
+        <div class="podium-name">—</div>
+        <div class="podium-reg">—</div>
+        <div class="podium-score">—</div>
+        <div class="podium-meta">—</div>
+      </div>
+      <div class="podium-stand"><div class="stand gold"></div></div>
+    </div>
+    <!-- Bronze -->
+    <div class="podium-item">
+      <div class="podium-card bronze" id="pod3">
+        <span class="podium-medal">🥉</span>
+        <div class="podium-name">—</div>
+        <div class="podium-reg">—</div>
+        <div class="podium-score">—</div>
+        <div class="podium-meta">—</div>
+      </div>
+      <div class="podium-stand"><div class="stand bronze"></div></div>
+    </div>
+  </div>
+
+  <!-- TABS -->
+  <div class="tabs">
+    <button class="tab active" onclick="switchTab('students')">🎓 Students</button>
+    <button class="tab" onclick="switchTab('sections')">🏫 Sections</button>
+    <button class="tab" onclick="switchTab('categories')">📊 Categories</button>
+  </div>
+
+  <!-- ══ STUDENTS TAB ══ -->
+  <div class="panel active" id="panel-students">
+    <div class="table-card">
+      <div class="table-head-bar">
+        <div class="table-head-title">🎓 Student Rankings</div>
+        <div class="filter-row">
+          <select class="filter-sel" id="filterSection" onchange="renderStudents()">
+            <option value="">All Sections</option>
+          </select>
+          <select class="filter-sel" id="filterYear" onchange="renderStudents()">
+            <option value="">All Years</option>
+            <option>I</option><option>II</option><option>III</option><option>IV</option>
+          </select>
+        </div>
+      </div>
+      <div class="col-header col-students">
+        <div>Rank</div><div>Student</div><div>Section</div><div>Events</div><div>Wins</div><div>Score</div><div>Progress</div>
+      </div>
+      <div id="studentsList"><div class="loading-row">Loading rankings...</div></div>
+    </div>
+  </div>
+
+  <!-- ══ SECTIONS TAB ══ -->
+  <div class="panel" id="panel-sections">
+    <div class="table-card">
+      <div class="table-head-bar">
+        <div class="table-head-title">🏫 Section Rankings</div>
+      </div>
+      <div class="col-header col-sections">
+        <div>Rank</div><div>Section</div><div>Active Members</div><div>Events</div><div>Total Score</div>
+      </div>
+      <div id="sectionsList"><div class="loading-row">Loading...</div></div>
+    </div>
+  </div>
+
+  <!-- ══ CATEGORIES TAB ══ -->
+  <div class="panel" id="panel-categories">
+    <div class="table-card">
+      <div class="table-head-bar">
+        <div class="table-head-title">📊 Category Breakdown</div>
+      </div>
+      <div id="categoriesList"><div class="loading-row">Loading...</div></div>
+    </div>
+  </div>
+
+</div><!-- /.main -->
+
+<script>
+/* ── CONFIG — GAS URL hardcoded ── */
+const GAS_URL = 'https://script.google.com/macros/s/AKfycbyhfNlPrsU1NfuJr6Wjf7Kgo6EiA8ASca2EZQ-1lSIgNswDccZ4CukIhcTxN0YdOMRciA/exec';
+
+/* ── Read logged-in user if any (optional — used for "YOU" highlight) ── */
+let EMS_USER = {};
+try { EMS_USER = JSON.parse(localStorage.getItem('ems_user') || '{}'); } catch(e){}
+
+let LEADERDATA = {};
+
+/* ── API ── */
+async function api(action, params = {}) {
+  try {
+    const res = await fetch(GAS_URL, {
+      method: 'POST',
+      headers: { 'Content-Type': 'text/plain' },
+      body: JSON.stringify({ action, ...params })
+    });
+    return await res.json();
+  } catch(e) {
+    return { success: false, message: 'Network error: ' + e.message };
+  }
+}
+
+/* ── Toast ── */
+function toast(msg, type = 'info') {
+  const box = document.getElementById('toastBox');
+  const el  = document.createElement('div');
+  el.className = 'toast ' + type;
+  el.textContent = msg;
+  box.appendChild(el);
+  setTimeout(() => el.remove(), 3500);
+}
+
+/* ── Avatar colours ── */
+const AVATAR_COLORS = [
+  ['#2056d3','#1a44b8'],['#059669','#047857'],['#d97706','#b45309'],
+  ['#0284c7','#0369a1'],['#7c3aed','#6d28d9'],['#db2777','#be185d'],
+  ['#0891b2','#0e7490'],['#16a34a','#15803d']
+];
+function avatarColor(i){ return AVATAR_COLORS[i % AVATAR_COLORS.length]; }
+
+/* ── Format helpers ── */
+function pctBar(score, max, color) {
+  const p = max > 0 ? Math.round(score/max*100) : 0;
+  return `<div class="score-bar"><div class="score-fill" style="width:${p}%;background:${color};"></div></div>`;
+}
+
+/* ── LOAD DATA ── */
+async function loadLeaderboard() {
+  // Load leaderboard + analytics in parallel for stat strip
+  const [lb, analytics] = await Promise.all([
+    api('leaderboard', { limit: 200 }),
+    api('getAnalytics', {})
+  ]);
+
+  if (!lb.success) { toast('Could not load leaderboard: ' + lb.message, 'error'); return; }
+  LEADERDATA = lb;
+
+  // Stat strip from analytics
+  if (analytics.success) {
+    document.getElementById('statStudents').textContent  = analytics.activeStudents ?? '—';
+    document.getElementById('statEvents').textContent    = (analytics.submissions||[]).length ?? '—';
+    document.getElementById('statVerified').textContent  = (analytics.submissions||[]).filter(s=>s.Status==='Verified').length ?? '—';
+    document.getElementById('statScore').textContent     = analytics.totalScore ?? '—';
+  }
+
+  // Populate section filter from actual data
+  const sections = [...new Set((lb.students||[]).map(s=>s.section).filter(Boolean))].sort();
+  const selSec   = document.getElementById('filterSection');
+  selSec.innerHTML = '<option value="">All Sections</option>' +
+    sections.map(s=>`<option value="${s}">${s}</option>`).join('');
+
+  renderPodium(lb.students || []);
+  renderStudents();
+  renderSections();
+  renderCategories();
+}
+
+/* ── PODIUM ── */
+function renderPodium(students) {
+  // Podium order: 2nd | 1st | 3rd
+  const order = [
+    { s: students[1], id: 'pod2', medal: '🥈', cls: 'silver' },
+    { s: students[0], id: 'pod1', medal: '🥇', cls: 'gold'   },
+    { s: students[2], id: 'pod3', medal: '🥉', cls: 'bronze' }
+  ];
+  order.forEach(({ s, id, medal }) => {
+    if (!s) return;
+    const el = document.getElementById(id);
+    el.innerHTML = `
+      <span class="podium-medal">${medal}</span>
+      <div class="podium-name">${s.name || '—'}</div>
+      <div class="podium-reg">${s.regNo || ''}</div>
+      <div class="podium-score">${s.score}</div>
+      <div class="podium-meta">Sec ${s.section || '—'} · ${s.events} events · ${s.wins} wins</div>
+    `;
+  });
+}
+
+/* ── STUDENTS TAB ── */
+function renderStudents() {
+  const secFilter  = document.getElementById('filterSection')?.value || '';
+  const yearFilter = document.getElementById('filterYear')?.value   || '';
+  let   students   = LEADERDATA.students || [];
+
+  if (secFilter)  students = students.filter(s => s.section === secFilter);
+  if (yearFilter) students = students.filter(s => s.year    === yearFilter);
+
+  const maxScore = students.length > 0 ? students[0].score : 1;
+
+  if (!students.length) {
+    document.getElementById('studentsList').innerHTML = '<div class="empty">No students found for this filter.</div>';
+    return;
+  }
+
+  const html = students.map((s, i) => {
+    const [c1, c2] = avatarColor(i);
+    const rankCls  = s.rank <= 3 ? 'rank-' + s.rank : 'rank-n';
+    const pct      = maxScore > 0 ? Math.round(s.score / maxScore * 100) : 0;
+    const isMe     = EMS_USER.RegNo && EMS_USER.RegNo === s.regNo;
+    const scoreColor = s.rank===1 ? 'var(--gold)' : s.rank===2 ? 'var(--silver)' : s.rank===3 ? 'var(--bronze)' : 'var(--blue)';
+    const winsHtml = s.wins > 0
+      ? `<span style="color:var(--gold);font-weight:700;">${s.wins}</span> <span style="color:var(--muted);font-size:11px;">wins</span>`
+      : `<span style="color:var(--muted);">—</span>`;
+
+    return `<div class="lb-row col-students${isMe?' is-me':''}">
+      <div><div class="rank-badge ${rankCls}">${s.rank}</div></div>
+      <div style="display:flex;align-items:center;gap:10px;">
+        <div class="avatar" style="background:linear-gradient(135deg,${c1},${c2});">${(s.name||'?')[0].toUpperCase()}</div>
+        <div>
+          <div style="font-weight:600;font-size:13px;color:var(--text);">${s.name||'—'}${isMe?'<span class="you-tag">YOU</span>':''}</div>
+          <div style="font-family:\'JetBrains Mono\',monospace;font-size:11px;color:var(--muted);">${s.regNo||''}</div>
+        </div>
+      </div>
+      <div><span class="badge b-blue">Sec ${s.section||'—'}</span>${s.year?`<span class="badge b-muted" style="margin-left:4px;">${s.year}</span>`:''}</div>
+      <div style="font-weight:600;">${s.events} <span style="color:var(--muted);font-weight:400;font-size:11px;">events</span></div>
+      <div>${winsHtml}</div>
+      <div>
+        <div style="font-family:\'Space Grotesk\',sans-serif;font-size:26px;font-weight:700;color:${scoreColor};line-height:1;">${s.score}</div>
+        <div style="font-size:10px;color:var(--muted);">pts</div>
+      </div>
+      <div style="min-width:80px;">
+        <div style="font-size:11px;color:var(--muted);margin-bottom:3px;">${pct}%</div>
+        <div class="score-bar"><div class="score-fill" style="width:${pct}%;background:linear-gradient(90deg,${c1},${c2});"></div></div>
+      </div>
+    </div>`;
+  }).join('');
+
+  document.getElementById('studentsList').innerHTML = html;
+}
+
+/* ── SECTIONS TAB ── */
+function renderSections() {
+  const sections = LEADERDATA.sections || [];
+  const maxScore = sections.length > 0 ? sections[0].score : 1;
+  const SEC_COLORS = ['#2056d3','#059669','#d97706','#7c3aed','#0284c7','#db2777'];
+
+  if (!sections.length) {
+    document.getElementById('sectionsList').innerHTML = '<div class="empty">No section data yet.</div>';
+    return;
+  }
+
+  const html = sections.map((s, i) => {
+    const color   = SEC_COLORS[i % SEC_COLORS.length];
+    const rankCls = s.rank <= 3 ? 'rank-' + s.rank : 'rank-n';
+    const pct     = maxScore > 0 ? Math.round(s.score / maxScore * 100) : 0;
+
+    return `<div class="lb-row col-sections">
+      <div><div class="rank-badge ${rankCls}">${s.rank}</div></div>
+      <div>
+        <div style="font-family:\'Space Grotesk\',sans-serif;font-size:22px;font-weight:700;color:${color};">Section ${s.section}</div>
+        <div class="score-bar" style="margin-top:6px;"><div class="score-fill" style="width:${pct}%;background:${color};"></div></div>
+      </div>
+      <div>
+        <span style="font-weight:700;color:${color};font-size:18px;">${s.memberCount}</span>
+        <span style="color:var(--muted);font-size:12px;"> active</span>
+      </div>
+      <div style="font-weight:600;">${s.events} <span style="color:var(--muted);font-weight:400;font-size:11px;">events</span></div>
+      <div>
+        <span style="font-family:\'Space Grotesk\',sans-serif;font-size:28px;font-weight:700;color:${color};">${s.score}</span>
+        <span style="color:var(--muted);font-size:12px;"> pts</span>
+      </div>
+    </div>`;
+  }).join('');
+
+  document.getElementById('sectionsList').innerHTML = html;
+}
+
+/* ── CATEGORIES TAB ── */
+function renderCategories() {
+  const categories = LEADERDATA.categories || [];
+  const maxCount   = Math.max(...categories.map(c => c.count), 1);
+  const CAT_COLORS = ['#2056d3','#059669','#d97706','#0284c7','#7c3aed','#db2777','#0891b2','#16a34a'];
+  const CAT_ICONS  = {
+    'Hackathon':'💻','Paper Presentation':'📄','Sports':'⚽','Club Activities':'🎭',
+    'Cultural':'🎨','Technical Symposium':'🔬','Workshop':'🛠️','Internship':'🏢',
+    'Project Exhibition':'🏗️','Quiz':'🧠'
+  };
+  const CAT_BG = ['#eff2ff','#ecfdf5','#fffbeb','#e0f4ff','#f5f3ff','#fdf2f8','#ecfeff','#f0fdf4'];
+
+  if (!categories.length) {
+    document.getElementById('categoriesList').innerHTML = '<div class="empty">No category data yet.</div>';
+    return;
+  }
+
+  const html = categories
+    .sort((a,b) => b.totalScore - a.totalScore)
+    .map((c, i) => {
+      const color = CAT_COLORS[i % CAT_COLORS.length];
+      const bg    = CAT_BG[i % CAT_BG.length];
+      const icon  = CAT_ICONS[c.category] || '🎯';
+      const pct   = Math.round(c.count / maxCount * 100);
+
+      return `<div class="cat-row">
+        <div class="cat-icon-box" style="background:${bg};">${icon}</div>
+        <div class="cat-bar-wrap">
+          <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:5px;">
+            <div style="font-weight:600;font-size:13px;color:var(--text);">${c.category}</div>
+            <div style="font-size:11px;color:var(--muted);">${c.count} submissions</div>
+          </div>
+          <div class="cat-bar"><div class="cat-fill" style="width:${pct}%;background:${color};"></div></div>
+        </div>
+        <div style="text-align:right;min-width:90px;">
+          <div style="font-family:\'Space Grotesk\',sans-serif;font-size:22px;font-weight:700;color:${color};line-height:1;">${c.totalScore}</div>
+          <div style="font-size:10px;color:var(--muted);">total pts</div>
+        </div>
+      </div>`;
+    }).join('');
+
+  document.getElementById('categoriesList').innerHTML = html;
+}
+
+/* ── TAB SWITCH ── */
+function switchTab(t) {
+  const list = ['students','sections','categories'];
+  document.querySelectorAll('.tab').forEach((b,i) => b.classList.toggle('active', list[i]===t));
+  document.querySelectorAll('.panel').forEach(p => p.classList.remove('active'));
+  document.getElementById('panel-'+t).classList.add('active');
+}
+
+/* ── INIT ── */
+loadLeaderboard();
+</script>
+</body>
+</html>

@@ -1,0 +1,765 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/><meta name="viewport" content="width=device-width,initial-scale=1.0"/>
+<title>Approval Portal | ECE-EMS</title>
+<link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&family=Space+Grotesk:wght@400;500;600;700&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet"/>
+<style>
+:root{
+  --bg:#f0f4ff;--surface:#fff;--surface2:#f0f3fa;--surface3:#e8eeff;
+  --border:#dde5f8;--text:#0f1f45;--text2:#3a4d7a;--muted:#7b8db8;
+  --blue:#2056d3;--blue2:#1a44b8;--blue-lt:#eef2ff;--blue-mid:#c7d5ff;
+  --cyan:#0284c7;--cyan-lt:#e0f4ff;
+  --green:#059669;--green-lt:#ecfdf5;--green-mid:#a7f3d0;
+  --gold:#d97706;--gold-lt:#fffbeb;--gold-mid:#fde68a;
+  --red:#dc2626;--red-lt:#fef2f2;
+  --shadow:0 1px 3px rgba(32,86,211,0.06),0 4px 16px rgba(32,86,211,0.08);
+  --shadow-lg:0 8px 32px rgba(32,86,211,0.14);
+  --radius:12px;--radius-lg:18px;
+}
+*{margin:0;padding:0;box-sizing:border-box;}
+body{font-family:'Outfit',sans-serif;background:var(--bg);color:var(--text);min-height:100vh;font-size:14px;}
+
+/* ── BANNER ── */
+.banner{background:linear-gradient(135deg,#0f2d8a 0%,#1a44b8 30%,#2056d3 60%,#3b6ef7 100%);position:relative;overflow:hidden;padding:0 24px;display:flex;align-items:center;justify-content:space-between;min-height:70px;flex-wrap:wrap;gap:8px;}
+.banner::before{content:'';position:absolute;inset:0;background-image:radial-gradient(circle at 10% 50%,rgba(255,255,255,0.07) 0%,transparent 55%),radial-gradient(circle at 88% 25%,rgba(99,130,255,0.3) 0%,transparent 45%),repeating-linear-gradient(45deg,transparent,transparent 28px,rgba(255,255,255,0.02) 28px,rgba(255,255,255,0.02) 29px);pointer-events:none;}
+.banner::after{content:'';position:absolute;bottom:0;left:0;right:0;height:2px;background:linear-gradient(90deg,transparent,rgba(255,255,255,0.35),transparent);}
+.banner-left{display:flex;align-items:center;gap:14px;position:relative;z-index:1;}
+.banner-logo{width:46px;height:46px;border-radius:10px;background:rgba(255,255,255,0.15);border:1.5px solid rgba(255,255,255,0.25);display:flex;align-items:center;justify-content:center;font-size:22px;backdrop-filter:blur(4px);flex-shrink:0;}
+.banner-college{font-family:'Space Grotesk',sans-serif;font-size:10px;font-weight:600;letter-spacing:1.2px;color:rgba(255,255,255,0.65);text-transform:uppercase;margin-bottom:1px;}
+.banner-title{font-family:'Space Grotesk',sans-serif;font-size:17px;font-weight:700;color:#fff;line-height:1.1;}
+.banner-subtitle{font-size:11px;color:rgba(255,255,255,0.55);margin-top:1px;}
+.banner-right{display:flex;align-items:center;gap:8px;position:relative;z-index:1;flex-wrap:wrap;}
+.banner-badge{padding:4px 12px;border-radius:20px;background:rgba(255,255,255,0.15);border:1.5px solid rgba(255,255,255,0.25);color:#fff;font-size:11px;font-weight:700;backdrop-filter:blur(4px);display:flex;align-items:center;gap:5px;}
+.banner-badge-dot{width:6px;height:6px;border-radius:50%;background:#4ade80;box-shadow:0 0 6px #4ade80;animation:blink 2s infinite;}
+@keyframes blink{0%,100%{opacity:1}50%{opacity:0.5}}
+.banner-user{font-size:12px;color:rgba(255,255,255,0.8);padding:4px 10px;background:rgba(255,255,255,0.1);border-radius:8px;border:1px solid rgba(255,255,255,0.2);}
+.logout-btn{padding:6px 14px;border-radius:8px;background:rgba(255,255,255,0.12);border:1.5px solid rgba(255,255,255,0.25);color:#fff;font-family:'Outfit',sans-serif;font-size:12px;font-weight:600;cursor:pointer;transition:all 0.18s;}
+.logout-btn:hover{background:rgba(255,255,255,0.22);}
+
+/* ── LAYOUT ── */
+.main{padding:22px 24px;max-width:1300px;margin:0 auto;}
+
+/* ── PAGE HEADER ── */
+.page-header{margin-bottom:20px;}
+.page-title{font-family:'Space Grotesk',sans-serif;font-size:22px;font-weight:700;color:var(--text);}
+.page-sub{color:var(--muted);font-size:13px;margin-top:3px;}
+
+/* ── BANNER STRIP ── */
+.approval-strip{display:flex;align-items:center;gap:16px;background:linear-gradient(135deg,var(--blue-lt),var(--cyan-lt));border:1.5px solid var(--blue-mid);border-radius:var(--radius-lg);padding:16px 22px;margin-bottom:22px;flex-wrap:wrap;gap:12px;box-shadow:var(--shadow);}
+.strip-stat{text-align:center;min-width:80px;}
+.strip-num{font-family:'Space Grotesk',sans-serif;font-size:36px;font-weight:700;color:var(--gold);line-height:1;}
+.strip-lbl{font-size:10px;color:var(--muted);font-weight:600;text-transform:uppercase;letter-spacing:0.5px;margin-top:2px;}
+.strip-divider{width:1.5px;height:48px;background:var(--border);flex-shrink:0;}
+.strip-actions{margin-left:auto;display:flex;gap:8px;flex-wrap:wrap;}
+
+/* ── SECTION FILTER (Chairperson) ── */
+.section-filter-bar{background:var(--surface);border:1.5px solid var(--border);border-radius:var(--radius);padding:12px 18px;margin-bottom:18px;display:flex;align-items:center;gap:12px;flex-wrap:wrap;box-shadow:var(--shadow);}
+.sf-label{font-size:12px;font-weight:700;color:var(--text2);text-transform:uppercase;letter-spacing:0.5px;}
+.sf-select{padding:7px 12px;background:var(--surface2);border:1.5px solid var(--border);border-radius:8px;color:var(--text);font-family:'Outfit',sans-serif;font-size:13px;outline:none;transition:all 0.18s;}
+.sf-select:focus{border-color:var(--blue);box-shadow:0 0 0 3px rgba(32,86,211,0.08);}
+
+/* ── TABS ── */
+.tabs{display:flex;gap:2px;background:var(--surface2);border:1.5px solid var(--border);border-radius:var(--radius);padding:4px;margin-bottom:20px;overflow-x:auto;}
+.tab{flex:1;min-width:100px;padding:9px 14px;border:none;border-radius:8px;background:transparent;color:var(--text2);cursor:pointer;font-family:'Outfit',sans-serif;font-size:13px;font-weight:500;transition:all 0.18s;text-align:center;white-space:nowrap;}
+.tab.active{background:var(--blue);color:#fff;box-shadow:0 2px 8px rgba(32,86,211,0.25);}
+.tab:hover:not(.active){background:var(--border);color:var(--text);}
+.panel{display:none;}.panel.active{display:block;}
+
+/* ── TABLE CARD ── */
+.table-card{background:var(--surface);border:1.5px solid var(--border);border-radius:var(--radius-lg);overflow:hidden;box-shadow:var(--shadow);margin-bottom:18px;}
+.table-head-bar{display:flex;align-items:center;justify-content:space-between;padding:13px 18px;border-bottom:1.5px solid var(--border);background:var(--surface2);flex-wrap:wrap;gap:8px;}
+.table-head-title{font-family:'Space Grotesk',sans-serif;font-size:14px;font-weight:700;color:var(--text);}
+.table-count{background:var(--blue-lt);color:var(--blue);padding:3px 10px;border-radius:20px;font-size:11px;font-weight:700;}
+.table-wrap{overflow-x:auto;-webkit-overflow-scrolling:touch;}
+table{width:100%;border-collapse:collapse;font-size:13px;min-width:600px;}
+thead{background:var(--surface2);}
+th{padding:9px 14px;text-align:left;font-size:10px;font-weight:700;letter-spacing:0.7px;color:var(--muted);text-transform:uppercase;border-bottom:1.5px solid var(--border);white-space:nowrap;}
+td{padding:10px 14px;border-bottom:1px solid var(--border);color:var(--text);vertical-align:middle;}
+tr:last-child td{border-bottom:none;}
+tr:hover td{background:var(--blue-lt);}
+
+/* ── MOBILE CARD VIEW ── */
+.mobile-cards{display:none;}
+.req-card{background:var(--surface);border:1.5px solid var(--border);border-radius:var(--radius);padding:14px 16px;margin-bottom:12px;box-shadow:var(--shadow);}
+.req-card-top{display:flex;align-items:flex-start;justify-content:space-between;margin-bottom:10px;}
+.req-card-name{font-family:'Space Grotesk',sans-serif;font-weight:700;font-size:14px;}
+.req-card-reg{font-family:'JetBrains Mono',monospace;font-size:11px;color:var(--muted);}
+.req-card-event{font-size:13px;font-weight:600;color:var(--blue);margin-bottom:6px;}
+.req-card-meta{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:10px;}
+.req-card-actions{display:flex;gap:8px;flex-wrap:wrap;}
+
+/* ── BADGES ── */
+.badge{display:inline-flex;align-items:center;padding:2px 9px;border-radius:20px;font-size:11px;font-weight:700;}
+.b-blue{background:var(--blue-lt);color:var(--blue);}
+.b-green{background:var(--green-lt);color:var(--green);}
+.b-gold{background:var(--gold-lt);color:var(--gold);}
+.b-red{background:var(--red-lt);color:var(--red);}
+.b-muted{background:var(--surface2);color:var(--muted);}
+.b-cyan{background:var(--cyan-lt);color:var(--cyan);}
+
+/* ── BUTTONS ── */
+.btn{padding:7px 14px;border-radius:8px;border:none;cursor:pointer;font-family:'Outfit',sans-serif;font-size:12px;font-weight:600;transition:all 0.18s;display:inline-flex;align-items:center;gap:6px;white-space:nowrap;}
+.btn-approve{background:var(--green-lt);color:var(--green);border:1.5px solid var(--green-mid);}
+.btn-approve:hover{background:#d1fae5;}
+.btn-reject{background:var(--red-lt);color:var(--red);border:1.5px solid #fecaca;}
+.btn-reject:hover{background:#fee2e2;}
+.btn-wa{background:#dcfce7;color:#16a34a;border:1.5px solid #a7f3d0;}
+.btn-wa:hover{background:#bbf7d0;}
+.btn-call{background:var(--blue-lt);color:var(--blue);border:1.5px solid var(--blue-mid);}
+.btn-call:hover{background:#dbeafe;}
+.btn-primary{background:var(--blue);color:#fff;border:none;box-shadow:0 2px 8px rgba(32,86,211,0.25);}
+.btn-primary:hover{background:var(--blue2);transform:translateY(-1px);}
+.btn-primary:disabled{opacity:0.6;cursor:not-allowed;transform:none;}
+.btn-outline{background:var(--surface);color:var(--text2);border:1.5px solid var(--border);}
+.btn-outline:hover{background:var(--blue-lt);border-color:var(--blue-mid);color:var(--blue);}
+.btn-sm{padding:5px 11px;font-size:11px;}
+
+/* ── REMARKS MODAL ── */
+.modal-overlay{display:none;position:fixed;inset:0;background:rgba(15,31,69,0.5);z-index:500;align-items:center;justify-content:center;padding:20px;}
+.modal-overlay.show{display:flex;}
+.modal{background:var(--surface);border:1.5px solid var(--border);border-radius:var(--radius-lg);padding:24px;width:100%;max-width:440px;box-shadow:var(--shadow-lg);}
+.modal-title{font-family:'Space Grotesk',sans-serif;font-size:16px;font-weight:700;margin-bottom:14px;}
+.modal textarea{width:100%;padding:10px 13px;background:var(--surface2);border:1.5px solid var(--border);border-radius:8px;color:var(--text);font-family:'Outfit',sans-serif;font-size:13px;outline:none;resize:vertical;min-height:90px;transition:border-color 0.18s;}
+.modal textarea:focus{border-color:var(--red);}
+.modal-actions{display:flex;gap:10px;margin-top:14px;justify-content:flex-end;}
+
+/* ── TOAST ── */
+#toastBox{position:fixed;bottom:20px;right:20px;z-index:9999;display:flex;flex-direction:column;gap:7px;}
+.toast{padding:11px 16px;border-radius:10px;font-size:13px;font-weight:600;box-shadow:var(--shadow-lg);animation:slideIn 0.3s ease;max-width:300px;display:flex;align-items:center;gap:9px;}
+.toast.success{background:#fff;border-left:4px solid var(--green);color:var(--green);}
+.toast.error{background:#fff;border-left:4px solid var(--red);color:var(--red);}
+.toast.info{background:#fff;border-left:4px solid var(--blue);color:var(--blue);}
+@keyframes slideIn{from{transform:translateX(100%);opacity:0}to{transform:translateX(0);opacity:1}}
+@keyframes fadeOut{to{opacity:0;transform:translateX(20px)}}
+
+/* ── EMPTY ── */
+.empty{text-align:center;padding:44px;color:var(--muted);font-size:13px;}
+
+/* ── PROOF LINK ── */
+.proof-link{color:var(--blue);text-decoration:none;font-size:11px;font-weight:600;padding:3px 8px;border:1.5px solid var(--blue-mid);border-radius:6px;}
+.proof-link:hover{background:var(--blue-lt);}
+
+/* ── STAT STRIP (history) ── */
+.history-stats{display:grid;grid-template-columns:repeat(auto-fit,minmax(130px,1fr));gap:10px;margin-bottom:18px;}
+.hs-box{background:var(--surface);border:1.5px solid var(--border);border-radius:var(--radius);padding:12px 14px;box-shadow:var(--shadow);text-align:center;}
+.hs-val{font-family:'Space Grotesk',sans-serif;font-size:22px;font-weight:700;color:var(--blue);}
+.hs-lbl{font-size:10px;color:var(--muted);font-weight:600;text-transform:uppercase;letter-spacing:0.5px;}
+
+/* ── RESPONSIVE ── */
+@media(max-width:768px){
+  .main{padding:14px 12px;}
+  .banner{padding:10px 14px;min-height:auto;}
+  .banner-title{font-size:14px;}
+  .banner-college{display:none;}
+  .banner-subtitle{display:none;}
+  .strip-divider{display:none;}
+  .approval-strip{padding:12px 14px;}
+  .strip-num{font-size:28px;}
+  .table-wrap table{min-width:500px;}
+  .mobile-cards{display:block;}
+  .desktop-table{display:none;}
+  .tabs{gap:0;}
+  .tab{padding:8px 10px;font-size:12px;}
+}
+@media(max-width:480px){
+  .strip-actions{width:100%;}
+  .strip-actions .btn{flex:1;justify-content:center;}
+  .section-filter-bar{padding:10px 12px;}
+  .tabs{overflow-x:auto;-webkit-overflow-scrolling:touch;}
+}
+</style>
+</head>
+<body>
+
+<!-- REJECT MODAL -->
+<div class="modal-overlay" id="rejectModal">
+  <div class="modal">
+    <div class="modal-title">✗ Reason for Rejection</div>
+    <textarea id="rejectRemarks" placeholder="Enter reason for rejection (optional)..."></textarea>
+    <div class="modal-actions">
+      <button class="btn btn-outline" onclick="closeRejectModal()">Cancel</button>
+      <button class="btn btn-reject" onclick="confirmReject()">✗ Confirm Reject</button>
+    </div>
+  </div>
+</div>
+
+<!-- BANNER -->
+<div class="banner">
+  <div class="banner-left">
+    <div class="banner-logo">🎓</div>
+    <div>
+            <div class="banner-title">ECE Event Management System</div>
+    </div>
+  </div>
+  <div class="banner-right">
+    <span class="banner-user" id="barUserName">—</span>
+    <div class="banner-badge"><div class="banner-badge-dot"></div><span id="barRole">Portal</span></div>
+    <button class="logout-btn" onclick="doLogout()">🚪 Logout</button>
+  </div>
+</div>
+
+<div id="toastBox"></div>
+
+<div class="main">
+
+  <!-- PAGE HEADER -->
+  <div class="page-header">
+    <div class="page-title" id="pageTitle">📋 Approval Portal</div>
+    <div class="page-sub" id="pageSub">Review and approve student pre-approval requests</div>
+  </div>
+
+  <!-- APPROVAL STRIP -->
+  <div class="approval-strip">
+    <div class="strip-stat">
+      <div class="strip-num" id="statPending">—</div>
+      <div class="strip-lbl">Pending</div>
+    </div>
+    <div class="strip-divider"></div>
+    <div class="strip-stat">
+      <div class="strip-num" style="color:var(--green);" id="statApproved">—</div>
+      <div class="strip-lbl">Approved</div>
+    </div>
+    <div class="strip-divider"></div>
+    <div class="strip-stat">
+      <div class="strip-num" style="color:var(--red);" id="statRejected">—</div>
+      <div class="strip-lbl">Rejected</div>
+    </div>
+    <div class="strip-divider"></div>
+    <div class="strip-stat">
+      <div class="strip-num" style="color:var(--blue);" id="statTotal">—</div>
+      <div class="strip-lbl">Total</div>
+    </div>
+    <div class="strip-actions">
+      <button class="btn btn-primary btn-sm" onclick="approveAll()">✅ Approve All Pending</button>
+      <button class="btn btn-outline btn-sm" onclick="loadAllData()">🔄 Refresh</button>
+    </div>
+  </div>
+
+  <!-- SECTION FILTER (Chairperson only) -->
+  <div class="section-filter-bar" id="sectionFilterBar" style="display:none;">
+    <span class="sf-label">Filter by Section:</span>
+    <select class="sf-select" id="sectionFilter" onchange="filterBySection()">
+      <option value="">All Sections</option>
+    </select>
+    <span class="sf-label" style="margin-left:8px;">Sort:</span>
+    <select class="sf-select" id="sortOrder" onchange="renderPending()">
+      <option value="date-asc">Date ↑ (oldest first)</option>
+      <option value="date-desc">Date ↓ (newest first)</option>
+      <option value="name">Name A→Z</option>
+    </select>
+  </div>
+
+  <!-- TABS -->
+  <div class="tabs">
+    <button class="tab active" onclick="switchTab('pending')">⏳ Pending</button>
+    <button class="tab" onclick="switchTab('approved')">✅ Approved</button>
+    <button class="tab" onclick="switchTab('rejected')">✗ Rejected</button>
+    <button class="tab" onclick="switchTab('all')">📋 All Records</button>
+  </div>
+
+  <!-- ══ PENDING TAB ══ -->
+  <div class="panel active" id="panel-pending">
+
+    <!-- DESKTOP TABLE -->
+    <div class="table-card desktop-table">
+      <div class="table-head-bar">
+        <div class="table-head-title">⏳ Pending Approvals</div>
+        <span class="table-count" id="pendingCount">0</span>
+      </div>
+      <div class="table-wrap">
+        <table>
+          <thead><tr>
+            <th>Reg No</th><th>Name</th><th>Sec/Yr</th><th>Event</th>
+            <th>Category</th><th>Date</th><th>Venue</th><th>Contact</th><th>Submitted</th><th>Actions</th>
+          </tr></thead>
+          <tbody id="pendingTableBody"><tr><td colspan="10"><div class="empty">Loading...</div></td></tr></tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- MOBILE CARDS -->
+    <div class="mobile-cards" id="pendingCards"></div>
+  </div>
+
+  <!-- ══ APPROVED TAB ══ -->
+  <div class="panel" id="panel-approved">
+    <div class="table-card desktop-table">
+      <div class="table-head-bar">
+        <div class="table-head-title">✅ Approved</div>
+        <span class="table-count" id="approvedCount">0</span>
+      </div>
+      <div class="table-wrap">
+        <table>
+          <thead><tr>
+            <th>Reg No</th><th>Name</th><th>Sec/Yr</th><th>Event</th>
+            <th>Date</th><th>HOD Status</th><th>Chair Status</th><th>Final Status</th><th>Approved By</th>
+          </tr></thead>
+          <tbody id="approvedTableBody"><tr><td colspan="9"><div class="empty">No approved records</div></td></tr></tbody>
+        </table>
+      </div>
+    </div>
+    <div class="mobile-cards" id="approvedCards"></div>
+  </div>
+
+  <!-- ══ REJECTED TAB ══ -->
+  <div class="panel" id="panel-rejected">
+    <div class="table-card desktop-table">
+      <div class="table-head-bar">
+        <div class="table-head-title">✗ Rejected</div>
+        <span class="table-count" id="rejectedCount">0</span>
+      </div>
+      <div class="table-wrap">
+        <table>
+          <thead><tr>
+            <th>Reg No</th><th>Name</th><th>Sec/Yr</th><th>Event</th>
+            <th>Date</th><th>Scope</th><th>Rejected By</th><th>Remarks</th>
+          </tr></thead>
+          <tbody id="rejectedTableBody"><tr><td colspan="8"><div class="empty">No rejected records</div></td></tr></tbody>
+        </table>
+      </div>
+    </div>
+    <div class="mobile-cards" id="rejectedCards"></div>
+  </div>
+
+  <!-- ══ ALL RECORDS TAB ══ -->
+  <div class="panel" id="panel-all">
+    <div class="history-stats">
+      <div class="hs-box"><div class="hs-val" id="allTotal">0</div><div class="hs-lbl">Total Requests</div></div>
+      <div class="hs-box"><div class="hs-val" style="color:var(--gold);" id="allPend">0</div><div class="hs-lbl">Pending</div></div>
+      <div class="hs-box"><div class="hs-val" style="color:var(--green);" id="allApp">0</div><div class="hs-lbl">Approved</div></div>
+      <div class="hs-box"><div class="hs-val" style="color:var(--red);" id="allRej">0</div><div class="hs-lbl">Rejected</div></div>
+      <div class="hs-box"><div class="hs-val" style="color:var(--blue);" id="allFull">0</div><div class="hs-lbl">Fully Approved</div></div>
+    </div>
+    <div class="table-card">
+      <div class="table-head-bar">
+        <div class="table-head-title">📋 All Pre-Approval Records</div>
+        <input id="allSearch" placeholder="Search name / reg no / event..." style="padding:6px 12px;background:var(--surface2);border:1.5px solid var(--border);border-radius:8px;font-family:'Outfit',sans-serif;font-size:12px;color:var(--text);outline:none;width:220px;" oninput="renderAll()"/>
+      </div>
+      <div class="table-wrap">
+        <table>
+          <thead><tr>
+            <th>Reg No</th><th>Name</th><th>Sec/Yr</th><th>Event</th>
+            <th>Category</th><th>Date</th><th>Scope</th>
+            <th>HOD</th><th>Chair</th><th>Status</th>
+          </tr></thead>
+          <tbody id="allTableBody"><tr><td colspan="10"><div class="empty">Loading...</div></td></tr></tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+
+</div><!-- /.main -->
+
+<script>
+/* ── CONFIG ── */
+const GAS_URL = 'https://script.google.com/macros/s/AKfycbx-8ea5LpImvcLFhHO9cnuOPTYEkiYvdEzZ99p_xYZGdFoZ5zadGcDguCrS8HAbUG_LqQ/exec';
+
+/* ── SESSION ── */
+let EMS_USER = {};
+let USER_ROLE = '';  // 'HOD' or 'Chairperson'
+
+let PENDING_DATA  = [];  // raw pending from backend
+let ALL_PA_DATA   = [];  // all pre-approvals (for "All Records" tab)
+let FILTERED_PEND = [];  // after section filter
+let REJECT_ID     = '';  // ID being rejected
+
+(function checkSession() {
+  const raw = localStorage.getItem('ems_user');
+  if (!raw) { window.location.href = 'index.html'; return; }
+  try {
+    EMS_USER = JSON.parse(raw);
+    if (!EMS_USER.Role) { window.location.href = 'index.html'; return; }
+  } catch { window.location.href = 'index.html'; return; }
+
+  USER_ROLE = EMS_USER.Role; // 'HOD' or 'Chairperson'
+
+  // Update banner
+  document.getElementById('barUserName').textContent = EMS_USER.Name || EMS_USER.Email || '—';
+  document.getElementById('barRole').textContent = USER_ROLE + ' Portal';
+
+  // Update page header
+  if (USER_ROLE === 'Chairperson') {
+    document.getElementById('pageTitle').textContent = '👑 Chairperson Approval Portal';
+    document.getElementById('pageSub').textContent   = 'Review HOD-approved requests and grant final permission';
+    document.getElementById('sectionFilterBar').style.display = 'flex';
+  } else {
+    document.getElementById('pageTitle').textContent = '🧑‍💼 HOD Approval Portal';
+    document.getElementById('pageSub').textContent   = 'Review and approve student event pre-approval requests';
+  }
+})();
+
+function doLogout() {
+  localStorage.removeItem('ems_user');
+  window.location.href = 'index.html';
+}
+
+/* ── API ── */
+async function api(action, params = {}) {
+  try {
+    const res = await fetch(GAS_URL, {
+      method: 'POST',
+      headers: { 'Content-Type': 'text/plain' },
+      body: JSON.stringify({ action, ...params })
+    });
+    return await res.json();
+  } catch(e) { return { success: false, message: 'Network error: ' + e.message }; }
+}
+
+/* ── TOAST ── */
+function toast(msg, type = 'info') {
+  const box = document.getElementById('toastBox');
+  const el  = document.createElement('div');
+  el.className = 'toast ' + type;
+  el.innerHTML = `<span>${{success:'✅',error:'❌',info:'ℹ️'}[type]||'ℹ️'}</span><span>${msg}</span>`;
+  box.appendChild(el);
+  setTimeout(() => { el.style.animation='fadeOut 0.4s ease forwards'; setTimeout(()=>el.remove(),400); }, 4000);
+}
+
+/* ── LOAD ALL DATA ── */
+async function loadAllData() {
+  // 1. Load pending approvals
+  const section = document.getElementById('sectionFilter')?.value || '';
+  const pendRes = await api('getPendingApprovals', {
+    role: USER_ROLE,
+    ...(section ? { section } : {})
+  });
+
+  if (pendRes.success) {
+    PENDING_DATA  = pendRes.data || [];
+    FILTERED_PEND = [...PENDING_DATA];
+  }
+
+  // 2. For Chairperson: populate section filter from pending data
+  if (USER_ROLE === 'Chairperson') {
+    const sections = [...new Set(PENDING_DATA.map(r=>r.Section).filter(Boolean))].sort();
+    const sel = document.getElementById('sectionFilter');
+    const cur = sel.value;
+    sel.innerHTML = '<option value="">All Sections</option>' +
+      sections.map(s=>`<option value="${s}"${s===cur?' selected':''}>${s}</option>`).join('');
+  }
+
+  // 3. Load all PA records for "All Records" tab using getStudentData if HOD
+  //    For Chairperson use getSectionDashboard if section is selected, else getPendingApprovals all
+  await loadAllPARecords();
+
+  // 4. Update strips and render
+  updateStrip();
+  renderPending();
+  renderApproved();
+  renderRejected();
+  renderAll();
+}
+
+async function loadAllPARecords() {
+  // Use getAnalytics won't have PA data — use a broad getPendingApprovals trick:
+  // We need ALL records (pending + approved + rejected) across both HOD and Chair stages
+  // Best approach: fetch with role=HOD (gives HOD pending) + with role=Chairperson (gives chair pending)
+  // plus we already have the full picture from the PA sheet via getStudentData for each student.
+  // Simplest: call getPendingApprovals without role filter to get all statuses
+  const res = await api('getPendingApprovals', { role: 'HOD' });
+  const res2 = await api('getPendingApprovals', { role: 'Chairperson' });
+  // Merge and deduplicate by ID
+  const combined = [...(res.data||[]), ...(res2.data||[])];
+  const seen = new Set();
+  ALL_PA_DATA = combined.filter(r => {
+    if (seen.has(r.ID)) return false;
+    seen.add(r.ID); return true;
+  });
+}
+
+function updateStrip() {
+  const pending  = PENDING_DATA.length;
+  const allPA    = ALL_PA_DATA;
+  // Count approved = HOD or Chair approved in ALL_PA_DATA
+  const approved = allPA.filter(r=>r.HODStatus==='Approved'||r.ChairStatus==='Approved').length;
+  const rejected = allPA.filter(r=>r.HODStatus==='Rejected'||r.ChairStatus==='Rejected').length;
+  const total    = allPA.length + pending;
+
+  document.getElementById('statPending').textContent  = pending;
+  document.getElementById('statApproved').textContent = approved;
+  document.getElementById('statRejected').textContent = rejected;
+  document.getElementById('statTotal').textContent    = total;
+
+  // All tab stats
+  document.getElementById('allTotal').textContent = total;
+  document.getElementById('allPend').textContent  = pending;
+  document.getElementById('allApp').textContent   = approved;
+  document.getElementById('allRej').textContent   = rejected;
+  document.getElementById('allFull').textContent  = allPA.filter(r=>r.Status==='Fully Approved').length;
+}
+
+/* ── FILTER BY SECTION ── */
+function filterBySection() {
+  const sec = document.getElementById('sectionFilter').value;
+  FILTERED_PEND = sec ? PENDING_DATA.filter(r=>r.Section===sec) : [...PENDING_DATA];
+  renderPending();
+}
+
+/* ── SORT ── */
+function getSorted(arr) {
+  const order = document.getElementById('sortOrder')?.value || 'date-asc';
+  const copy  = [...arr];
+  if (order === 'date-asc')  copy.sort((a,b)=>(a.EventDate||'').localeCompare(b.EventDate||''));
+  if (order === 'date-desc') copy.sort((a,b)=>(b.EventDate||'').localeCompare(a.EventDate||''));
+  if (order === 'name')      copy.sort((a,b)=>(a.Name||'').localeCompare(b.Name||''));
+  return copy;
+}
+
+/* ── RENDER PENDING ── */
+function renderPending() {
+  const rows = getSorted(FILTERED_PEND);
+  document.getElementById('pendingCount').textContent = rows.length;
+
+  const scopeCls = {International:'b-gold',National:'b-blue',State:'b-green',College:'b-muted'};
+
+  // Desktop table
+  document.getElementById('pendingTableBody').innerHTML = rows.length
+    ? rows.map(r => `<tr id="row_${r.ID}">
+        <td style="font-family:'JetBrains Mono',monospace;font-size:11px;color:var(--muted);">${r.RegNo||'—'}</td>
+        <td style="font-weight:600;">${r.Name||'—'}</td>
+        <td><span class="badge b-blue">Sec ${r.Section||'—'}</span>${r.Year?`<span class="badge b-muted" style="margin-left:4px;">${r.Year}</span>`:''}</td>
+        <td style="font-weight:600;max-width:160px;">${r.EventName||'—'}</td>
+        <td><span class="badge b-cyan">${r.Category||'—'}</span></td>
+        <td style="white-space:nowrap;color:var(--cyan);">${fmtDate(r.EventDate)}</td>
+        <td style="font-size:12px;color:var(--muted);max-width:120px;">${[r.CollegeName,r.City,r.State].filter(Boolean).join(', ')||r.Venue||'—'}</td>
+        <td>
+          <div style="display:flex;gap:4px;">
+            ${r.Phone?`<a href="${waLink(r.Phone,r.Name,'review')}" target="_blank" class="btn btn-wa btn-sm">💬</a>
+            <a href="tel:${r.Phone}" class="btn btn-call btn-sm">📞</a>`:'—'}
+          </div>
+        </td>
+        <td style="font-size:11px;color:var(--muted);">${fmtDate(r.SubmittedAt)}</td>
+        <td>
+          <div style="display:flex;gap:5px;">
+            <button class="btn btn-approve btn-sm" onclick="approve('${r.ID}')">✅ Approve</button>
+            <button class="btn btn-reject btn-sm" onclick="openReject('${r.ID}')">✗ Reject</button>
+          </div>
+        </td>
+      </tr>`)
+      .join('')
+    : '<tr><td colspan="10"><div class="empty">🎉 All caught up! No pending approvals.</div></td></tr>';
+
+  // Mobile cards
+  document.getElementById('pendingCards').innerHTML = rows.length
+    ? rows.map(r => `
+      <div class="req-card" id="mrow_${r.ID}">
+        <div class="req-card-top">
+          <div>
+            <div class="req-card-name">${r.Name||'—'}</div>
+            <div class="req-card-reg">${r.RegNo||''}</div>
+          </div>
+          <span class="badge b-blue">Sec ${r.Section||'—'}</span>
+        </div>
+        <div class="req-card-event">${r.EventName||'—'}</div>
+        <div class="req-card-meta">
+          ${r.Category?`<span class="badge b-cyan">${r.Category}</span>`:''}
+          <span class="badge b-muted">${fmtDate(r.EventDate)}</span>
+          ${r.City?`<span class="badge b-muted">${r.City}${r.State?', '+r.State:''}</span>`:''}
+        </div>
+        <div class="req-card-actions">
+          <button class="btn btn-approve btn-sm" onclick="approve('${r.ID}')">✅ Approve</button>
+          <button class="btn btn-reject btn-sm" onclick="openReject('${r.ID}')">✗ Reject</button>
+          ${r.Phone?`<a href="${waLink(r.Phone,r.Name,'review')}" target="_blank" class="btn btn-wa btn-sm">💬 WhatsApp</a>`:''}
+        </div>
+      </div>`)
+      .join('')
+    : '<div class="empty">🎉 No pending approvals.</div>';
+}
+
+/* ── RENDER APPROVED ── */
+function renderApproved() {
+  const approvedAction = USER_ROLE === 'HOD' ? 'hodApprove' : 'chairApprove';
+  const approved = ALL_PA_DATA.filter(r =>
+    USER_ROLE === 'HOD'
+      ? r.HODStatus === 'Approved'
+      : r.ChairStatus === 'Approved'
+  );
+  document.getElementById('approvedCount').textContent = approved.length;
+
+  document.getElementById('approvedTableBody').innerHTML = approved.length
+    ? approved.map(r => `<tr>
+        <td style="font-family:'JetBrains Mono',monospace;font-size:11px;color:var(--muted);">${r.RegNo||'—'}</td>
+        <td style="font-weight:600;">${r.Name||'—'}</td>
+        <td><span class="badge b-blue">Sec ${r.Section||'—'}</span>${r.Year?`<span class="badge b-muted" style="margin-left:3px;">${r.Year}</span>`:''}</td>
+        <td style="font-weight:600;">${r.EventName||'—'}</td>
+        <td style="color:var(--cyan);">${fmtDate(r.EventDate)}</td>
+        <td><span class="badge ${r.HODStatus==='Approved'?'b-green':'b-muted'}">${r.HODStatus||'—'}</span></td>
+        <td><span class="badge ${r.ChairStatus==='Approved'?'b-green':r.ChairStatus==='Rejected'?'b-red':'b-gold'}">${r.ChairStatus||'Pending'}</span></td>
+        <td><span class="badge ${r.Status==='Fully Approved'?'b-green':r.Status==='HOD Rejected'||r.Status==='Chair Rejected'?'b-red':'b-gold'}">${r.Status||'—'}</span></td>
+        <td style="font-size:12px;color:var(--muted);">${(USER_ROLE==='HOD'?r.HODBy:r.ChairBy)||'—'}</td>
+      </tr>`).join('')
+    : '<tr><td colspan="9"><div class="empty">No approved records yet.</div></td></tr>';
+
+  // Mobile cards for approved
+  document.getElementById('approvedCards').innerHTML = approved.length
+    ? approved.map(r=>`
+      <div class="req-card">
+        <div class="req-card-top">
+          <div><div class="req-card-name">${r.Name||'—'}</div><div class="req-card-reg">${r.RegNo||''}</div></div>
+          <span class="badge b-green">Approved</span>
+        </div>
+        <div class="req-card-event">${r.EventName||'—'}</div>
+        <div class="req-card-meta">
+          <span class="badge b-muted">${fmtDate(r.EventDate)}</span>
+          <span class="badge ${r.Status==='Fully Approved'?'b-green':'b-gold'}">${r.Status||'—'}</span>
+        </div>
+      </div>`).join('')
+    : '<div class="empty">No approved records yet.</div>';
+}
+
+/* ── RENDER REJECTED ── */
+function renderRejected() {
+  const rejected = ALL_PA_DATA.filter(r =>
+    USER_ROLE === 'HOD'
+      ? r.HODStatus === 'Rejected'
+      : r.ChairStatus === 'Rejected'
+  );
+  document.getElementById('rejectedCount').textContent = rejected.length;
+
+  document.getElementById('rejectedTableBody').innerHTML = rejected.length
+    ? rejected.map(r => `<tr>
+        <td style="font-family:'JetBrains Mono',monospace;font-size:11px;color:var(--muted);">${r.RegNo||'—'}</td>
+        <td style="font-weight:600;">${r.Name||'—'}</td>
+        <td><span class="badge b-blue">Sec ${r.Section||'—'}</span>${r.Year?`<span class="badge b-muted" style="margin-left:3px;">${r.Year}</span>`:''}</td>
+        <td style="font-weight:600;">${r.EventName||'—'}</td>
+        <td style="color:var(--cyan);">${fmtDate(r.EventDate)}</td>
+        <td><span class="badge b-muted">${r.Scope||'—'}</span></td>
+        <td style="font-size:12px;color:var(--muted);">${(USER_ROLE==='HOD'?r.HODBy:r.ChairBy)||'—'}</td>
+        <td style="font-size:12px;color:var(--red);">${r.Remarks||'—'}</td>
+      </tr>`).join('')
+    : '<tr><td colspan="8"><div class="empty">No rejected records.</div></td></tr>';
+
+  document.getElementById('rejectedCards').innerHTML = rejected.length
+    ? rejected.map(r=>`
+      <div class="req-card" style="border-color:#fecaca;">
+        <div class="req-card-top">
+          <div><div class="req-card-name">${r.Name||'—'}</div><div class="req-card-reg">${r.RegNo||''}</div></div>
+          <span class="badge b-red">Rejected</span>
+        </div>
+        <div class="req-card-event">${r.EventName||'—'}</div>
+        <div class="req-card-meta"><span class="badge b-muted">${fmtDate(r.EventDate)}</span></div>
+        ${r.Remarks?`<div style="font-size:12px;color:var(--red);margin-top:6px;">Reason: ${r.Remarks}</div>`:''}
+      </div>`).join('')
+    : '<div class="empty">No rejected records.</div>';
+}
+
+/* ── RENDER ALL ── */
+function renderAll() {
+  const search = (document.getElementById('allSearch')?.value||'').toLowerCase();
+  const combined = [...PENDING_DATA, ...ALL_PA_DATA];
+  const seen = new Set();
+  let rows = combined.filter(r=>{ if(seen.has(r.ID)) return false; seen.add(r.ID); return true; });
+  if (search) rows = rows.filter(r=>
+    (r.Name||'').toLowerCase().includes(search)||
+    (r.RegNo||'').toLowerCase().includes(search)||
+    (r.EventName||'').toLowerCase().includes(search)
+  );
+
+  const hodCls   = s => s==='Approved'?'b-green':s==='Rejected'?'b-red':'b-gold';
+  const chairCls = s => s==='Approved'?'b-green':s==='Rejected'?'b-red':!s||s==='Pending'?'b-muted':'b-gold';
+  const stsCls   = s => s==='Fully Approved'?'b-green':s&&s.includes('Rejected')?'b-red':'b-gold';
+
+  document.getElementById('allTableBody').innerHTML = rows.length
+    ? rows.map(r=>`<tr>
+        <td style="font-family:'JetBrains Mono',monospace;font-size:11px;color:var(--muted);">${r.RegNo||'—'}</td>
+        <td style="font-weight:600;">${r.Name||'—'}</td>
+        <td><span class="badge b-blue">${r.Section||'—'}</span>${r.Year?`<span class="badge b-muted" style="margin-left:3px;">${r.Year}</span>`:''}</td>
+        <td style="max-width:160px;font-weight:600;">${r.EventName||'—'}</td>
+        <td><span class="badge b-cyan">${r.Category||'—'}</span></td>
+        <td style="white-space:nowrap;">${fmtDate(r.EventDate)}</td>
+        <td><span class="badge b-muted">${r.Scope||'—'}</span></td>
+        <td><span class="badge ${hodCls(r.HODStatus)}">${r.HODStatus||'Pending'}</span></td>
+        <td><span class="badge ${chairCls(r.ChairStatus)}">${r.ChairStatus||'Pending'}</span></td>
+        <td><span class="badge ${stsCls(r.Status)}">${r.Status||'Pending'}</span></td>
+      </tr>`).join('')
+    : '<tr><td colspan="10"><div class="empty">No records found.</div></td></tr>';
+}
+
+/* ── APPROVE ── */
+async function approve(id) {
+  const action = USER_ROLE === 'HOD' ? 'hodApprove' : 'chairApprove';
+  const btn = document.querySelector(`#row_${id} .btn-approve`);
+  if (btn) { btn.disabled = true; btn.textContent = '⏳'; }
+  const res = await api(action, { id, status: 'Approved', approvedBy: EMS_USER.Name || EMS_USER.Email });
+  toast(res.message, res.success ? 'success' : 'error');
+  if (res.success) {
+    // Fade out the row
+    const row  = document.getElementById('row_'+id);
+    const mrow = document.getElementById('mrow_'+id);
+    [row, mrow].forEach(el => { if(el){ el.style.transition='opacity 0.4s'; el.style.opacity='0.3'; setTimeout(()=>el.remove(),400); }});
+    PENDING_DATA  = PENDING_DATA.filter(r=>r.ID!==id);
+    FILTERED_PEND = FILTERED_PEND.filter(r=>r.ID!==id);
+    document.getElementById('pendingCount').textContent = FILTERED_PEND.length;
+    document.getElementById('statPending').textContent  = PENDING_DATA.length;
+  }
+}
+
+/* ── REJECT MODAL ── */
+function openReject(id) {
+  REJECT_ID = id;
+  document.getElementById('rejectRemarks').value = '';
+  document.getElementById('rejectModal').classList.add('show');
+  document.getElementById('rejectRemarks').focus();
+}
+function closeRejectModal() {
+  document.getElementById('rejectModal').classList.remove('show');
+  REJECT_ID = '';
+}
+async function confirmReject() {
+  if (!REJECT_ID) return;
+  const remarks = document.getElementById('rejectRemarks').value.trim();
+  const action  = USER_ROLE === 'HOD' ? 'hodApprove' : 'chairApprove';
+  const res = await api(action, { id: REJECT_ID, status: 'Rejected', approvedBy: EMS_USER.Name || EMS_USER.Email, remarks });
+  toast(res.message, res.success ? 'success' : 'error');
+  closeRejectModal();
+  if (res.success) loadAllData();
+}
+
+/* ── APPROVE ALL ── */
+async function approveAll() {
+  const count = FILTERED_PEND.length;
+  if (!count) { toast('No pending requests to approve', 'info'); return; }
+  if (!confirm(`Approve all ${count} pending request(s)?`)) return;
+  const action = USER_ROLE === 'HOD' ? 'hodApprove' : 'chairApprove';
+  const btn = document.querySelector('.strip-actions .btn-primary');
+  if (btn) { btn.disabled = true; btn.textContent = '⏳ Processing...'; }
+  let ok = 0;
+  for (const r of [...FILTERED_PEND]) {
+    const res = await api(action, { id: r.ID, status: 'Approved', approvedBy: EMS_USER.Name || EMS_USER.Email });
+    if (res.success) ok++;
+  }
+  toast(`✅ Approved ${ok} of ${count} requests`, 'success');
+  if (btn) { btn.disabled = false; btn.textContent = '✅ Approve All Pending'; }
+  loadAllData();
+}
+
+/* ── CLOSE MODAL ON OVERLAY CLICK ── */
+document.getElementById('rejectModal').addEventListener('click', function(e) {
+  if (e.target === this) closeRejectModal();
+});
+
+/* ── TAB SWITCH ── */
+function switchTab(t) {
+  const list = ['pending','approved','rejected','all'];
+  document.querySelectorAll('.tab').forEach((b,i)=>b.classList.toggle('active', list[i]===t));
+  document.querySelectorAll('.panel').forEach(p=>p.classList.remove('active'));
+  document.getElementById('panel-'+t).classList.add('active');
+}
+
+/* ── UTILS ── */
+function fmtDate(d) {
+  if (!d) return '—';
+  try { return new Date(d).toLocaleDateString('en-IN',{day:'2-digit',month:'short',year:'numeric'}); }
+  catch { return d; }
+}
+function waLink(phone, name, context) {
+  const msg = encodeURIComponent(`Hi ${name}, your event pre-approval request is currently under ${context} by the ${USER_ROLE}. — ECE EMS`);
+  return `https://wa.me/91${phone}?text=${msg}`;
+}
+
+/* ── INIT ── */
+loadAllData();
+</script>
+</body>
+</html>

@@ -1,0 +1,1004 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/><meta name="viewport" content="width=device-width,initial-scale=1.0"/>
+<title>SSR Report | ECE-EMS</title>
+<link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&family=Space+Grotesk:wght@400;500;600;700&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet"/>
+<style>
+:root{
+  --bg:#f0f4ff;--surface:#fff;--surface2:#f0f3fa;--surface3:#e8eeff;
+  --border:#dde5f8;--text:#0f1f45;--text2:#3a4d7a;--muted:#7b8db8;
+  --blue:#2056d3;--blue2:#1a44b8;--blue-lt:#eef2ff;--blue-mid:#c7d5ff;
+  --cyan:#0284c7;--cyan-lt:#e0f4ff;
+  --green:#059669;--green-lt:#ecfdf5;--green-mid:#a7f3d0;
+  --gold:#d97706;--gold-lt:#fffbeb;--gold-mid:#fde68a;
+  --red:#dc2626;--red-lt:#fef2f2;
+  --purple:#7c3aed;--purple-lt:#f5f3ff;
+  --shadow:0 1px 3px rgba(32,86,211,0.06),0 4px 16px rgba(32,86,211,0.08);
+  --shadow-lg:0 8px 32px rgba(32,86,211,0.14);
+  --radius:12px;--radius-lg:18px;
+}
+*{margin:0;padding:0;box-sizing:border-box;}
+body{font-family:'Outfit',sans-serif;background:var(--bg);color:var(--text);min-height:100vh;font-size:14px;}
+
+/* ── BANNER ── */
+.banner{background:linear-gradient(135deg,#0f2d8a 0%,#1a44b8 30%,#2056d3 60%,#3b6ef7 100%);position:relative;overflow:hidden;padding:0 40px;display:flex;align-items:center;justify-content:space-between;min-height:76px;}
+.banner::before{content:'';position:absolute;inset:0;background-image:radial-gradient(circle at 10% 50%,rgba(255,255,255,0.07) 0%,transparent 55%),radial-gradient(circle at 88% 25%,rgba(99,130,255,0.3) 0%,transparent 45%),repeating-linear-gradient(45deg,transparent,transparent 28px,rgba(255,255,255,0.02) 28px,rgba(255,255,255,0.02) 29px);pointer-events:none;}
+.banner::after{content:'';position:absolute;bottom:0;left:0;right:0;height:2px;background:linear-gradient(90deg,transparent,rgba(255,255,255,0.35),transparent);}
+.banner-left{display:flex;align-items:center;gap:16px;position:relative;z-index:1;}
+.banner-logo{width:50px;height:50px;border-radius:12px;background:rgba(255,255,255,0.15);border:1.5px solid rgba(255,255,255,0.25);display:flex;align-items:center;justify-content:center;font-size:24px;backdrop-filter:blur(4px);}
+.banner-college{font-family:'Space Grotesk',sans-serif;font-size:11px;font-weight:600;letter-spacing:1.2px;color:rgba(255,255,255,0.65);text-transform:uppercase;margin-bottom:2px;}
+.banner-title{font-family:'Space Grotesk',sans-serif;font-size:20px;font-weight:700;color:#fff;line-height:1.1;}
+.banner-subtitle{font-size:12px;color:rgba(255,255,255,0.55);margin-top:2px;}
+.banner-right{display:flex;align-items:center;gap:10px;position:relative;z-index:1;}
+.banner-badge{padding:5px 14px;border-radius:20px;background:rgba(255,255,255,0.15);border:1.5px solid rgba(255,255,255,0.25);color:#fff;font-size:12px;font-weight:700;backdrop-filter:blur(4px);}
+.back-btn{padding:7px 16px;border-radius:8px;background:rgba(255,255,255,0.15);border:1.5px solid rgba(255,255,255,0.25);color:#fff;font-family:'Outfit',sans-serif;font-size:12px;font-weight:600;cursor:pointer;text-decoration:none;display:flex;align-items:center;gap:6px;transition:all 0.18s;}
+.back-btn:hover{background:rgba(255,255,255,0.25);}
+
+/* ── LAYOUT ── */
+.main{padding:28px 40px;max-width:1400px;margin:0 auto;}
+.page-header{margin-bottom:24px;}
+.page-title{font-family:'Space Grotesk',sans-serif;font-size:26px;font-weight:700;color:var(--text);margin-bottom:4px;}
+.page-sub{color:var(--muted);font-size:13px;}
+
+/* ── CARD ── */
+.card{background:var(--surface);border:1.5px solid var(--border);border-radius:var(--radius-lg);box-shadow:var(--shadow);}
+.card-head{display:flex;align-items:center;justify-content:space-between;padding:14px 20px;border-bottom:1.5px solid var(--border);background:var(--surface2);}
+.card-title{font-family:'Space Grotesk',sans-serif;font-size:14px;font-weight:700;color:var(--text);}
+
+/* ── FILTER PANEL ── */
+.filter-card{background:var(--surface);border:1.5px solid var(--border);border-radius:var(--radius-lg);padding:20px 24px;margin-bottom:22px;box-shadow:var(--shadow);}
+.filter-title{font-family:'Space Grotesk',sans-serif;font-size:15px;font-weight:700;color:var(--blue);margin-bottom:16px;display:flex;align-items:center;gap:8px;}
+.filter-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(160px,1fr));gap:12px;margin-bottom:16px;}
+.form-group{display:flex;flex-direction:column;gap:5px;}
+.form-group label{font-size:10px;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:0.7px;}
+.form-group input,.form-group select{padding:8px 12px;background:var(--surface2);border:1.5px solid var(--border);border-radius:8px;color:var(--text);font-family:'Outfit',sans-serif;font-size:13px;outline:none;transition:all 0.18s;}
+.form-group input:focus,.form-group select:focus{border-color:var(--blue);background:#fff;box-shadow:0 0 0 3px rgba(32,86,211,0.08);}
+.filter-actions{display:flex;gap:10px;flex-wrap:wrap;}
+
+/* ── BUTTONS ── */
+.btn{padding:8px 18px;border-radius:8px;border:none;cursor:pointer;font-family:'Outfit',sans-serif;font-size:13px;font-weight:600;transition:all 0.18s;display:inline-flex;align-items:center;gap:7px;white-space:nowrap;}
+.btn-primary{background:var(--blue);color:#fff;box-shadow:0 2px 8px rgba(32,86,211,0.25);}
+.btn-primary:hover{background:var(--blue2);transform:translateY(-1px);}
+.btn-primary:disabled{opacity:0.6;cursor:not-allowed;transform:none;}
+.btn-success{background:var(--green);color:#fff;}
+.btn-success:hover{filter:brightness(1.1);transform:translateY(-1px);}
+.btn-gold{background:var(--gold);color:#fff;}
+.btn-gold:hover{filter:brightness(1.1);transform:translateY(-1px);}
+.btn-purple{background:var(--purple);color:#fff;}
+.btn-purple:hover{filter:brightness(1.1);transform:translateY(-1px);}
+.btn-outline{background:var(--surface);color:var(--text2);border:1.5px solid var(--border);}
+.btn-outline:hover{background:var(--blue-lt);border-color:var(--blue-mid);color:var(--blue);}
+.btn-sm{padding:5px 13px;font-size:12px;}
+
+/* ── STAT STRIP ── */
+.stat-strip{display:grid;grid-template-columns:repeat(auto-fit,minmax(148px,1fr));gap:12px;margin-bottom:22px;}
+.stat-box{background:var(--surface);border:1.5px solid var(--border);border-radius:var(--radius);padding:14px 16px;box-shadow:var(--shadow);display:flex;align-items:center;gap:11px;position:relative;overflow:hidden;}
+.stat-box::before{content:'';position:absolute;top:0;left:0;right:0;height:3px;border-radius:var(--radius) var(--radius) 0 0;}
+.stat-box.s-blue::before{background:var(--blue);}
+.stat-box.s-green::before{background:var(--green);}
+.stat-box.s-gold::before{background:var(--gold);}
+.stat-box.s-purple::before{background:var(--purple);}
+.stat-box.s-cyan::before{background:var(--cyan);}
+.stat-box.s-red::before{background:var(--red);}
+.stat-icon{font-size:26px;flex-shrink:0;}
+.stat-val{font-family:'Space Grotesk',sans-serif;font-size:22px;font-weight:700;line-height:1;}
+.stat-box.s-blue .stat-val{color:var(--blue);}
+.stat-box.s-green .stat-val{color:var(--green);}
+.stat-box.s-gold .stat-val{color:var(--gold);}
+.stat-box.s-purple .stat-val{color:var(--purple);}
+.stat-box.s-cyan .stat-val{color:var(--cyan);}
+.stat-box.s-red .stat-val{color:var(--red);}
+.stat-lbl{font-size:10px;color:var(--muted);font-weight:600;text-transform:uppercase;letter-spacing:0.5px;margin-top:2px;}
+
+/* ── CHARTS ROW ── */
+.charts-row{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-bottom:22px;}
+@media(max-width:900px){.charts-row{grid-template-columns:1fr;}}
+.chart-card{background:var(--surface);border:1.5px solid var(--border);border-radius:var(--radius-lg);padding:20px 22px;box-shadow:var(--shadow);}
+.chart-title{font-family:'Space Grotesk',sans-serif;font-size:13px;font-weight:700;color:var(--text);margin-bottom:14px;}
+
+/* ── BAR CHART ── */
+.bar-chart{display:flex;flex-direction:column;gap:9px;}
+.bar-row{display:flex;align-items:center;gap:10px;}
+.bar-label{font-size:11px;font-weight:600;color:var(--text2);min-width:88px;text-align:right;}
+.bar-track{flex:1;background:var(--surface2);border-radius:5px;height:20px;overflow:hidden;}
+.bar-fill{height:100%;border-radius:5px;display:flex;align-items:center;padding-left:8px;font-size:11px;font-weight:700;color:#fff;min-width:28px;transition:width 1.2s cubic-bezier(0.4,0,0.2,1);}
+.bar-val{font-size:12px;font-weight:700;min-width:28px;text-align:right;}
+
+/* ── MONTH CHART ── */
+.month-chart{display:flex;align-items:flex-end;gap:7px;height:120px;padding-bottom:4px;}
+.month-col{flex:1;display:flex;flex-direction:column;align-items:center;gap:4px;height:100%;}
+.month-bar-wrap{flex:1;display:flex;align-items:flex-end;width:100%;}
+.month-bar{width:100%;border-radius:4px 4px 0 0;min-height:3px;cursor:pointer;position:relative;transition:height 1.2s cubic-bezier(0.4,0,0.2,1);}
+.month-bar:hover{filter:brightness(1.15);}
+.month-bar::after{content:attr(data-tip);position:absolute;bottom:105%;left:50%;transform:translateX(-50%);background:var(--text);color:#fff;padding:4px 8px;border-radius:6px;font-size:11px;white-space:nowrap;opacity:0;pointer-events:none;transition:opacity 0.2s;}
+.month-bar:hover::after{opacity:1;}
+.month-label{font-size:10px;color:var(--muted);font-weight:600;white-space:nowrap;}
+
+/* ── TABLES ── */
+.table-card{background:var(--surface);border:1.5px solid var(--border);border-radius:var(--radius-lg);overflow:hidden;box-shadow:var(--shadow);margin-bottom:20px;}
+.table-wrap{overflow-x:auto;}
+table{width:100%;border-collapse:collapse;font-size:13px;}
+thead{background:var(--surface2);}
+th{padding:10px 14px;text-align:left;font-size:10px;font-weight:700;letter-spacing:0.7px;color:var(--muted);text-transform:uppercase;white-space:nowrap;border-bottom:1.5px solid var(--border);}
+td{padding:10px 14px;border-bottom:1px solid var(--border);color:var(--text);vertical-align:middle;}
+tr:last-child td{border-bottom:none;}
+tr:hover td{background:var(--blue-lt);}
+.sno{color:var(--muted);font-size:11px;font-weight:700;}
+
+/* ── BADGES ── */
+.badge{display:inline-flex;align-items:center;padding:2px 9px;border-radius:20px;font-size:11px;font-weight:700;}
+.b-intl{background:var(--purple-lt);color:var(--purple);}
+.b-natl{background:var(--blue-lt);color:var(--blue);}
+.b-state{background:var(--green-lt);color:var(--green);}
+.b-coll{background:var(--surface2);color:var(--muted);}
+.b-win{background:var(--gold-lt);color:var(--gold);}
+.b-prize{background:var(--green-lt);color:var(--green);}
+.b-part{background:var(--surface2);color:var(--muted);}
+.b-blue{background:var(--blue-lt);color:var(--blue);}
+.b-cat{background:var(--cyan-lt);color:var(--cyan);}
+
+/* ── PROOF LINK ── */
+.proof-link{color:var(--blue);text-decoration:none;font-size:11px;font-weight:600;padding:3px 9px;border:1.5px solid var(--blue-mid);border-radius:6px;transition:all 0.18s;white-space:nowrap;}
+.proof-link:hover{background:var(--blue-lt);}
+
+/* ── SECTION TABS ── */
+.sec-tabs{display:flex;gap:2px;background:var(--surface2);border:1.5px solid var(--border);border-radius:var(--radius);padding:4px;margin-bottom:20px;width:fit-content;}
+.sec-tab{padding:7px 18px;border:none;border-radius:8px;background:transparent;color:var(--text2);cursor:pointer;font-family:'Outfit',sans-serif;font-size:13px;font-weight:500;transition:all 0.18s;}
+.sec-tab.active{background:var(--blue);color:#fff;box-shadow:0 2px 8px rgba(32,86,211,0.25);}
+.sec-tab:hover:not(.active){background:var(--border);color:var(--text);}
+.sec-panel{display:none;}.sec-panel.active{display:block;}
+
+/* ── LOADER ── */
+.loader{display:none;text-align:center;padding:52px;color:var(--muted);}
+.spinner{width:36px;height:36px;border:3px solid var(--border);border-top-color:var(--blue);border-radius:50%;animation:spin 0.7s linear infinite;margin:0 auto 12px;}
+@keyframes spin{to{transform:rotate(360deg);}}
+
+/* ── EMPTY ── */
+.empty{text-align:center;padding:52px;color:var(--muted);font-size:13px;}
+
+/* ── TOAST ── */
+#toastBox{position:fixed;bottom:24px;right:24px;z-index:9999;display:flex;flex-direction:column;gap:8px;}
+.toast{padding:12px 18px;border-radius:10px;font-size:13px;font-weight:600;box-shadow:var(--shadow-lg);animation:slideIn 0.3s ease;display:flex;align-items:center;gap:10px;max-width:320px;}
+.toast.success{background:#fff;border-left:4px solid var(--green);color:var(--green);}
+.toast.error{background:#fff;border-left:4px solid var(--red);color:var(--red);}
+.toast.info{background:#fff;border-left:4px solid var(--blue);color:var(--blue);}
+@keyframes slideIn{from{transform:translateX(100%);opacity:0}to{transform:translateX(0);opacity:1}}
+
+/* ── PRINT PREVIEW ── */
+#printOverlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,0.7);z-index:500;overflow-y:auto;padding:36px 20px;}
+#printDoc{background:#fff;color:#000;max-width:1050px;margin:0 auto;padding:48px;border-radius:6px;font-family:'Outfit',sans-serif;font-size:13px;}
+.pd-header{display:flex;align-items:center;gap:18px;border-bottom:3px solid #1a44b8;padding-bottom:18px;margin-bottom:22px;}
+.pd-logo{width:54px;height:54px;background:#1a44b8;border-radius:12px;display:flex;align-items:center;justify-content:center;font-size:26px;flex-shrink:0;}
+.pd-logo-txt h1{font-size:18px;font-weight:800;color:#1a44b8;margin:0;}
+.pd-logo-txt p{font-size:11px;color:#64748b;margin-top:2px;}
+.pd-meta{display:grid;grid-template-columns:1fr 1fr 1fr;gap:18px;margin-bottom:22px;background:#f8fafc;border-radius:8px;padding:14px 18px;}
+.pd-meta-item h4{font-size:10px;text-transform:uppercase;letter-spacing:0.5px;color:#64748b;margin-bottom:4px;}
+.pd-meta-item p{font-size:13px;font-weight:600;color:#000;}
+.pd-summary{display:grid;grid-template-columns:repeat(6,1fr);gap:10px;margin-bottom:22px;}
+.pds{border:2px solid #e2e8f0;border-radius:8px;padding:10px;text-align:center;}
+.pds .n{font-size:24px;font-weight:800;color:#1a44b8;}
+.pds .l{font-size:10px;color:#64748b;font-weight:600;text-transform:uppercase;}
+.pd-section-title{font-size:13px;font-weight:800;color:#1a44b8;border-left:4px solid #1a44b8;padding-left:10px;margin:20px 0 10px;}
+.pd-table{width:100%;border-collapse:collapse;font-size:11px;}
+.pd-table th{background:#1a44b8;color:#fff;padding:7px 9px;text-align:left;font-weight:700;}
+.pd-table td{padding:6px 9px;border-bottom:1px solid #e2e8f0;}
+.pd-table tr:nth-child(even) td{background:#f8fafc;}
+.pd-footer{margin-top:36px;border-top:2px solid #e2e8f0;padding-top:18px;display:grid;grid-template-columns:1fr 1fr 1fr;gap:20px;text-align:center;font-size:11px;color:#64748b;}
+.pd-footer strong{display:block;margin-top:28px;border-top:1px solid #000;padding-top:4px;color:#000;font-size:12px;}
+.print-overlay-actions{display:flex;gap:12px;justify-content:center;margin-top:20px;}
+.close-overlay{position:fixed;top:16px;right:16px;background:#fff;border:none;width:38px;height:38px;border-radius:50%;cursor:pointer;font-size:18px;font-weight:800;display:flex;align-items:center;justify-content:center;box-shadow:0 2px 8px rgba(0,0,0,0.2);}
+
+@media(max-width:900px){
+  .main{padding:16px;}
+  .banner{padding:0 16px;}
+  .charts-row{grid-template-columns:1fr;}
+  .stat-strip{grid-template-columns:repeat(2,1fr);}
+}
+</style>
+</head>
+<body>
+
+<!-- BANNER -->
+<div class="banner">
+  <div class="banner-left">
+    <div class="banner-logo">🎓</div>
+    <div>
+      <div class="banner-college">KCET — Kamaraj College of Engineering & Technology</div>
+      <div class="banner-title">ECE Event Management System</div>
+      <div class="banner-subtitle">Department of Electronics &amp; Communication Engineering</div>
+    </div>
+  </div>
+  <div class="banner-right">
+    <a href="index.html" class="back-btn">← Back</a>
+    <div class="banner-badge">📊 Reports</div>
+  </div>
+</div>
+
+<div id="toastBox"></div>
+
+<!-- PRINT OVERLAY -->
+<div id="printOverlay">
+  <button class="close-overlay" onclick="closePrint()">✕</button>
+  <div id="printDoc"></div>
+  <div class="print-overlay-actions">
+    <button class="btn btn-primary" onclick="doPrint()">🖨️ Print / Save as PDF</button>
+    <button class="btn btn-outline" onclick="closePrint()">✕ Close</button>
+  </div>
+</div>
+
+<div class="main">
+
+  <!-- PAGE HEADER -->
+  <div class="page-header">
+    <div class="page-title">📊 NAAC / NBA SSR Report Generator</div>
+    <div class="page-sub">Generate accreditation-ready reports for student event participation · All data fetched live from backend</div>
+  </div>
+
+  <!-- FILTER PANEL -->
+  <div class="filter-card">
+    <div class="filter-title">🔍 Report Filters</div>
+    <div class="filter-grid">
+      <div class="form-group">
+        <label>From Date</label>
+        <input type="date" id="fromDate"/>
+      </div>
+      <div class="form-group">
+        <label>To Date</label>
+        <input type="date" id="toDate"/>
+      </div>
+      <div class="form-group">
+        <label>Section</label>
+        <select id="filterSection"><option value="">All Sections</option></select>
+      </div>
+      <div class="form-group">
+        <label>Year</label>
+        <select id="filterYear">
+          <option value="">All Years</option>
+          <option>I</option><option>II</option><option>III</option><option>IV</option>
+        </select>
+      </div>
+      <div class="form-group">
+        <label>Category</label>
+        <select id="filterCategory"><option value="">All Categories</option></select>
+      </div>
+      <div class="form-group">
+        <label>Scope</label>
+        <select id="filterScope">
+          <option value="">All Scopes</option>
+          <option>International</option><option>National</option>
+          <option>State</option><option>College</option>
+        </select>
+      </div>
+      <div class="form-group">
+        <label>Prize</label>
+        <select id="filterPrize"><option value="">All Prizes</option></select>
+      </div>
+      <div class="form-group">
+        <label>Status</label>
+        <select id="filterStatus">
+          <option value="">All Statuses</option>
+          <option value="Verified">Verified</option>
+          <option value="Pending">Pending</option>
+          <option value="Rejected">Rejected</option>
+        </select>
+      </div>
+      <div class="form-group">
+        <label>Report Type</label>
+        <select id="reportType">
+          <option value="naac">NAAC SSR</option>
+          <option value="nba">NBA Report</option>
+          <option value="dept">Department Summary</option>
+          <option value="student">Student-wise Report</option>
+        </select>
+      </div>
+    </div>
+    <div class="filter-actions">
+      <button class="btn btn-primary" id="btnGenerate" onclick="generateReport()">⚡ Generate Report</button>
+      <button class="btn btn-gold" onclick="showPrintPreview()">📄 Print / PDF</button>
+      <button class="btn btn-success" onclick="exportCSV()">📥 Export CSV</button>
+      <button class="btn btn-purple" onclick="exportStudentWise()">👤 Student-wise CSV</button>
+      <button class="btn btn-outline" onclick="resetFilters()">↺ Reset</button>
+    </div>
+  </div>
+
+  <!-- LOADER -->
+  <div class="loader" id="loader">
+    <div class="spinner"></div>
+    Fetching data from backend...
+  </div>
+
+  <!-- CONTENT (hidden until report generated) -->
+  <div id="reportContent" style="display:none;">
+
+    <!-- STAT STRIP -->
+    <div class="stat-strip">
+      <div class="stat-box s-blue">  <div class="stat-icon">📋</div><div><div class="stat-val" id="sTotal">0</div>  <div class="stat-lbl">Total Participations</div></div></div>
+      <div class="stat-box s-purple"><div class="stat-icon">👥</div><div><div class="stat-val" id="sUnique">0</div> <div class="stat-lbl">Students Participated</div></div></div>
+      <div class="stat-box s-gold">  <div class="stat-icon">🌍</div><div><div class="stat-val" id="sIntl">0</div>   <div class="stat-lbl">International</div></div></div>
+      <div class="stat-box s-cyan">  <div class="stat-icon">🇮🇳</div><div><div class="stat-val" id="sNatl">0</div>  <div class="stat-lbl">National</div></div></div>
+      <div class="stat-box s-green"> <div class="stat-icon">🏆</div><div><div class="stat-val" id="sWins">0</div>   <div class="stat-lbl">Winners</div></div></div>
+      <div class="stat-box s-red">   <div class="stat-icon">💰</div><div><div class="stat-val" id="sCash">₹0</div>  <div class="stat-lbl">Cash Won</div></div></div>
+      <div class="stat-box s-blue">  <div class="stat-icon">⭐</div><div><div class="stat-val" id="sScore">0</div>  <div class="stat-lbl">Total Points</div></div></div>
+      <div class="stat-box s-green"> <div class="stat-icon">✅</div><div><div class="stat-val" id="sVerified">0</div><div class="stat-lbl">Verified</div></div></div>
+    </div>
+
+    <!-- CHARTS -->
+    <div class="charts-row">
+      <div class="chart-card">
+        <div class="chart-title">📅 Monthly Participation Trend</div>
+        <div class="month-chart" id="monthChart"></div>
+      </div>
+      <div class="chart-card">
+        <div class="chart-title">🏷️ Category Distribution</div>
+        <div class="bar-chart" id="categoryChart"></div>
+      </div>
+    </div>
+    <div class="charts-row">
+      <div class="chart-card">
+        <div class="chart-title">🌍 Scope Breakdown</div>
+        <div class="bar-chart" id="scopeChart"></div>
+      </div>
+      <div class="chart-card">
+        <div class="chart-title">🏅 Prize Distribution</div>
+        <div class="bar-chart" id="prizeChart"></div>
+      </div>
+    </div>
+
+    <!-- SECTION TABS -->
+    <div class="sec-tabs">
+      <button class="sec-tab active" onclick="switchSecTab('main')">📋 All Records</button>
+      <button class="sec-tab" onclick="switchSecTab('section')">🏫 Section Summary</button>
+      <button class="sec-tab" onclick="switchSecTab('achievers')">🏆 Top Achievers</button>
+      <button class="sec-tab" onclick="switchSecTab('student')">👤 Student Summary</button>
+    </div>
+
+    <!-- ALL RECORDS -->
+    <div class="sec-panel active" id="spanel-main">
+      <div class="table-card">
+        <div class="card-head">
+          <div class="card-title" id="mainTableTitle">📋 Student Event Participation Report</div>
+          <div style="display:flex;align-items:center;gap:10px;">
+            <span id="rowCount" style="background:var(--blue-lt);color:var(--blue);padding:3px 10px;border-radius:20px;font-size:12px;font-weight:700;">0 records</span>
+            <input id="searchBox" placeholder="Search name / reg no..." style="padding:6px 12px;background:var(--surface2);border:1.5px solid var(--border);border-radius:8px;font-family:'Outfit',sans-serif;font-size:12px;color:var(--text);outline:none;width:200px;" oninput="renderMainTable()">
+          </div>
+        </div>
+        <div class="table-wrap">
+          <table>
+            <thead><tr>
+              <th>S.No</th><th>Reg No</th><th>Name</th><th>Sec/Yr</th>
+              <th>Event Name</th><th>Category</th><th>Date</th>
+              <th>Scope</th><th>Prize</th><th>Score</th><th>Cash (₹)</th>
+              <th>Proof</th><th>Status</th><th>Verified By</th>
+            </tr></thead>
+            <tbody id="mainTableBody"></tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+
+    <!-- SECTION SUMMARY -->
+    <div class="sec-panel" id="spanel-section">
+      <div class="table-card">
+        <div class="card-head"><div class="card-title">🏫 Section-wise Performance Summary</div></div>
+        <div class="table-wrap">
+          <table>
+            <thead><tr>
+              <th>Section</th><th>Students Active</th><th>Participations</th>
+              <th>International</th><th>National</th><th>State</th><th>College</th>
+              <th>Winners</th><th>Total Score</th><th>Avg Score/Student</th><th>Cash Won (₹)</th>
+            </tr></thead>
+            <tbody id="sectionTableBody"></tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+
+    <!-- TOP ACHIEVERS -->
+    <div class="sec-panel" id="spanel-achievers">
+      <div class="table-card">
+        <div class="card-head"><div class="card-title">🏆 Top Achievers</div></div>
+        <div class="table-wrap">
+          <table>
+            <thead><tr>
+              <th>Rank</th><th>Reg No</th><th>Name</th><th>Sec/Yr</th>
+              <th>Events</th><th>Int'l</th><th>National</th><th>State</th>
+              <th>Wins</th><th>Cash Won (₹)</th><th>Total Score</th>
+            </tr></thead>
+            <tbody id="topAchieversBody"></tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+
+    <!-- STUDENT SUMMARY -->
+    <div class="sec-panel" id="spanel-student">
+      <div class="table-card">
+        <div class="card-head">
+          <div class="card-title">👤 Student-wise Submission Summary</div>
+          <input id="stuSearch" placeholder="Search..." style="padding:6px 12px;background:var(--surface2);border:1.5px solid var(--border);border-radius:8px;font-family:'Outfit',sans-serif;font-size:12px;color:var(--text);outline:none;width:180px;" oninput="renderStudentSummary()">
+        </div>
+        <div class="table-wrap">
+          <table>
+            <thead><tr>
+              <th>Reg No</th><th>Name</th><th>Section</th><th>Year</th>
+              <th>Events</th><th>Int'l</th><th>National</th><th>State</th>
+              <th>Wins</th><th>Pending</th><th>Score</th><th>Cash (₹)</th>
+            </tr></thead>
+            <tbody id="studentSummaryBody"></tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+
+  </div><!-- /#reportContent -->
+</div>
+
+<script>
+/* ── CONFIG ── */
+const GAS_URL = 'https://script.google.com/macros/s/AKfycbyhfNlPrsU1NfuJr6Wjf7Kgo6EiA8ASca2EZQ-1lSIgNswDccZ4CukIhcTxN0YdOMRciA/exec';
+
+/* ── SESSION ── */
+let EMS_USER = {};
+try { EMS_USER = JSON.parse(localStorage.getItem('ems_user') || '{}'); } catch(e){}
+
+let ALL_DATA = [];       // raw submissions from backend
+let FILTERED = [];       // after filter applied
+let DROPDOWNS = {};      // categories, sections, prizes from backend
+
+/* ── API ── */
+async function api(action, params = {}) {
+  try {
+    const res = await fetch(GAS_URL, {
+      method: 'POST',
+      headers: { 'Content-Type': 'text/plain' },
+      body: JSON.stringify({ action, ...params })
+    });
+    return await res.json();
+  } catch(e) { return { success: false, message: 'Network error: ' + e.message }; }
+}
+
+/* ── TOAST ── */
+function toast(msg, type = 'info') {
+  const box = document.getElementById('toastBox');
+  const el  = document.createElement('div');
+  el.className = 'toast ' + type;
+  el.textContent = msg;
+  box.appendChild(el);
+  setTimeout(() => el.remove(), 3500);
+}
+
+/* ── INIT ── */
+window.addEventListener('DOMContentLoaded', async () => {
+  // Set default date range to current academic year
+  const now   = new Date();
+  const month = now.getMonth();
+  const yr    = month >= 5 ? now.getFullYear() : now.getFullYear() - 1;
+  document.getElementById('fromDate').value = `${yr}-06-01`;
+  document.getElementById('toDate').value   = `${yr+1}-05-31`;
+
+  // Load dropdowns from backend
+  const dd = await api('getDropdowns');
+  if (dd.success) {
+    DROPDOWNS = dd;
+    populateDropdowns(dd);
+  }
+
+  // Auto-generate report on load
+  generateReport();
+});
+
+function populateDropdowns(dd) {
+  // Section filter
+  const secSel = document.getElementById('filterSection');
+  const secs   = [...new Set((dd.sections || []))].sort();
+  secSel.innerHTML = '<option value="">All Sections</option>' +
+    secs.map(s=>`<option value="${s}">${s}</option>`).join('');
+
+  // Category filter
+  const catSel = document.getElementById('filterCategory');
+  catSel.innerHTML = '<option value="">All Categories</option>' +
+    (dd.categories||[]).map(c=>`<option value="${c}">${c}</option>`).join('');
+
+  // Prize filter
+  const prizeSel = document.getElementById('filterPrize');
+  prizeSel.innerHTML = '<option value="">All Prizes</option>' +
+    (dd.prizes||[]).map(p=>`<option value="${p}">${p}</option>`).join('');
+}
+
+/* ── GENERATE REPORT ── */
+async function generateReport() {
+  const btn = document.getElementById('btnGenerate');
+  btn.innerHTML = '⏳ Loading...'; btn.disabled = true;
+  document.getElementById('loader').style.display = 'block';
+  document.getElementById('reportContent').style.display = 'none';
+
+  const from   = document.getElementById('fromDate').value;
+  const to     = document.getElementById('toDate').value;
+  const section= document.getElementById('filterSection').value;
+  const cat    = document.getElementById('filterCategory').value;
+
+  // Fetch analytics (all submissions with details)
+  const res = await api('getAnalytics', {
+    fromDate: from || undefined,
+    toDate:   to   || undefined,
+    section:  section || undefined,
+    category: cat  || undefined
+  });
+
+  btn.innerHTML = '⚡ Generate Report'; btn.disabled = false;
+  document.getElementById('loader').style.display = 'none';
+
+  if (!res.success) {
+    toast('Failed to load data: ' + res.message, 'error'); return;
+  }
+
+  ALL_DATA = res.submissions || [];
+
+  // Refresh section dropdown from actual data
+  const secs = [...new Set(ALL_DATA.map(r=>r.Section).filter(Boolean))].sort();
+  const secSel = document.getElementById('filterSection');
+  const curSec = secSel.value;
+  secSel.innerHTML = '<option value="">All Sections</option>' +
+    secs.map(s=>`<option value="${s}"${s===curSec?' selected':''}>${s}</option>`).join('');
+
+  applyFilters();
+  document.getElementById('reportContent').style.display = 'block';
+  toast(`Loaded ${ALL_DATA.length} records from backend`, 'success');
+}
+
+/* ── APPLY FILTERS ── */
+function applyFilters() {
+  const from   = document.getElementById('fromDate').value;
+  const to     = document.getElementById('toDate').value;
+  const sec    = document.getElementById('filterSection').value;
+  const yr     = document.getElementById('filterYear').value;
+  const cat    = document.getElementById('filterCategory').value;
+  const scope  = document.getElementById('filterScope').value;
+  const prize  = document.getElementById('filterPrize').value;
+  const status = document.getElementById('filterStatus').value;
+
+  FILTERED = ALL_DATA.filter(r => {
+    if (from   && r.EventDate < from)   return false;
+    if (to     && r.EventDate > to)     return false;
+    if (sec    && r.Section   !== sec)  return false;
+    if (yr     && r.Year      !== yr)   return false;
+    if (cat    && r.Category  !== cat)  return false;
+    if (scope  && r.Scope     !== scope)return false;
+    if (prize  && r.Prize     !== prize)return false;
+    if (status && r.Status    !== status)return false;
+    return true;
+  });
+
+  renderStats();
+  renderCharts();
+  renderMainTable();
+  renderSectionSummary();
+  renderTopAchievers();
+  renderStudentSummary();
+}
+
+/* ── STATS ── */
+function renderStats() {
+  const total   = FILTERED.length;
+  const unique  = new Set(FILTERED.map(r=>r.RegNo)).size;
+  const intl    = FILTERED.filter(r=>r.Scope==='International').length;
+  const natl    = FILTERED.filter(r=>r.Scope==='National').length;
+  const wins    = FILTERED.filter(r=>['Winner','1st Prize'].includes(r.Prize)).length;
+  const cash    = FILTERED.reduce((s,r)=>s+Number(r.Amount||0),0);
+  const score   = FILTERED.reduce((s,r)=>s+Number(r.Score||0),0);
+  const verified= FILTERED.filter(r=>r.Status==='Verified').length;
+
+  document.getElementById('sTotal').textContent    = total;
+  document.getElementById('sUnique').textContent   = unique;
+  document.getElementById('sIntl').textContent     = intl;
+  document.getElementById('sNatl').textContent     = natl;
+  document.getElementById('sWins').textContent     = wins;
+  document.getElementById('sCash').textContent     = '₹'+cash.toLocaleString('en-IN');
+  document.getElementById('sScore').textContent    = score;
+  document.getElementById('sVerified').textContent = verified;
+}
+
+/* ── CHARTS ── */
+const CHART_COLORS = ['#2056d3','#059669','#d97706','#0284c7','#7c3aed','#dc2626','#0891b2','#16a34a'];
+
+function renderBarChart(elId, dataObj, colors) {
+  const sorted = Object.entries(dataObj).sort((a,b)=>b[1]-a[1]);
+  const max    = sorted[0]?.[1] || 1;
+  document.getElementById(elId).innerHTML = sorted.map(([label, cnt], i) => {
+    const c   = colors ? colors[i % colors.length] : CHART_COLORS[i % CHART_COLORS.length];
+    const pct = Math.round(cnt/max*100);
+    return `<div class="bar-row">
+      <div class="bar-label">${label.length>12?label.substring(0,11)+'…':label}</div>
+      <div class="bar-track"><div class="bar-fill" style="width:${pct}%;background:${c};">${cnt}</div></div>
+      <div class="bar-val" style="color:${c};">${cnt}</div>
+    </div>`;
+  }).join('') || '<div class="empty" style="padding:20px;">No data</div>';
+}
+
+function renderCharts() {
+  // Monthly trend
+  const months = {};
+  FILTERED.forEach(r => {
+    if (!r.EventDate) return;
+    const d   = new Date(r.EventDate);
+    if (isNaN(d)) return;
+    const key = d.toLocaleString('en-IN',{month:'short',year:'2-digit'});
+    months[key] = (months[key]||0) + 1;
+  });
+  const keys   = Object.keys(months).slice(-12);
+  const maxMon = Math.max(...keys.map(k=>months[k]),1);
+  document.getElementById('monthChart').innerHTML = keys.length
+    ? keys.map(k => {
+        const h   = Math.round((months[k]/maxMon)*100);
+        return `<div class="month-col">
+          <div class="month-bar-wrap">
+            <div class="month-bar" data-tip="${months[k]} events"
+              style="height:${h}px;background:linear-gradient(180deg,#3b6ef7,#1a44b8);"></div>
+          </div>
+          <div class="month-label">${k}</div>
+        </div>`;
+      }).join('')
+    : '<div class="empty" style="padding:20px;font-size:12px;">No data for selected period</div>';
+
+  // Category
+  const cats = {};
+  FILTERED.forEach(r => { if(r.Category) cats[r.Category] = (cats[r.Category]||0)+1; });
+  renderBarChart('categoryChart', cats);
+
+  // Scope
+  const scopeColors = { International:'#7c3aed', National:'#2056d3', State:'#059669', College:'#7b8db8' };
+  const scopes = {};
+  FILTERED.forEach(r => { if(r.Scope) scopes[r.Scope] = (scopes[r.Scope]||0)+1; });
+  renderBarChart('scopeChart', scopes, Object.keys(scopes).map(s=>scopeColors[s]||'#2056d3'));
+
+  // Prize
+  const prizes = {};
+  FILTERED.forEach(r => { if(r.Prize) prizes[r.Prize] = (prizes[r.Prize]||0)+1; });
+  renderBarChart('prizeChart', prizes);
+}
+
+/* ── MAIN TABLE ── */
+function renderMainTable() {
+  const search = (document.getElementById('searchBox')?.value||'').toLowerCase();
+  let rows = FILTERED;
+  if (search) rows = rows.filter(r =>
+    (r.Name||'').toLowerCase().includes(search) ||
+    (r.RegNo||'').toLowerCase().includes(search) ||
+    (r.EventName||'').toLowerCase().includes(search)
+  );
+
+  document.getElementById('rowCount').textContent = rows.length + ' records';
+  document.getElementById('mainTableTitle').textContent =
+    `📋 ${document.getElementById('reportType').options[document.getElementById('reportType').selectedIndex].text} — Participation Data`;
+
+  const scopeCls = { International:'b-intl', National:'b-natl', State:'b-state', College:'b-coll' };
+  const prizeCls = { Winner:'b-win','1st Prize':'b-win','2nd Prize':'b-prize','3rd Prize':'b-prize','Runner Up':'b-prize',Participation:'b-part' };
+  const statusCls= { Verified:'b-prize', Pending:'b-part', Rejected:'b-win' };
+
+  if (!rows.length) {
+    document.getElementById('mainTableBody').innerHTML =
+      '<tr><td colspan="14"><div class="empty">No records found for selected filters.</div></td></tr>';
+    return;
+  }
+
+  document.getElementById('mainTableBody').innerHTML = rows.map((r,i) => `<tr>
+    <td class="sno">${i+1}</td>
+    <td style="font-family:'JetBrains Mono',monospace;font-size:12px;color:var(--blue);font-weight:600;">${r.RegNo||'—'}</td>
+    <td style="font-weight:600;">${r.Name||'—'}</td>
+    <td><b>${r.Section||'—'}</b> / <span style="color:var(--muted);">${r.Year||'—'}</span></td>
+    <td style="max-width:180px;font-size:12px;">${r.EventName||'—'}</td>
+    <td><span class="badge b-cat">${r.Category||'—'}</span></td>
+    <td style="font-size:12px;white-space:nowrap;">${fmtDate(r.EventDate)}</td>
+    <td><span class="badge ${scopeCls[r.Scope]||'b-coll'}">${r.Scope||'—'}</span></td>
+    <td><span class="badge ${prizeCls[r.Prize]||'b-part'}">${r.Prize||'—'}</span></td>
+    <td><span style="font-family:'Space Grotesk',sans-serif;font-size:16px;font-weight:700;color:${scoreClr(r.Score)};">${r.Score||0}</span></td>
+    <td>${Number(r.Amount)>0?`<span style="color:var(--green);font-weight:700;">₹${Number(r.Amount).toLocaleString('en-IN')}</span>`:'—'}</td>
+    <td>${r.ProofLink?`<a href="${r.ProofLink}" target="_blank" class="proof-link">🔗 View</a>`:'—'}</td>
+    <td><span class="badge ${statusCls[r.Status]||'b-part'}">${r.Status||'—'}</span></td>
+    <td style="font-size:12px;color:var(--muted);">${r.VerifiedBy||'—'}</td>
+  </tr>`).join('');
+}
+
+/* ── SECTION SUMMARY ── */
+function renderSectionSummary() {
+  const map = {};
+  FILTERED.forEach(r => {
+    const s = r.Section||'Unknown';
+    if (!map[s]) map[s] = {students:new Set(),count:0,intl:0,natl:0,state:0,coll:0,wins:0,score:0,cash:0};
+    const m = map[s];
+    m.students.add(r.RegNo); m.count++;
+    if (r.Scope==='International') m.intl++;
+    if (r.Scope==='National')      m.natl++;
+    if (r.Scope==='State')         m.state++;
+    if (r.Scope==='College')       m.coll++;
+    if (['Winner','1st Prize'].includes(r.Prize)) m.wins++;
+    m.score += Number(r.Score||0);
+    m.cash  += Number(r.Amount||0);
+  });
+  const rows = Object.entries(map).sort((a,b)=>b[1].score-a[1].score);
+  document.getElementById('sectionTableBody').innerHTML = rows.map(([sec,m]) => `<tr>
+    <td style="font-family:'Space Grotesk',sans-serif;font-size:18px;font-weight:700;color:var(--blue);">Sec ${sec}</td>
+    <td style="font-weight:700;">${m.students.size}</td>
+    <td style="font-weight:700;">${m.count}</td>
+    <td style="color:var(--purple);font-weight:700;">${m.intl}</td>
+    <td style="color:var(--blue);font-weight:700;">${m.natl}</td>
+    <td style="color:var(--green);font-weight:700;">${m.state}</td>
+    <td style="color:var(--muted);">${m.coll}</td>
+    <td style="color:var(--gold);font-weight:700;">🏆 ${m.wins}</td>
+    <td style="font-family:'Space Grotesk',sans-serif;font-size:18px;font-weight:700;color:var(--blue);">${m.score}</td>
+    <td>${m.students.size>0?(m.score/m.students.size).toFixed(1):0}</td>
+    <td style="color:var(--green);font-weight:700;">${m.cash>0?'₹'+m.cash.toLocaleString('en-IN'):'—'}</td>
+  </tr>`).join('') || '<tr><td colspan="11"><div class="empty">No data.</div></td></tr>';
+}
+
+/* ── TOP ACHIEVERS ── */
+function renderTopAchievers() {
+  const map = {};
+  FILTERED.forEach(r => {
+    const k = r.RegNo||'?';
+    if (!map[k]) map[k] = {RegNo:r.RegNo,Name:r.Name,Section:r.Section,Year:r.Year,events:0,intl:0,natl:0,state:0,wins:0,cash:0,score:0};
+    const m = map[k];
+    m.events++; m.score += Number(r.Score||0); m.cash += Number(r.Amount||0);
+    if (r.Scope==='International') m.intl++;
+    if (r.Scope==='National')      m.natl++;
+    if (r.Scope==='State')         m.state++;
+    if (['Winner','1st Prize'].includes(r.Prize)) m.wins++;
+  });
+  const top    = Object.values(map).sort((a,b)=>b.score-a.score).slice(0,20);
+  const medals = ['🥇','🥈','🥉'];
+  document.getElementById('topAchieversBody').innerHTML = top.map((s,i) => `<tr>
+    <td style="font-size:20px;">${medals[i]||'#'+(i+1)}</td>
+    <td style="font-family:'JetBrains Mono',monospace;font-size:12px;color:var(--blue);font-weight:600;">${s.RegNo}</td>
+    <td style="font-weight:600;">${s.Name}</td>
+    <td><b>${s.Section}</b>/<span style="color:var(--muted);">${s.Year}</span></td>
+    <td style="font-weight:700;">${s.events}</td>
+    <td style="color:var(--purple);font-weight:700;">${s.intl}</td>
+    <td style="color:var(--blue);font-weight:700;">${s.natl}</td>
+    <td style="color:var(--green);font-weight:700;">${s.state}</td>
+    <td>${s.wins>0?'🏆 '+s.wins:'—'}</td>
+    <td style="color:var(--green);font-weight:700;">${s.cash>0?'₹'+s.cash.toLocaleString('en-IN'):'—'}</td>
+    <td style="font-family:'Space Grotesk',sans-serif;font-size:20px;font-weight:700;color:var(--gold);">${s.score}</td>
+  </tr>`).join('') || '<tr><td colspan="11"><div class="empty">No data.</div></td></tr>';
+}
+
+/* ── STUDENT SUMMARY ── */
+function renderStudentSummary() {
+  const search = (document.getElementById('stuSearch')?.value||'').toLowerCase();
+  const map = {};
+  FILTERED.forEach(r => {
+    const k = r.RegNo||'?';
+    if (!map[k]) map[k] = {RegNo:r.RegNo,Name:r.Name,Section:r.Section,Year:r.Year,events:0,intl:0,natl:0,state:0,wins:0,pending:0,cash:0,score:0};
+    const m = map[k];
+    m.events++; m.score += Number(r.Score||0); m.cash += Number(r.Amount||0);
+    if (r.Scope==='International') m.intl++;
+    if (r.Scope==='National')      m.natl++;
+    if (r.Scope==='State')         m.state++;
+    if (['Winner','1st Prize'].includes(r.Prize)) m.wins++;
+    if (r.Status==='Pending') m.pending++;
+  });
+  let rows = Object.values(map).sort((a,b)=>b.score-a.score);
+  if (search) rows = rows.filter(r =>
+    (r.Name||'').toLowerCase().includes(search) ||
+    (r.RegNo||'').toLowerCase().includes(search)
+  );
+  document.getElementById('studentSummaryBody').innerHTML = rows.map(s => `<tr>
+    <td style="font-family:'JetBrains Mono',monospace;font-size:12px;color:var(--blue);font-weight:600;">${s.RegNo}</td>
+    <td style="font-weight:600;">${s.Name}</td>
+    <td><span class="badge b-blue">${s.Section||'—'}</span></td>
+    <td style="color:var(--muted);">${s.Year||'—'}</td>
+    <td style="font-weight:700;">${s.events}</td>
+    <td style="color:var(--purple);font-weight:700;">${s.intl||'—'}</td>
+    <td style="color:var(--blue);font-weight:700;">${s.natl||'—'}</td>
+    <td style="color:var(--green);font-weight:700;">${s.state||'—'}</td>
+    <td>${s.wins>0?`<span style="color:var(--gold);font-weight:700;">🏆 ${s.wins}</span>`:'—'}</td>
+    <td>${s.pending>0?`<span class="badge b-win">${s.pending}</span>`:'—'}</td>
+    <td style="font-family:'Space Grotesk',sans-serif;font-size:16px;font-weight:700;color:${scoreClr(s.score)};">${s.score}</td>
+    <td style="color:var(--green);font-weight:700;">${s.cash>0?'₹'+s.cash.toLocaleString('en-IN'):'—'}</td>
+  </tr>`).join('') || '<tr><td colspan="12"><div class="empty">No data.</div></td></tr>';
+}
+
+/* ── TAB SWITCH ── */
+function switchSecTab(t) {
+  document.querySelectorAll('.sec-tab').forEach((b,i) => {
+    b.classList.toggle('active', ['main','section','achievers','student'][i]===t);
+  });
+  document.querySelectorAll('.sec-panel').forEach(p => p.classList.remove('active'));
+  document.getElementById('spanel-'+t).classList.add('active');
+}
+
+/* ── RESET ── */
+function resetFilters() {
+  ['filterSection','filterYear','filterCategory','filterScope','filterPrize','filterStatus'].forEach(id => {
+    document.getElementById(id).value = '';
+  });
+  applyFilters();
+  toast('Filters reset', 'info');
+}
+
+/* ── EXPORT CSV ── */
+function exportCSV() {
+  if (!FILTERED.length) { toast('No data to export', 'error'); return; }
+  const hdr = ['S.No','Reg No','Name','Section','Year','Event Name','Category',
+                'Scope','Prize','Score','Cash Amount','Event Date','Status','Verified By'];
+  const rows = FILTERED.map((r,i) =>
+    [i+1, r.RegNo, r.Name, r.Section, r.Year, r.EventName, r.Category,
+     r.Scope, r.Prize, r.Score, r.Amount||0, r.EventDate, r.Status, r.VerifiedBy||'']
+    .map(v=>`"${String(v||'').replace(/"/g,'""')}"`).join(',')
+  );
+  download([hdr.join(','), ...rows].join('\n'), `ECE_EMS_Report_${today()}.csv`, 'text/csv');
+  toast('CSV exported ✓', 'success');
+}
+
+/* ── EXPORT STUDENT-WISE CSV ── */
+function exportStudentWise() {
+  if (!FILTERED.length) { toast('No data to export', 'error'); return; }
+  const map = {};
+  FILTERED.forEach(r => {
+    const k = r.RegNo||'?';
+    if (!map[k]) map[k] = {RegNo:r.RegNo,Name:r.Name,Section:r.Section,Year:r.Year,events:0,intl:0,natl:0,state:0,wins:0,cash:0,score:0};
+    const m = map[k];
+    m.events++; m.score += Number(r.Score||0); m.cash += Number(r.Amount||0);
+    if (r.Scope==='International') m.intl++;
+    if (r.Scope==='National')      m.natl++;
+    if (r.Scope==='State')         m.state++;
+    if (['Winner','1st Prize'].includes(r.Prize)) m.wins++;
+  });
+  const hdr  = ['Reg No','Name','Section','Year','Total Events','International','National','State','Wins','Cash Won','Total Score'];
+  const rows = Object.values(map).sort((a,b)=>b.score-a.score).map(s =>
+    [s.RegNo,s.Name,s.Section,s.Year,s.events,s.intl,s.natl,s.state,s.wins,s.cash,s.score]
+    .map(v=>`"${v}"`).join(',')
+  );
+  download([hdr.join(','), ...rows].join('\n'), `ECE_EMS_StudentSummary_${today()}.csv`, 'text/csv');
+  toast('Student-wise CSV exported ✓', 'success');
+}
+
+function download(content, filename, type) {
+  const a = document.createElement('a');
+  a.href = 'data:'+type+';charset=utf-8,' + encodeURIComponent(content);
+  a.download = filename;
+  a.click();
+}
+
+/* ── PRINT PREVIEW ── */
+function showPrintPreview() {
+  if (!FILTERED.length) { toast('Generate a report first', 'error'); return; }
+
+  const from     = document.getElementById('fromDate').value   || 'All dates';
+  const to       = document.getElementById('toDate').value     || 'Present';
+  const sec      = document.getElementById('filterSection').value || 'All Sections';
+  const rtEl     = document.getElementById('reportType');
+  const rtLabel  = rtEl.options[rtEl.selectedIndex].text;
+  const total    = FILTERED.length;
+  const unique   = new Set(FILTERED.map(r=>r.RegNo)).size;
+  const intl     = FILTERED.filter(r=>r.Scope==='International').length;
+  const natl     = FILTERED.filter(r=>r.Scope==='National').length;
+  const wins     = FILTERED.filter(r=>['Winner','1st Prize'].includes(r.Prize)).length;
+  const cash     = FILTERED.reduce((s,r)=>s+Number(r.Amount||0),0);
+  const score    = FILTERED.reduce((s,r)=>s+Number(r.Score||0),0);
+  const verified = FILTERED.filter(r=>r.Status==='Verified').length;
+
+  // Section summary for print
+  const secMap = {};
+  FILTERED.forEach(r => {
+    const s = r.Section||'?';
+    if (!secMap[s]) secMap[s]={students:new Set(),count:0,intl:0,natl:0,state:0,wins:0,score:0,cash:0};
+    const m = secMap[s]; m.students.add(r.RegNo); m.count++;
+    if(r.Scope==='International')m.intl++; if(r.Scope==='National')m.natl++; if(r.Scope==='State')m.state++;
+    if(['Winner','1st Prize'].includes(r.Prize))m.wins++;
+    m.score+=Number(r.Score||0); m.cash+=Number(r.Amount||0);
+  });
+
+  document.getElementById('printDoc').innerHTML = `
+    <div class="pd-header">
+      <div class="pd-logo">🎓</div>
+      <div class="pd-logo-txt">
+        <h1>ECE Department — Event Management System</h1>
+        <p>${rtLabel} | Kamaraj College of Engineering &amp; Technology, Virudhunagar</p>
+        <p style="margin-top:2px;font-size:11px;color:#94a3b8;">Generated on ${new Date().toLocaleDateString('en-IN',{day:'2-digit',month:'long',year:'numeric',hour:'2-digit',minute:'2-digit'})}</p>
+      </div>
+    </div>
+
+    <div class="pd-meta">
+      <div class="pd-meta-item"><h4>Report Period</h4><p>${from} → ${to}</p></div>
+      <div class="pd-meta-item"><h4>Section / Filter</h4><p>${sec}</p></div>
+      <div class="pd-meta-item"><h4>Report Type</h4><p>${rtLabel}</p></div>
+    </div>
+
+    <div class="pd-summary">
+      <div class="pds"><div class="n">${total}</div><div class="l">Participations</div></div>
+      <div class="pds"><div class="n">${unique}</div><div class="l">Students</div></div>
+      <div class="pds"><div class="n">${intl}</div><div class="l">International</div></div>
+      <div class="pds"><div class="n">${natl}</div><div class="l">National</div></div>
+      <div class="pds"><div class="n">${wins}</div><div class="l">Winners</div></div>
+      <div class="pds"><div class="n">₹${cash.toLocaleString('en-IN')}</div><div class="l">Cash Won</div></div>
+      <div class="pds"><div class="n">${score}</div><div class="l">Total Score</div></div>
+      <div class="pds"><div class="n">${verified}</div><div class="l">Verified</div></div>
+    </div>
+
+    <div class="pd-section-title">Section-wise Performance Summary</div>
+    <table class="pd-table">
+      <thead><tr><th>Section</th><th>Students</th><th>Events</th><th>Int'l</th><th>National</th><th>State</th><th>Wins</th><th>Score</th><th>Cash</th></tr></thead>
+      <tbody>
+        ${Object.entries(secMap).sort((a,b)=>b[1].score-a[1].score).map(([s,m])=>`
+          <tr><td><b>${s}</b></td><td>${m.students.size}</td><td>${m.count}</td><td>${m.intl}</td><td>${m.natl}</td><td>${m.state}</td><td>${m.wins}</td><td><b>${m.score}</b></td><td>${m.cash>0?'₹'+m.cash.toLocaleString('en-IN'):'—'}</td></tr>
+        `).join('')}
+      </tbody>
+    </table>
+
+    <div class="pd-section-title">Student Event Participation Data (${total} records)</div>
+    <table class="pd-table">
+      <thead><tr><th>S.No</th><th>Reg No</th><th>Name</th><th>Sec/Yr</th><th>Event</th><th>Category</th><th>Date</th><th>Scope</th><th>Prize</th><th>Score</th><th>Cash</th><th>Status</th></tr></thead>
+      <tbody>
+        ${FILTERED.map((r,i)=>`
+          <tr><td>${i+1}</td><td>${r.RegNo||''}</td><td>${r.Name||''}</td>
+          <td>${r.Section||''}/${r.Year||''}</td><td style="max-width:120px;">${r.EventName||''}</td>
+          <td>${r.Category||''}</td><td style="white-space:nowrap;">${r.EventDate||''}</td>
+          <td>${r.Scope||''}</td><td>${r.Prize||''}</td><td><b>${r.Score||0}</b></td>
+          <td>${Number(r.Amount)>0?'₹'+r.Amount:'—'}</td><td>${r.Status||''}</td></tr>
+        `).join('')}
+      </tbody>
+    </table>
+
+    <div class="pd-footer">
+      <div>Prepared by<strong>Faculty Coordinator, ECE Dept</strong></div>
+      <div>Verified by<strong>Head of Department, ECE</strong></div>
+      <div>Approved by<strong>Principal / Chairperson</strong></div>
+    </div>
+  `;
+  document.getElementById('printOverlay').style.display = 'block';
+}
+
+function closePrint() {
+  document.getElementById('printOverlay').style.display = 'none';
+}
+
+function doPrint() {
+  const content = document.getElementById('printDoc').innerHTML;
+  const w = window.open('','_blank','width=1120,height=900');
+  w.document.write(`<!DOCTYPE html><html><head><title>ECE-EMS Report</title>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;600;700;800&display=swap" rel="stylesheet"/>
+    <style>
+      *{margin:0;padding:0;box-sizing:border-box;}
+      body{font-family:'Outfit',sans-serif;padding:36px;color:#000;font-size:12px;}
+      .pd-header{display:flex;align-items:center;gap:16px;border-bottom:3px solid #1a44b8;padding-bottom:16px;margin-bottom:20px;}
+      .pd-logo{width:52px;height:52px;background:#1a44b8;border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:24px;flex-shrink:0;}
+      .pd-logo-txt h1{font-size:16px;font-weight:800;color:#1a44b8;}
+      .pd-logo-txt p{font-size:11px;color:#64748b;margin-top:2px;}
+      .pd-meta{display:grid;grid-template-columns:1fr 1fr 1fr;gap:14px;margin-bottom:18px;background:#f8fafc;border-radius:8px;padding:12px 16px;}
+      .pd-meta-item h4{font-size:10px;text-transform:uppercase;letter-spacing:0.5px;color:#64748b;margin-bottom:3px;}
+      .pd-meta-item p{font-size:13px;font-weight:700;}
+      .pd-summary{display:grid;grid-template-columns:repeat(8,1fr);gap:8px;margin-bottom:18px;}
+      .pds{border:2px solid #e2e8f0;border-radius:6px;padding:8px;text-align:center;}
+      .pds .n{font-size:20px;font-weight:800;color:#1a44b8;}
+      .pds .l{font-size:9px;color:#64748b;font-weight:600;text-transform:uppercase;}
+      .pd-section-title{font-size:13px;font-weight:800;color:#1a44b8;border-left:4px solid #1a44b8;padding-left:8px;margin:18px 0 8px;}
+      .pd-table{width:100%;border-collapse:collapse;font-size:10px;}
+      .pd-table th{background:#1a44b8;color:#fff;padding:6px 8px;text-align:left;font-weight:700;}
+      .pd-table td{padding:5px 8px;border-bottom:1px solid #e2e8f0;}
+      .pd-table tr:nth-child(even) td{background:#f8fafc;}
+      .pd-footer{margin-top:32px;border-top:2px solid #e2e8f0;padding-top:16px;display:grid;grid-template-columns:1fr 1fr 1fr;gap:20px;text-align:center;font-size:11px;color:#64748b;}
+      .pd-footer strong{display:block;margin-top:26px;border-top:1px solid #000;padding-top:4px;color:#000;}
+      @media print{body{padding:20px;}}
+    </style></head><body>${content}</body></html>`);
+  w.document.close();
+  setTimeout(()=>{ w.print(); }, 800);
+}
+
+/* ── UTILS ── */
+function fmtDate(d) {
+  if (!d) return '—';
+  try { return new Date(d).toLocaleDateString('en-IN',{day:'2-digit',month:'short',year:'numeric'}); }
+  catch { return d; }
+}
+function scoreClr(s) {
+  const n = Number(s)||0;
+  if (n>=20) return 'var(--gold)';
+  if (n>=10) return 'var(--blue)';
+  if (n>=5)  return 'var(--green)';
+  return 'var(--muted)';
+}
+function today() { return new Date().toISOString().slice(0,10); }
+</script>
+</body>
+</html>

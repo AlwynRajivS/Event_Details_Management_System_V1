@@ -1,0 +1,1140 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>Chairperson Portal | ECE-EMS</title>
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Sans:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#f0f5ff;--surface:#fff;--surface2:#f4f7ff;--surface3:#e8eeff;
+  --border:rgba(37,99,235,.12);--border2:rgba(37,99,235,.22);
+  --text:#0f1e5c;--text2:#2d44a0;--muted:#7b90cc;
+  --blue:#2563eb;--blue2:#1d4ed8;--blue-lt:rgba(37,99,235,.08);--blue-mid:rgba(37,99,235,.15);
+  --cyan:#0284c7;--cyan-lt:rgba(2,132,199,.08);
+  --green:#059669;--green-lt:rgba(5,150,105,.08);
+  --red:#dc2626;--red-lt:rgba(220,38,38,.08);
+  --orange:#ea580c;--orange-lt:rgba(234,88,12,.08);
+  --purple:#7c3aed;--purple-lt:rgba(124,58,237,.08);
+  --indigo:#4338ca;
+  --shadow:0 1px 8px rgba(37,99,235,.08),0 2px 20px rgba(37,99,235,.05);
+  --shadow-lg:0 8px 40px rgba(37,99,235,.13);
+  --r:12px;--rl:18px;--hh:62px;
+}
+*,*::before,*::after{margin:0;padding:0;box-sizing:border-box;}
+html{scroll-behavior:smooth;-webkit-text-size-adjust:100%;}
+body{font-family:'DM Sans',sans-serif;background:var(--bg);color:var(--text);min-height:100vh;overflow-x:hidden;font-size:14px;}
+body::before{content:'';position:fixed;inset:0;background:radial-gradient(ellipse 60% 35% at 0 0,rgba(37,99,235,.07),transparent 55%),radial-gradient(ellipse 50% 30% at 100% 100%,rgba(2,132,199,.06),transparent 55%);pointer-events:none;z-index:0;}
+
+/* ── LOGIN SCREEN ── */
+#loginScreen{position:fixed;inset:0;background:linear-gradient(135deg,#1e3a8a,#1d4ed8,#2563eb);z-index:9999;display:flex;align-items:center;justify-content:center;padding:20px;}
+#loginScreen.hidden{display:none;}
+.lbox{background:#fff;border-radius:22px;padding:36px 30px;width:100%;max-width:400px;box-shadow:0 24px 64px rgba(0,0,0,.22);}
+.llogo{width:52px;height:52px;border-radius:16px;background:linear-gradient(135deg,#2563eb,#1d4ed8);display:flex;align-items:center;justify-content:center;font-size:26px;margin:0 auto 16px;box-shadow:0 6px 20px rgba(37,99,235,.35);}
+.ltitle{font-family:'Syne',sans-serif;font-size:22px;font-weight:800;color:var(--text);text-align:center;margin-bottom:4px;}
+.lsub{font-size:12px;color:var(--muted);text-align:center;margin-bottom:24px;}
+.lfield{margin-bottom:14px;}
+.lfield label{display:block;font-size:11px;font-weight:700;color:var(--text2);text-transform:uppercase;letter-spacing:.5px;margin-bottom:5px;}
+.lfield input{width:100%;padding:11px 14px;border:1.5px solid var(--border2);border-radius:11px;font-family:'DM Sans',sans-serif;font-size:13px;color:var(--text);outline:none;background:var(--surface2);transition:border-color .2s,box-shadow .2s;}
+.lfield input:focus{border-color:var(--blue);box-shadow:0 0 0 3px var(--blue-lt);background:#fff;}
+.lbtn{width:100%;padding:12px;border:none;border-radius:11px;background:linear-gradient(135deg,#2563eb,#1d4ed8);color:#fff;font-family:'Syne',sans-serif;font-size:14px;font-weight:800;cursor:pointer;margin-top:6px;box-shadow:0 4px 16px rgba(37,99,235,.3);transition:all .2s;}
+.lbtn:hover{transform:translateY(-1px);box-shadow:0 8px 24px rgba(37,99,235,.4);}
+.lbtn:disabled{opacity:.6;cursor:not-allowed;transform:none;}
+.lerr{background:var(--red-lt);border:1px solid rgba(220,38,38,.2);color:var(--red);border-radius:10px;padding:10px 14px;font-size:12px;font-weight:600;margin-top:10px;display:none;}
+.lerr.show{display:block;}
+
+/* ── HEADER ── */
+.hdr{position:sticky;top:0;z-index:400;height:var(--hh);background:rgba(255,255,255,.94);backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px);border-bottom:1.5px solid var(--border2);box-shadow:0 2px 20px rgba(37,99,235,.08);display:flex;align-items:center;padding:0 14px;gap:10px;}
+@media(min-width:640px){.hdr{padding:0 24px;gap:14px;}}
+.hlogo{width:38px;height:38px;border-radius:11px;background:linear-gradient(135deg,#2563eb,#1d4ed8);display:flex;align-items:center;justify-content:center;font-size:18px;flex-shrink:0;box-shadow:0 3px 14px rgba(37,99,235,.3);}
+.hbrand{flex:1;min-width:0;}
+.htitle{font-family:'Syne',sans-serif;font-size:15px;font-weight:800;color:var(--text);}
+.hsub{font-size:11px;color:var(--muted);display:none;}
+@media(min-width:480px){.hsub{display:block;}}
+.hright{display:flex;align-items:center;gap:7px;flex-shrink:0;}
+.lpip{display:flex;align-items:center;gap:5px;padding:5px 10px;border-radius:20px;background:rgba(5,150,105,.09);border:1px solid rgba(5,150,105,.22);font-size:11px;font-weight:700;color:var(--green);}
+.ldot{width:6px;height:6px;border-radius:50%;background:var(--green);box-shadow:0 0 7px var(--green);animation:blink 2s infinite;}
+@keyframes blink{0%,100%{opacity:1;transform:scale(1)}50%{opacity:.5;transform:scale(1.5)}}
+.uchip{display:none;align-items:center;gap:7px;padding:5px 12px;border-radius:20px;background:var(--surface2);border:1px solid var(--border2);font-size:12px;font-weight:600;color:var(--text2);}
+@media(min-width:520px){.uchip{display:flex;}}
+.uav{width:26px;height:26px;border-radius:50%;background:linear-gradient(135deg,#2563eb,#1d4ed8);display:flex;align-items:center;justify-content:center;font-size:12px;color:#fff;font-weight:800;flex-shrink:0;}
+.blo{display:flex;align-items:center;gap:5px;padding:7px 11px;border-radius:9px;background:var(--red-lt);border:1px solid rgba(220,38,38,.2);color:var(--red);font-family:'DM Sans',sans-serif;font-size:12px;font-weight:700;cursor:pointer;transition:all .2s;}
+.blo:hover{background:rgba(220,38,38,.15);}
+.lot{display:none;}
+@media(min-width:400px){.lot{display:inline;}}
+
+/* ── MAIN ── */
+.main{position:relative;z-index:1;padding:16px 12px 100px;max-width:1360px;margin:0 auto;}
+@media(min-width:640px){.main{padding:22px 20px 80px;}}
+@media(min-width:1024px){.main{padding:28px 36px 60px;}}
+.pghdr{display:flex;align-items:flex-start;justify-content:space-between;gap:10px;margin-bottom:18px;flex-wrap:wrap;}
+.pgtitle{font-family:'Syne',sans-serif;font-size:clamp(19px,5vw,27px);font-weight:800;line-height:1.2;}
+.pgsub{color:var(--muted);font-size:12px;margin-top:3px;}
+.pgacts{display:flex;gap:7px;flex-wrap:wrap;flex-shrink:0;}
+
+/* ── CLASS BANNER ── */
+.cbanner{background:linear-gradient(135deg,#2563eb,#1d4ed8,#1e40af);border-radius:var(--rl);padding:20px 18px;margin-bottom:18px;position:relative;overflow:hidden;box-shadow:0 8px 32px rgba(37,99,235,.30);}
+.cbanner::before{content:'';position:absolute;inset:0;background:radial-gradient(ellipse 60% 80% at 90% 50%,rgba(255,255,255,.07),transparent),repeating-linear-gradient(45deg,transparent,transparent 30px,rgba(255,255,255,.02) 30px,rgba(255,255,255,.02) 31px);pointer-events:none;}
+.cbanner::after{content:'👑';position:absolute;right:16px;top:50%;transform:translateY(-50%);font-size:60px;opacity:.10;pointer-events:none;}
+@media(min-width:480px){.cbanner::after{font-size:90px;right:28px;}}
+.cbi{display:flex;align-items:center;gap:14px;flex-wrap:wrap;position:relative;z-index:1;}
+.cbmain{flex-shrink:0;}
+.cbsec{font-family:'Syne',sans-serif;font-size:clamp(30px,8vw,52px);font-weight:800;color:#fff;line-height:1;}
+.cblbl{font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.8px;color:rgba(255,255,255,.65);margin-top:3px;}
+.cbsub{font-size:11px;color:rgba(255,255,255,.5);margin-top:2px;}
+.cbdiv{width:1px;height:50px;background:rgba(255,255,255,.2);flex-shrink:0;display:none;}
+@media(min-width:420px){.cbdiv{display:block;}}
+.cbstats{display:flex;gap:16px;flex-wrap:wrap;}
+.cbs{text-align:center;}
+.cbsv{font-family:'Syne',sans-serif;font-size:20px;font-weight:800;color:#fff;line-height:1;}
+.cbsl{font-size:9px;font-weight:700;text-transform:uppercase;letter-spacing:.5px;color:rgba(255,255,255,.55);margin-top:2px;}
+.cbacts{margin-left:auto;display:flex;flex-direction:column;gap:6px;flex-shrink:0;}
+
+/* ── STAT CARDS ── */
+.sgrid{display:grid;grid-template-columns:repeat(2,1fr);gap:10px;margin-bottom:18px;}
+@media(min-width:500px){.sgrid{grid-template-columns:repeat(3,1fr);}}
+@media(min-width:768px){.sgrid{grid-template-columns:repeat(6,1fr);}}
+.sc{background:var(--surface);border:1.5px solid var(--border);border-radius:var(--rl);padding:14px 12px;position:relative;overflow:hidden;box-shadow:var(--shadow);transition:transform .2s,box-shadow .2s;}
+.sc:hover{transform:translateY(-2px);box-shadow:var(--shadow-lg);}
+.sc.cb{border-color:rgba(37,99,235,.2);}.sc.cg{border-color:rgba(5,150,105,.2);}
+.sc.cc{border-color:rgba(2,132,199,.2);}.sc.cr{border-color:rgba(220,38,38,.2);}
+.sc.co{border-color:rgba(234,88,12,.2);}.sc.cp{border-color:rgba(124,58,237,.2);}
+.sirow{display:flex;justify-content:space-between;align-items:center;margin-bottom:8px;}
+.si{width:30px;height:30px;border-radius:9px;display:flex;align-items:center;justify-content:center;font-size:14px;}
+.sc.cb .si{background:var(--blue-lt);}.sc.cg .si{background:var(--green-lt);}
+.sc.cc .si{background:var(--cyan-lt);}.sc.cr .si{background:var(--red-lt);}
+.sc.co .si{background:var(--orange-lt);}.sc.cp .si{background:var(--purple-lt);}
+.str{font-size:10px;font-weight:700;padding:2px 6px;border-radius:20px;}
+.tu{background:rgba(5,150,105,.1);color:var(--green);}
+.td{background:rgba(220,38,38,.1);color:var(--red);}
+.tn{background:var(--surface2);color:var(--muted);}
+.scn{font-family:'Syne',sans-serif;font-size:clamp(20px,4vw,30px);font-weight:800;line-height:1;margin-bottom:3px;}
+.sc.cb .scn{color:var(--blue);}.sc.cg .scn{color:var(--green);}
+.sc.cc .scn{color:var(--cyan);}.sc.cr .scn{color:var(--red);}
+.sc.co .scn{color:var(--orange);}.sc.cp .scn{color:var(--purple);}
+.scl{font-size:10px;font-weight:700;letter-spacing:.6px;color:var(--muted);text-transform:uppercase;}
+.sbar{height:3px;background:var(--surface2);border-radius:3px;margin-top:9px;overflow:hidden;}
+.sbf{height:100%;border-radius:3px;width:0;transition:width 1.2s ease;}
+.sc.cb .sbf{background:linear-gradient(90deg,var(--blue),var(--cyan));}
+.sc.cg .sbf{background:linear-gradient(90deg,var(--green),var(--cyan));}
+.sc.cc .sbf{background:linear-gradient(90deg,var(--cyan),var(--blue));}
+.sc.cr .sbf{background:linear-gradient(90deg,var(--red),#9f1239);}
+.sc.co .sbf{background:linear-gradient(90deg,var(--orange),var(--red));}
+.sc.cp .sbf{background:linear-gradient(90deg,var(--purple),var(--blue));}
+
+/* ── ANALYTICS ROW ── */
+.anrow{display:grid;grid-template-columns:1fr;gap:12px;margin-bottom:18px;}
+@media(min-width:768px){.anrow{grid-template-columns:1fr 1fr;}}
+@media(min-width:1100px){.anrow{grid-template-columns:3fr 2fr 2fr;}}
+.card{background:var(--surface);border:1.5px solid var(--border);border-radius:var(--rl);padding:16px 14px;box-shadow:var(--shadow);}
+.ctitle{font-family:'Syne',sans-serif;font-size:13px;font-weight:700;color:var(--text);display:flex;align-items:center;justify-content:space-between;gap:8px;margin-bottom:14px;padding-bottom:11px;border-bottom:1px solid var(--border);}
+.ctl{display:flex;align-items:center;gap:6px;}
+
+/* ── PIPELINE ── */
+.pl{display:flex;flex-direction:column;gap:12px;}
+.ptop{display:flex;justify-content:space-between;align-items:center;margin-bottom:4px;}
+.pn{display:flex;align-items:center;gap:7px;font-size:12px;color:var(--text2);font-weight:500;}
+.pd{width:7px;height:7px;border-radius:50%;flex-shrink:0;}
+.pv{font-family:'Syne',sans-serif;font-size:13px;font-weight:800;}
+.pbg{height:7px;background:var(--surface2);border-radius:6px;overflow:hidden;}
+.pf{height:100%;border-radius:6px;width:0;transition:width 1.2s ease;}
+.pp{font-size:10px;color:var(--muted);text-align:right;margin-top:2px;}
+
+/* ── DONUT ── */
+.dwrap{display:flex;align-items:center;gap:16px;}
+.dcon{position:relative;width:96px;height:96px;flex-shrink:0;}
+.dsvg{transform:rotate(-90deg);}
+.dcen{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%) rotate(90deg);text-align:center;}
+.dpct{font-family:'Syne',sans-serif;font-size:17px;font-weight:800;color:var(--text);}
+.dsub{font-size:8px;color:var(--muted);font-weight:700;letter-spacing:.4px;text-transform:uppercase;}
+.dleg{flex:1;display:flex;flex-direction:column;gap:9px;}
+.dli{display:flex;align-items:center;gap:7px;}
+.dld{width:8px;height:8px;border-radius:50%;flex-shrink:0;}
+.dll{font-size:11px;color:var(--text2);flex:1;}
+.dlv{font-family:'Syne',sans-serif;font-size:12px;font-weight:800;color:var(--text);}
+
+/* ── SCOPE BARS ── */
+.sbars{display:flex;flex-direction:column;gap:10px;}
+.sbt{display:flex;justify-content:space-between;font-size:11px;margin-bottom:3px;}
+.sbl{font-weight:600;color:var(--text2);}
+.sbv{font-family:'Syne',sans-serif;font-weight:800;color:var(--text);}
+.sbbg{height:7px;background:var(--surface2);border-radius:6px;overflow:hidden;}
+.sbfill{height:100%;border-radius:6px;width:0;transition:width 1s ease;}
+
+/* ── TABS ── */
+.tabbar{display:flex;background:var(--surface);border:1.5px solid var(--border2);border-radius:var(--r);padding:4px;margin-bottom:16px;overflow-x:auto;scrollbar-width:none;}
+.tabbar::-webkit-scrollbar{display:none;}
+.tab{padding:8px 15px;border:none;border-radius:9px;background:transparent;color:var(--muted);cursor:pointer;font-family:'DM Sans',sans-serif;font-size:12px;font-weight:600;transition:all .2s;white-space:nowrap;flex-shrink:0;}
+.tab.on{background:linear-gradient(135deg,#2563eb,#1d4ed8);color:#fff;box-shadow:0 4px 14px rgba(37,99,235,.25);}
+.tab:hover:not(.on){background:var(--surface2);color:var(--text);}
+.panel{display:none;}.panel.on{display:block;animation:fadeUp .25s ease;}
+@keyframes fadeUp{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:translateY(0)}}
+
+/* ── FILTER ROW ── */
+.frow{display:flex;gap:8px;margin-bottom:12px;flex-wrap:wrap;align-items:center;}
+.sbox{display:flex;align-items:center;gap:7px;padding:9px 12px;background:var(--surface);border:1.5px solid var(--border2);border-radius:10px;flex:1;min-width:160px;}
+.sbox:focus-within{border-color:var(--blue);box-shadow:0 0 0 3px var(--blue-lt);}
+.sbox input{border:none;background:transparent;color:var(--text);font-family:'DM Sans',sans-serif;font-size:12px;outline:none;flex:1;min-width:0;}
+.sbox input::placeholder{color:var(--muted);}
+select.fsel{padding:9px 26px 9px 11px;border-radius:10px;border:1.5px solid var(--border2);background:var(--surface);color:var(--text);font-family:'DM Sans',sans-serif;font-size:12px;outline:none;cursor:pointer;-webkit-appearance:none;appearance:none;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='10' height='6'%3E%3Cpath d='M1 1l4 4 4-4' stroke='%237b90cc' stroke-width='1.5' fill='none' stroke-linecap='round'/%3E%3C/svg%3E");background-repeat:no-repeat;background-position:right 9px center;}
+
+/* ── TABLE ── */
+.twrap{background:var(--surface);border:1.5px solid var(--border);border-radius:var(--rl);overflow:hidden;box-shadow:var(--shadow);margin-bottom:16px;}
+.thdr{display:flex;align-items:center;justify-content:space-between;gap:8px;padding:12px 15px;border-bottom:1.5px solid var(--border);background:var(--surface2);flex-wrap:wrap;}
+.ttl{font-family:'Syne',sans-serif;font-size:13px;font-weight:700;flex:1;min-width:100px;}
+.tscr{overflow-x:auto;}
+table{width:100%;border-collapse:collapse;min-width:540px;}
+th{padding:9px 12px;text-align:left;font-size:10px;font-weight:700;letter-spacing:.8px;color:var(--muted);text-transform:uppercase;background:var(--surface2);border-bottom:1.5px solid var(--border);white-space:nowrap;}
+td{padding:9px 12px;font-size:12px;border-bottom:1px solid var(--border);color:var(--text);vertical-align:middle;white-space:nowrap;}
+tr:last-child td{border-bottom:none;}
+tr:hover td{background:rgba(37,99,235,.03);}
+tr.rx{opacity:0;transition:opacity .4s;}
+.mono{font-family:'JetBrains Mono',monospace;font-size:10px;color:var(--muted);}
+.empty{text-align:center;padding:42px;color:var(--muted);font-size:12px;white-space:normal;min-width:0;}
+
+/* ── STUDENT CARD ── */
+.stuc{background:var(--surface2);border:1.5px solid var(--border2);border-radius:var(--r);padding:14px;margin-bottom:10px;}
+.stutop{display:flex;align-items:center;gap:10px;flex-wrap:wrap;}
+.stuav{width:40px;height:40px;border-radius:12px;background:linear-gradient(135deg,var(--blue),var(--cyan));display:flex;align-items:center;justify-content:center;font-family:'Syne',sans-serif;font-size:16px;font-weight:800;color:#fff;flex-shrink:0;}
+.stuinfo{flex:1;min-width:0;}
+.stuname{font-family:'Syne',sans-serif;font-size:14px;font-weight:800;color:var(--text);}
+.stumeta{font-size:11px;color:var(--muted);margin-top:2px;line-height:1.5;}
+.stuscore{font-family:'Syne',sans-serif;font-size:22px;font-weight:800;color:var(--blue);flex-shrink:0;text-align:right;}
+.stuacts{display:flex;gap:6px;margin-top:10px;flex-wrap:wrap;}
+.stusubs{margin-top:10px;padding-top:10px;border-top:1px solid var(--border);}
+.subrow{display:flex;align-items:center;gap:8px;padding:7px 10px;border-radius:9px;background:var(--surface);border:1px solid var(--border);margin-bottom:6px;flex-wrap:wrap;}
+.subrow:last-child{margin-bottom:0;}
+.subinfo{flex:1;min-width:130px;}
+.subev{font-size:12px;font-weight:600;color:var(--text);}
+.submeta{font-size:10px;color:var(--muted);margin-top:1px;}
+.subacts{display:flex;gap:5px;align-items:center;flex-shrink:0;}
+.nosub{font-size:12px;color:var(--muted);text-align:center;padding:12px;}
+
+/* ── BADGES ── */
+.badge{padding:3px 8px;border-radius:20px;font-size:10px;font-weight:700;display:inline-flex;align-items:center;gap:4px;}
+.bb{background:var(--blue-lt);color:var(--blue);border:1px solid rgba(37,99,235,.18);}
+.bg{background:var(--green-lt);color:var(--green);border:1px solid rgba(5,150,105,.18);}
+.br{background:var(--red-lt);color:var(--red);border:1px solid rgba(220,38,38,.18);}
+.bc{background:var(--cyan-lt);color:var(--cyan);border:1px solid rgba(2,132,199,.18);}
+.bo{background:var(--orange-lt);color:var(--orange);border:1px solid rgba(234,88,12,.18);}
+.bp{background:var(--purple-lt);color:var(--purple);border:1px solid rgba(124,58,237,.18);}
+.bm{background:var(--surface2);color:var(--muted);border:1px solid var(--border);}
+.hchip{display:inline-flex;align-items:center;gap:4px;padding:3px 9px;border-radius:20px;background:var(--green-lt);border:1px solid rgba(5,150,105,.2);font-size:10px;font-weight:700;color:var(--green);}
+.pchip{display:inline-flex;align-items:center;gap:4px;padding:3px 9px;border-radius:20px;background:var(--orange-lt);border:1px solid rgba(234,88,12,.2);font-size:10px;font-weight:700;color:var(--orange);}
+
+/* ── BUTTONS ── */
+.btn{padding:7px 13px;border-radius:9px;border:none;cursor:pointer;font-family:'DM Sans',sans-serif;font-size:12px;font-weight:700;transition:all .2s;display:inline-flex;align-items:center;gap:5px;white-space:nowrap;text-decoration:none;}
+.bpri{background:linear-gradient(135deg,#2563eb,#1d4ed8);color:#fff;box-shadow:0 4px 16px rgba(37,99,235,.28);}
+.bpri:hover{transform:translateY(-1px);box-shadow:0 8px 24px rgba(37,99,235,.36);}
+.bapp{background:var(--green-lt);color:var(--green);border:1px solid rgba(5,150,105,.22);}
+.bapp:hover{background:rgba(5,150,105,.15);}
+.brej{background:var(--red-lt);color:var(--red);border:1px solid rgba(220,38,38,.22);}
+.brej:hover{background:rgba(220,38,38,.15);}
+.bwa{background:rgba(37,211,102,.09);color:#15803d;border:1px solid rgba(37,211,102,.25);}
+.bwa:hover{background:rgba(37,211,102,.16);}
+.bcall{background:var(--blue-lt);color:var(--blue);border:1px solid rgba(37,99,235,.2);}
+.bcall:hover{background:var(--blue-mid);}
+.bsms{background:var(--orange-lt);color:var(--orange);border:1px solid rgba(234,88,12,.2);}
+.bghost{background:var(--surface2);color:var(--text2);border:1.5px solid var(--border);}
+.bghost:hover{background:var(--surface3);}
+.boutl{background:transparent;color:var(--blue);border:1.5px solid rgba(37,99,235,.28);}
+.boutl:hover{background:var(--blue-lt);}
+.bsm{padding:5px 11px;font-size:11px;}
+.bxs{padding:3px 8px;font-size:10px;border-radius:7px;}
+
+/* ── MODAL ── */
+.ovl{display:none;position:fixed;inset:0;background:rgba(15,30,92,.32);z-index:500;backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px);align-items:center;justify-content:center;padding:14px;}
+.ovl.show{display:flex;}
+.modal{background:#fff;border:1.5px solid var(--border2);border-radius:18px;padding:20px;width:100%;max-width:500px;max-height:90vh;overflow-y:auto;box-shadow:0 24px 64px rgba(37,99,235,.18);animation:popIn .25s ease;}
+@keyframes popIn{from{opacity:0;transform:scale(.96) translateY(8px)}to{opacity:1;transform:scale(1) translateY(0)}}
+.mtitle{font-family:'Syne',sans-serif;font-size:16px;font-weight:800;margin-bottom:2px;}
+.msub{color:var(--muted);font-size:11px;margin-bottom:14px;}
+.drow{display:flex;gap:10px;font-size:12px;padding:6px 0;border-bottom:1px solid var(--border);}
+.drow:last-child{border-bottom:none;}
+.dlbl{color:var(--muted);font-weight:700;text-transform:uppercase;letter-spacing:.4px;min-width:80px;flex-shrink:0;font-size:10px;padding-top:1px;}
+.dval{color:var(--text);font-weight:600;flex:1;word-break:break-word;white-space:normal;}
+textarea{width:100%;padding:9px 11px;margin-top:10px;background:var(--surface2);border:1.5px solid var(--border2);border-radius:10px;color:var(--text);font-family:'DM Sans',sans-serif;font-size:12px;outline:none;resize:vertical;min-height:68px;transition:border-color .2s;}
+textarea:focus{border-color:var(--blue);}
+.mact{display:flex;gap:7px;margin-top:12px;flex-wrap:wrap;}
+.wa-prev{background:linear-gradient(135deg,#dcfce7,#bbf7d0);border:1px solid #86efac;border-radius:12px;padding:12px 14px;margin-top:10px;font-size:12px;color:#14532d;line-height:1.6;white-space:pre-wrap;word-break:break-word;}
+
+/* ── TOAST ── */
+#toastBox{position:fixed;bottom:18px;right:12px;z-index:9999;display:flex;flex-direction:column;gap:7px;max-width:calc(100vw - 24px);}
+.toast{padding:10px 14px;border-radius:11px;font-size:12px;font-weight:600;box-shadow:0 4px 24px rgba(37,99,235,.14);animation:tin .3s ease;display:flex;align-items:center;gap:8px;background:#fff;border:1.5px solid var(--border2);max-width:300px;}
+.toast.success{border-left:3px solid var(--green);color:var(--green);}
+.toast.error{border-left:3px solid var(--red);color:var(--red);}
+.toast.info{border-left:3px solid var(--blue);color:var(--blue);}
+@keyframes tin{from{transform:translateX(100%);opacity:0}to{transform:translateX(0);opacity:1}}
+@keyframes tout{to{opacity:0;transform:translateX(30px)}}
+
+/* ── REVEAL ── */
+.reveal{opacity:0;transform:translateY(12px);transition:opacity .4s ease,transform .4s ease;}
+.reveal.vis{opacity:1;transform:translateY(0);}
+.skel{background:linear-gradient(90deg,var(--surface2) 25%,var(--surface3) 50%,var(--surface2) 75%);background-size:200% 100%;animation:shimmer 1.4s infinite;border-radius:8px;}
+@keyframes shimmer{0%{background-position:200%}100%{background-position:-200%}}
+.bcnt{background:var(--red);color:#fff;border-radius:50%;width:16px;height:16px;font-size:9px;font-weight:800;display:inline-flex;align-items:center;justify-content:center;margin-left:4px;}
+</style>
+</head>
+<body>
+<div id="toastBox"></div>
+
+<!-- ══════════════ LOGIN SCREEN ══════════════ -->
+<div id="loginScreen">
+  <div class="lbox">
+    <div class="llogo">👑</div>
+    <div class="ltitle">Chairperson Portal</div>
+    <div class="lsub">ECE Department · Event Management System</div>
+    <div class="lfield">
+      <label>Email Address</label>
+      <input type="email" id="lEmail" placeholder="chair@ece.edu" autocomplete="email">
+    </div>
+    <div class="lfield">
+      <label>Password</label>
+      <input type="password" id="lPass" placeholder="Enter password" autocomplete="current-password">
+    </div>
+    <button class="lbtn" id="lBtn" onclick="doLogin()">Login to Portal</button>
+    <div class="lerr" id="lErr"></div>
+  </div>
+</div>
+
+<!-- ══════════════ APPROVAL MODAL ══════════════ -->
+<div class="ovl" id="approvalModal">
+  <div class="modal">
+    <div class="mtitle" id="amTitle">Review Pre-Approval</div>
+    <div class="msub" id="amSub"></div>
+    <div id="amDets"></div>
+    <div style="margin-top:12px;">
+      <div style="font-size:10px;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:.5px;">Remarks (optional)</div>
+      <textarea id="amRem" placeholder="Add remarks…"></textarea>
+    </div>
+    <div class="mact">
+      <button class="btn bapp" id="amApp">👑 Approve</button>
+      <button class="btn brej" id="amRej">✗ Reject</button>
+      <button class="btn bghost" onclick="cm('approvalModal')" style="margin-left:auto;">Cancel</button>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════════ STUDENT DETAIL MODAL ══════════════ -->
+<div class="ovl" id="stuModal">
+  <div class="modal" style="max-width:540px;">
+    <div class="mtitle" id="smTitle">Student Details</div>
+    <div class="msub" id="smSub"></div>
+    <div id="smContent"></div>
+    <div class="mact" style="margin-top:14px;">
+      <button class="btn bghost" onclick="cm('stuModal')" style="margin-left:auto;">Close</button>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════════ REMINDER MODAL ══════════════ -->
+<div class="ovl" id="remModal">
+  <div class="modal">
+    <div class="mtitle">📤 Send Reminder</div>
+    <div class="msub" id="remSub">Send reminder to student</div>
+    <textarea id="remMsg" rows="5"></textarea>
+    <div class="wa-prev" id="remPrev"></div>
+    <div class="mact">
+      <button class="btn bwa"   id="remWa">💬 WhatsApp</button>
+      <button class="btn bcall" id="remCall">📞 Call</button>
+      <button class="btn bsms"  id="remSms">📱 SMS</button>
+      <button class="btn bghost" onclick="cm('remModal')" style="margin-left:auto;">Cancel</button>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════════ HEADER ══════════════ -->
+<header class="hdr">
+  <div class="hlogo">👑</div>
+  <div class="hbrand">
+    <div class="htitle">Chairperson Portal</div>
+    <div class="hsub">ECE-EMS · Final Approval Authority</div>
+  </div>
+  <div class="hright">
+    <div class="lpip"><div class="ldot"></div>Live</div>
+    <div class="uchip"><div class="uav" id="uAv">C</div><span id="uName">—</span></div>
+    <button class="blo" onclick="doLogout()"><span>⏻</span><span class="lot">Logout</span></button>
+  </div>
+</header>
+
+<!-- ══════════════ MAIN ══════════════ -->
+<div class="main">
+
+  <div class="pghdr reveal">
+    <div>
+      <div class="pgtitle">👑 Chairperson Portal</div>
+      <div class="pgsub" id="pgSub">—</div>
+    </div>
+    <div class="pgacts">
+      <button class="btn bghost bsm" onclick="loadAll()">🔄 Refresh</button>
+      <button class="btn bpri bsm" onclick="approveAll()">👑 Approve All Pending</button>
+    </div>
+  </div>
+
+  <!-- CLASS BANNER -->
+  <div class="cbanner reveal">
+    <div class="cbi">
+      <div class="cbmain">
+        <div class="cbsec" id="cbSec">—</div>
+        <div class="cblbl">Your Assigned Section</div>
+        <div class="cbsub" id="cbSubLbl">ECE Department</div>
+      </div>
+      <div class="cbdiv"></div>
+      <div class="cbstats">
+        <div class="cbs"><div class="cbsv" id="cbP">0</div><div class="cbsl">Pending</div></div>
+        <div class="cbs"><div class="cbsv" id="cbA">0</div><div class="cbsl">Approved</div></div>
+        <div class="cbs"><div class="cbsv" id="cbStu">0</div><div class="cbsl">Students</div></div>
+        <div class="cbs"><div class="cbsv" id="cbRate">0%</div><div class="cbsl">Rate</div></div>
+      </div>
+      <div class="cbacts">
+        <button class="btn bsm" style="background:rgba(255,255,255,.18);color:#fff;border:1px solid rgba(255,255,255,.28);" onclick="approveAll()">👑 Approve All</button>
+        <button class="btn bsm" style="background:rgba(255,255,255,.1);color:rgba(255,255,255,.8);border:1px solid rgba(255,255,255,.2);" onclick="bulkRemind()">📤 Bulk Remind</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- STAT CARDS -->
+  <div class="sgrid">
+    <div class="sc cb reveal"><div class="sirow"><div class="si">⏳</div><span class="str tn">—</span></div><div class="scn" id="s1">0</div><div class="scl">Pending Chair</div><div class="sbar"><div class="sbf" id="b1"></div></div></div>
+    <div class="sc cg reveal"><div class="sirow"><div class="si">✅</div><span class="str tu">↑</span></div><div class="scn" id="s2">0</div><div class="scl">Approved</div><div class="sbar"><div class="sbf" id="b2"></div></div></div>
+    <div class="sc cc reveal"><div class="sirow"><div class="si">📋</div><span class="str tn">—</span></div><div class="scn" id="s3">0</div><div class="scl">Final Submissions</div><div class="sbar"><div class="sbf" id="b3"></div></div></div>
+    <div class="sc cg reveal"><div class="sirow"><div class="si">🔍</div><span class="str tu">↑</span></div><div class="scn" id="s4">0</div><div class="scl">Verified</div><div class="sbar"><div class="sbf" id="b4"></div></div></div>
+    <div class="sc co reveal"><div class="sirow"><div class="si">📤</div><span class="str tn">—</span></div><div class="scn" id="s5">0</div><div class="scl">Not Submitted</div><div class="sbar"><div class="sbf" id="b5"></div></div></div>
+    <div class="sc cr reveal"><div class="sirow"><div class="si">✗</div><span class="str td">↓</span></div><div class="scn" id="s6">0</div><div class="scl">Rejected</div><div class="sbar"><div class="sbf" id="b6"></div></div></div>
+  </div>
+
+  <!-- ANALYTICS ROW -->
+  <div class="anrow">
+    <div class="card reveal">
+      <div class="ctitle">
+        <div class="ctl">📈 Approval Pipeline</div>
+        <span class="badge bm" id="pipeTot">Total: 0</span>
+      </div>
+      <div class="pl">
+        <div><div class="ptop"><span class="pn"><span class="pd" style="background:var(--blue)"></span>Pending HOD</span><span class="pv" id="ppH" style="color:var(--blue)">0</span></div><div class="pbg"><div id="pbH" class="pf" style="background:linear-gradient(90deg,var(--blue),var(--cyan))"></div></div><div class="pp" id="pctH"></div></div>
+        <div><div class="ptop"><span class="pn"><span class="pd" style="background:var(--indigo)"></span>Pending Chair</span><span class="pv" id="ppC" style="color:var(--indigo)">0</span></div><div class="pbg"><div id="pbC" class="pf" style="background:linear-gradient(90deg,var(--indigo),var(--purple))"></div></div><div class="pp" id="pctC"></div></div>
+        <div><div class="ptop"><span class="pn"><span class="pd" style="background:var(--green)"></span>Approved</span><span class="pv" id="ppA" style="color:var(--green)">0</span></div><div class="pbg"><div id="pbA" class="pf" style="background:linear-gradient(90deg,var(--green),var(--cyan))"></div></div><div class="pp" id="pctA"></div></div>
+        <div><div class="ptop"><span class="pn"><span class="pd" style="background:var(--red)"></span>Rejected</span><span class="pv" id="ppR" style="color:var(--red)">0</span></div><div class="pbg"><div id="pbR" class="pf" style="background:linear-gradient(90deg,var(--red),#9f1239)"></div></div><div class="pp" id="pctR"></div></div>
+      </div>
+    </div>
+    <div class="card reveal">
+      <div class="ctitle"><div class="ctl">🍩 Status Breakdown</div></div>
+      <div class="dwrap">
+        <div class="dcon">
+          <svg class="dsvg" viewBox="0 0 100 100" width="96" height="96">
+            <circle cx="50" cy="50" r="38" fill="none" stroke="rgba(37,99,235,.07)" stroke-width="13"/>
+            <circle id="dA" cx="50" cy="50" r="38" fill="none" stroke="var(--green)" stroke-width="13" stroke-dasharray="239 239" stroke-dashoffset="239" stroke-linecap="round" style="transition:stroke-dashoffset 1.2s ease"/>
+            <circle id="dP" cx="50" cy="50" r="38" fill="none" stroke="var(--blue)"  stroke-width="13" stroke-dasharray="239 239" stroke-dashoffset="239" stroke-linecap="round" style="transition:stroke-dashoffset 1.2s .1s ease"/>
+            <circle id="dR" cx="50" cy="50" r="38" fill="none" stroke="var(--red)"   stroke-width="13" stroke-dasharray="239 239" stroke-dashoffset="239" stroke-linecap="round" style="transition:stroke-dashoffset 1.2s .2s ease"/>
+          </svg>
+          <div class="dcen"><div class="dpct" id="dPct">0%</div><div class="dsub">Approved</div></div>
+        </div>
+        <div class="dleg">
+          <div class="dli"><div class="dld" style="background:var(--green)"></div><div class="dll">Approved</div><div class="dlv" id="lgA">0</div></div>
+          <div class="dli"><div class="dld" style="background:var(--blue)"></div><div class="dll">Pending Chair</div><div class="dlv" id="lgP">0</div></div>
+          <div class="dli"><div class="dld" style="background:var(--red)"></div><div class="dll">Rejected</div><div class="dlv" id="lgR">0</div></div>
+          <div class="dli"><div class="dld" style="background:var(--orange)"></div><div class="dll">No Submission</div><div class="dlv" id="lgNS">0</div></div>
+        </div>
+      </div>
+    </div>
+    <div class="card reveal">
+      <div class="ctitle"><div class="ctl">🌐 Event Scope</div></div>
+      <div class="sbars" id="scopeBars"><div style="color:var(--muted);font-size:12px;">Loading…</div></div>
+    </div>
+  </div>
+
+  <!-- TABS -->
+  <div class="tabbar reveal">
+    <button class="tab on" onclick="sw('pending')">⏳ Pending <span class="bcnt" id="tbCnt" style="display:none;"></span></button>
+    <button class="tab" onclick="sw('students')">🎓 Class Students</button>
+    <button class="tab" onclick="sw('approved')">✅ Approved</button>
+    <button class="tab" onclick="sw('rejected')">✗ Rejected</button>
+  </div>
+
+  <!-- PENDING PANEL -->
+  <div class="panel on" id="tab-pending">
+    <div class="frow reveal">
+      <div class="sbox"><span style="color:var(--muted);font-size:13px;">🔍</span><input id="srchP" placeholder="Name, reg no, event…" oninput="fpend()"></div>
+      <select class="fsel" id="scopeF" onchange="fpend()">
+        <option value="">All Scopes</option>
+        <option>International</option><option>National</option><option>State</option><option>College</option>
+      </select>
+    </div>
+    <div class="twrap reveal">
+      <div class="thdr"><div class="ttl">⏳ Pending Final Approval — Section <span id="secLabel">—</span></div><span class="badge bb" id="pendBadge">0 records</span></div>
+      <div class="tscr"><table>
+        <thead><tr><th>Reg No</th><th>Student</th><th>Event</th><th>Scope</th><th>Event Date</th><th>College / City</th><th>HOD</th><th>Contact</th><th>Actions</th></tr></thead>
+        <tbody id="pendTbl"><tr><td colspan="9" class="empty">Loading…</td></tr></tbody>
+      </table></div>
+    </div>
+  </div>
+
+  <!-- STUDENTS PANEL -->
+  <div class="panel" id="tab-students">
+    <div class="frow reveal">
+      <div class="sbox"><span style="color:var(--muted);font-size:13px;">🔍</span><input id="srchS" placeholder="Student name or reg no…" oninput="fstu()"></div>
+      <select class="fsel" id="stuF" onchange="fstu()">
+        <option value="">All Students</option>
+        <option value="submitted">Has Submissions</option>
+        <option value="none">No Submissions</option>
+        <option value="pending">Has Pending Approval</option>
+      </select>
+    </div>
+    <div id="stuList" class="reveal"><div class="empty">Loading students…</div></div>
+  </div>
+
+  <!-- APPROVED PANEL -->
+  <div class="panel" id="tab-approved">
+    <div class="twrap reveal">
+      <div class="thdr"><div class="ttl">✅ Approved by Chairperson</div><span class="badge bg" id="appBadge">0 records</span></div>
+      <div class="tscr"><table>
+        <thead><tr><th>Reg No</th><th>Name</th><th>Event</th><th>Scope</th><th>College</th><th>Approved At</th><th>Contact</th></tr></thead>
+        <tbody id="appTbl"><tr><td colspan="7" class="empty">No approvals yet</td></tr></tbody>
+      </table></div>
+    </div>
+  </div>
+
+  <!-- REJECTED PANEL -->
+  <div class="panel" id="tab-rejected">
+    <div class="twrap reveal">
+      <div class="thdr"><div class="ttl">✗ Rejected</div><span class="badge br" id="rejBadge">0 records</span></div>
+      <div class="tscr"><table>
+        <thead><tr><th>Reg No</th><th>Name</th><th>Event</th><th>Scope</th><th>Rejected At</th><th>Contact</th></tr></thead>
+        <tbody id="rejTbl"><tr><td colspan="6" class="empty">No rejections</td></tr></tbody>
+      </table></div>
+    </div>
+  </div>
+
+</div><!-- /.main -->
+
+<script>
+/* ══ CONFIG ══════════════════════════════════════════════════ */
+const GAS_URL = 'https://script.google.com/macros/s/AKfycbyhfNlPrsU1NfuJr6Wjf7Kgo6EiA8ASca2EZQ-1lSIgNswDccZ4CukIhcTxN0YdOMRciA/exec';
+
+/* ══ STATE ═══════════════════════════════════════════════════ */
+let CU  = null;
+let SEC = '';
+let PEND = [], APPD = [], REJD = [], STUS = [], FINS = [];
+let SCOPE_MAP = {};
+
+/* ══ API ═════════════════════════════════════════════════════ */
+async function api(action, params = {}) {
+  try {
+    const r = await fetch(GAS_URL, {
+      method: 'POST',
+      headers: { 'Content-Type': 'text/plain' },
+      body: JSON.stringify({ action, ...params })
+    });
+    return await r.json();
+  } catch(e) {
+    return { success: false, message: 'Network error: ' + e.message };
+  }
+}
+
+/* ══ HELPERS ═════════════════════════════════════════════════ */
+const G   = id => document.getElementById(id);
+const T   = (id, v) => { const e = G(id); if (e) e.textContent = v; };
+const W   = (id, p) => { const e = G(id); if (e) e.style.width = Math.min(100, Math.max(0, p)) + '%'; };
+const DO  = (id, c, p) => { const e = G(id); if (e) e.style.strokeDashoffset = c * (1 - Math.min(1, p)); };
+const fD  = d => d ? new Date(d).toLocaleDateString('en-IN',{day:'2-digit',month:'short',year:'numeric'}) : '—';
+const fDT = d => d ? new Date(d).toLocaleString('en-IN',{day:'2-digit',month:'short',hour:'2-digit',minute:'2-digit'}) : '—';
+const esc = s => (s||'').replace(/'/g,"\\'").replace(/"/g,'\\"');
+const js  = o => JSON.stringify(o).replace(/"/g,'&quot;');
+const SB  = {International:'bb',National:'bc',State:'bg',College:'bm'};
+const SC  = {International:'var(--blue)',National:'var(--cyan)',State:'var(--green)',College:'var(--muted)'};
+const cm  = id => G(id).classList.remove('show');
+const wm  = (name, msg) => encodeURIComponent(`Hi ${name},\n\n${msg}\n\n— ECE Department, CARE College`);
+
+/* ══ TOAST ═══════════════════════════════════════════════════ */
+function toast(msg, type = 'info') {
+  const box = G('toastBox'), el = document.createElement('div');
+  el.className = 'toast ' + type;
+  el.innerHTML = `<span>${{success:'✅',error:'❌',info:'ℹ️'}[type]||'ℹ️'}</span><span>${msg}</span>`;
+  box.appendChild(el);
+  setTimeout(() => { el.style.animation = 'tout .4s ease forwards'; setTimeout(() => el.remove(), 400); }, 4000);
+}
+
+/* ══ MODALS ══════════════════════════════════════════════════ */
+document.querySelectorAll('.ovl').forEach(o =>
+  o.addEventListener('click', e => { if (e.target === e.currentTarget) e.target.classList.remove('show'); })
+);
+
+/* ══ TABS ════════════════════════════════════════════════════ */
+function sw(name) {
+  ['pending','students','approved','rejected'].forEach((n, i) => {
+    document.querySelectorAll('.tab')[i].classList.toggle('on', n === name);
+  });
+  document.querySelectorAll('.panel').forEach(p => p.classList.remove('on'));
+  G('tab-' + name).classList.add('on');
+}
+
+/* ══════════════════════════════════════════════════════════════
+   LOGIN — built into the page, no separate login.html needed
+══════════════════════════════════════════════════════════════ */
+async function doLogin() {
+  const email = (G('lEmail').value || '').trim();
+  const pass  = (G('lPass').value  || '').trim();
+  const errEl = G('lErr');
+  const btn   = G('lBtn');
+
+  errEl.classList.remove('show');
+  if (!email || !pass) { showErr('Please enter email and password'); return; }
+
+  btn.disabled = true;
+  btn.textContent = 'Logging in…';
+
+  const d = await api('login', { email, password: pass });
+
+  if (!d.success) {
+    btn.disabled = false;
+    btn.textContent = 'Login to Portal';
+    showErr(d.message || 'Invalid credentials. Try again.');
+    return;
+  }
+
+  if (d.user.Role !== 'Chairperson') {
+    btn.disabled = false;
+    btn.textContent = 'Login to Portal';
+    showErr('This portal is for Chairperson role only. Your role: ' + d.user.Role);
+    return;
+  }
+
+  /* Save credentials */
+  localStorage.setItem('ems_email', email);
+  localStorage.setItem('ems_pass',  pass);
+  sessionStorage.setItem('ems_user', JSON.stringify(d.user));
+
+  /* Hide login, show portal */
+  G('loginScreen').classList.add('hidden');
+  setupPortal(d.user);
+}
+
+function showErr(msg) {
+  const e = G('lErr');
+  e.textContent = '⚠️ ' + msg;
+  e.classList.add('show');
+}
+
+/* Enter key on password field triggers login */
+G('lPass').addEventListener('keydown', e => { if (e.key === 'Enter') doLogin(); });
+G('lEmail').addEventListener('keydown', e => { if (e.key === 'Enter') G('lPass').focus(); });
+
+/* ══════════════════════════════════════════════════════════════
+   INIT — check if already logged in, else show login screen
+══════════════════════════════════════════════════════════════ */
+async function init() {
+  /* Check for existing session */
+  const savedEmail = localStorage.getItem('ems_email');
+  const savedPass  = localStorage.getItem('ems_pass');
+
+  /* Also check URL param (direct link from admin) */
+  const urlEmail = new URLSearchParams(window.location.search).get('email');
+  const urlPass  = new URLSearchParams(window.location.search).get('pass');
+
+  if (urlEmail && urlPass) {
+    G('lEmail').value = urlEmail;
+    G('lPass').value  = urlPass;
+    doLogin();
+    return;
+  }
+
+  if (urlEmail) {
+    G('lEmail').value = urlEmail;
+    G('lPass').focus();
+    return;
+  }
+
+  if (savedEmail && savedPass) {
+    /* Auto-login with saved credentials */
+    G('lEmail').value = savedEmail;
+    G('lPass').value  = savedPass;
+    G('lBtn').textContent = 'Resuming session…';
+    G('lBtn').disabled = true;
+
+    const d = await api('login', { email: savedEmail, password: savedPass });
+
+    if (d.success && d.user.Role === 'Chairperson') {
+      sessionStorage.setItem('ems_user', JSON.stringify(d.user));
+      G('loginScreen').classList.add('hidden');
+      setupPortal(d.user);
+    } else {
+      /* Saved creds invalid — show login form clean */
+      G('lBtn').disabled = false;
+      G('lBtn').textContent = 'Login to Portal';
+      G('lPass').value = '';
+      localStorage.removeItem('ems_pass');
+    }
+    return;
+  }
+
+  /* No session — login screen already visible, pre-fill email if known */
+  if (savedEmail) G('lEmail').value = savedEmail;
+}
+
+/* ══════════════════════════════════════════════════════════════
+   SETUP PORTAL — called after successful login
+══════════════════════════════════════════════════════════════ */
+function setupPortal(user) {
+  CU = user;
+
+  /* Update header */
+  T('uName', CU.Name || 'Chairperson');
+  G('uAv').textContent = (CU.Name || 'C')[0].toUpperCase();
+
+  /* Read Section — try all field name variants */
+  SEC = String(
+    CU.Section || CU.section || CU['Section '] || CU[' Section'] ||
+    (() => {
+      const k = Object.keys(CU).find(x => x.trim().toLowerCase() === 'section');
+      return k ? CU[k] : '';
+    })()
+  ).trim();
+
+  if (!SEC) {
+    T('pgSub', `Logged in as ${CU.Name} — Section not assigned. Ask Admin to set Section in USERS sheet for ${CU.Email}`);
+    toast('Section not assigned in USERS sheet. Contact Admin.', 'error');
+    return;
+  }
+
+  /* Update UI labels */
+  T('pgSub', `Managing Section ${SEC} · ${CU.Name}`);
+  T('cbSec', 'Sec ' + SEC);
+  T('cbSubLbl', `ECE Dept · Section ${SEC} · ${CU.Email || ''}`);
+  T('secLabel', SEC);
+
+  /* Load data */
+  loadAll();
+  setTimeout(initReveal, 100);
+}
+
+/* ══════════════════════════════════════════════════════════════
+   LOAD ALL DATA — parallel API calls, all compatible with v4.0
+══════════════════════════════════════════════════════════════ */
+async function loadAll() {
+  if (!SEC) { toast('Section not set', 'error'); return; }
+  T('s1','…'); T('s2','…'); T('s3','…'); T('s4','…'); T('s5','…'); T('s6','…');
+  toast('Loading Section ' + SEC + ' data…', 'info');
+
+  /* ── 5 parallel calls ── */
+  const [pendRes, userRes, fdRes, analRes, histRes] = await Promise.all([
+    api('getPendingApprovals', { role: 'Chairperson', section: SEC }),
+    api('getUsers',            { role: 'Student',     section: SEC }),
+    api('getFacultyDashboard', { section: SEC }),
+    api('getAnalytics',        { section: SEC }),
+    api('getChairHistory',     { section: SEC })
+  ]);
+
+  /* ── PENDING (chair queue) ── */
+  if (pendRes.success && pendRes.data && pendRes.data.length > 0) {
+    /* Extra client-side section filter as safety net */
+    PEND = pendRes.data.filter(r => String(r.Section||'').trim() === SEC);
+    if (PEND.length === 0) PEND = pendRes.data; /* if section mismatch in sheet, show all */
+  } else {
+    /* Fallback: fetch without section param, filter client-side */
+    const allP = await api('getPendingApprovals', { role: 'Chairperson' });
+    PEND = allP.success ? (allP.data||[]).filter(r => String(r.Section||'').trim() === SEC) : [];
+  }
+
+  /* ── FINAL SUBMISSIONS ── */
+  if (analRes.success && analRes.submissions && analRes.submissions.length > 0) {
+    FINS = analRes.submissions;
+  } else if (fdRes.success && fdRes.recentSubmissions && fdRes.recentSubmissions.length > 0) {
+    FINS = fdRes.recentSubmissions;
+  } else {
+    /* Fallback: all submissions, filter by section */
+    const allA = await api('getAnalytics', {});
+    FINS = allA.success ? (allA.submissions||[]).filter(f => String(f.Section||'').trim() === SEC) : [];
+  }
+
+  /* ── STUDENTS ── */
+  if (fdRes.success && fdRes.students && fdRes.students.length > 0) {
+    STUS = fdRes.students;
+  } else if (userRes.success && userRes.data && userRes.data.length > 0) {
+    STUS = userRes.data.map(u => enrichStudent(u));
+  } else {
+    /* Fallback: all users, filter by section */
+    const allU = await api('getUsers', { role: 'Student' });
+    const sec_students = allU.success
+      ? (allU.data||[]).filter(u => String(u.Section||'').trim() === SEC)
+      : [];
+    STUS = sec_students.map(u => enrichStudent(u));
+  }
+
+  /* ── APPROVED / REJECTED HISTORY ── */
+  if (histRes.success) {
+    APPD = histRes.approved || [];
+    REJD = histRes.rejected || [];
+  } else {
+    APPD = []; REJD = [];
+  }
+
+  /* ── SCOPE MAP ── */
+  SCOPE_MAP = {};
+  FINS.forEach(f => { const k = f.Scope||'Other'; SCOPE_MAP[k] = (SCOPE_MAP[k]||0)+1; });
+
+  /* ── HOD pending for pipeline ── */
+  const hodRes = await api('getPendingApprovals', { role: 'HOD', section: SEC });
+  const hodPend = hodRes.success ? (hodRes.data||[]).length : 0;
+
+  /* ── Stats ── */
+  const notSub = Math.max(0, STUS.length - new Set(FINS.map(f=>f.RegNo)).size);
+  const stats = {
+    hodPending:      hodPend,
+    pendingChair:    PEND.length,
+    approvedByChair: APPD.length,
+    rejectedByChair: REJD.length,
+    totalStudents:   STUS.length,
+    totalFinals:     FINS.length,
+    verifiedFinals:  FINS.filter(f=>f.Status==='Verified').length,
+    notSubmitted:    notSub
+  };
+
+  renderUI(stats);
+  renderAll();
+  setTimeout(initReveal, 80);
+  toast(`✅ Loaded: ${PEND.length} pending · ${STUS.length} students · ${FINS.length} submissions`, 'success');
+}
+
+function enrichStudent(u) {
+  const sf = FINS.filter(f => String(f.RegNo).trim() === String(u.RegNo).trim());
+  const sp = PEND.filter(p => String(p.RegNo).trim() === String(u.RegNo).trim());
+  return {
+    ...u,
+    submissionCount:  sf.length,
+    totalScore:       sf.reduce((t, f) => t + (Number(f.Score)||0), 0),
+    preApprovalCount: sp.length,
+    pendingCount:     sp.length
+  };
+}
+
+/* ══════════════════════════════════════════════════════════════
+   RENDER UI
+══════════════════════════════════════════════════════════════ */
+function renderUI(s) {
+  const pend  = s.pendingChair    || 0;
+  const appd  = s.approvedByChair || 0;
+  const rejd  = s.rejectedByChair || 0;
+  const hod   = s.hodPending      || 0;
+  const stus  = s.totalStudents   || 0;
+  const fins  = s.totalFinals     || 0;
+  const ver   = s.verifiedFinals  || 0;
+  const notS  = s.notSubmitted    || 0;
+  const total = Math.max(pend+appd+rejd+hod, 1);
+  const rate  = Math.round(appd / Math.max(appd+rejd, 1) * 100);
+
+  T('cbP',pend); T('cbA',appd); T('cbStu',stus); T('cbRate',rate+'%');
+  T('s1',pend);  T('s2',appd);  T('s3',fins);
+  T('s4',ver);   T('s5',notS);  T('s6',rejd);
+  T('lgA',appd); T('lgP',pend); T('lgR',rejd); T('lgNS',notS);
+  T('dPct',rate+'%');
+  T('pipeTot','Total: '+(hod+pend+appd+rejd));
+  T('ppH',hod); T('ppC',pend); T('ppA',appd); T('ppR',rejd);
+
+  const tc = G('tbCnt');
+  tc.textContent = pend > 0 ? pend : '';
+  tc.style.display = pend > 0 ? 'inline-flex' : 'none';
+  T('appBadge', appd + ' records');
+  T('rejBadge', rejd + ' records');
+
+  setTimeout(() => {
+    const p = v => Math.min(100, v/total*100);
+    W('b1',p(pend)); W('b2',p(appd)); W('b3',p(fins));
+    W('b4',p(ver));  W('b5',p(notS)); W('b6',p(rejd));
+    W('pbH',p(hod)); W('pbC',p(pend)); W('pbA',p(appd)); W('pbR',p(rejd));
+    const pc = v => Math.round(v/total*100)+'%';
+    T('pctH',pc(hod)); T('pctC',pc(pend)); T('pctA',pc(appd)); T('pctR',pc(rejd));
+    const circ = 239;
+    DO('dA',circ,appd/total*.88); DO('dP',circ,pend/total*.88); DO('dR',circ,rejd/total*.88);
+
+    const mx = Math.max(...Object.values(SCOPE_MAP), 1);
+    G('scopeBars').innerHTML = Object.keys(SCOPE_MAP).length
+      ? Object.entries(SCOPE_MAP).sort((a,b)=>b[1]-a[1]).map(([scope,n])=>`
+          <div>
+            <div class="sbt"><span class="sbl">${scope}</span><span class="sbv">${n}</span></div>
+            <div class="sbbg"><div class="sbfill" data-w="${n/mx*100}" style="background:${SC[scope]||'var(--blue)'};width:0%"></div></div>
+          </div>`).join('')
+      : '<div style="color:var(--muted);font-size:12px;">No submissions yet</div>';
+    setTimeout(()=>{ document.querySelectorAll('.sbfill').forEach(el=>{ el.style.width=(el.dataset.w||0)+'%'; }); },200);
+  }, 220);
+}
+
+function renderAll() { fpend(); rstu(STUS); rAppTbl(); rRejTbl(); }
+
+/* ══════════════════════════════════════════════════════════════
+   PENDING TABLE
+══════════════════════════════════════════════════════════════ */
+function fpend() {
+  const q  = (G('srchP')?.value||'').toLowerCase();
+  const sc = G('scopeF')?.value||'';
+  let f = PEND;
+  if (sc) f = f.filter(r=>r.Scope===sc);
+  if (q)  f = f.filter(r=>(r.Name||'').toLowerCase().includes(q)||(r.RegNo||'').toLowerCase().includes(q)||(r.EventName||'').toLowerCase().includes(q));
+  G('pendTbl').innerHTML = f.length ? f.map(r=>`
+    <tr id="row_${r.ID}">
+      <td class="mono">${r.RegNo||'—'}</td>
+      <td style="font-weight:600;max-width:100px;overflow:hidden;text-overflow:ellipsis;">${r.Name||'—'}</td>
+      <td style="max-width:130px;overflow:hidden;text-overflow:ellipsis;font-weight:500;">${r.EventName||'—'}</td>
+      <td><span class="badge ${SB[r.Scope]||'bm'}">${r.Scope||'—'}</span></td>
+      <td style="color:var(--cyan);font-size:11px;">${fD(r.EventDate)}</td>
+      <td style="font-size:11px;color:var(--muted);max-width:120px;overflow:hidden;text-overflow:ellipsis;">${r.CollegeName||'—'}${r.City?', '+r.City:''}</td>
+      <td><span class="hchip">✅ HOD</span></td>
+      <td><div style="display:flex;gap:3px;">${r.Phone?`
+        <a href="https://wa.me/91${r.Phone}?text=${wm(r.Name,'Your event pre-approval is pending Chairperson review.')}" target="_blank" class="btn bwa bxs">💬</a>
+        <a href="tel:${r.Phone}" class="btn bcall bxs">📞</a>`:'—'}
+      </div></td>
+      <td><div style="display:flex;gap:3px;">
+        <button class="btn boutl bxs" onclick='openAM(${js(r)})'>🔍</button>
+        <button class="btn bapp bxs" onclick="doApp('${r.ID}','${esc(r.Name)}','${r.Phone||''}','')">👑</button>
+        <button class="btn brej bxs" onclick="pRej('${r.ID}')">✗</button>
+      </div></td>
+    </tr>`).join('')
+    : `<tr><td colspan="9" class="empty">🎉 No pending approvals for Section ${SEC}</td></tr>`;
+  T('pendBadge', f.length + ' records');
+}
+
+/* ══════════════════════════════════════════════════════════════
+   APPROVED / REJECTED TABLES
+══════════════════════════════════════════════════════════════ */
+function rAppTbl() {
+  T('appBadge', APPD.length+' records');
+  G('appTbl').innerHTML = APPD.length ? APPD.map(r=>`
+    <tr>
+      <td class="mono">${r.RegNo||'—'}</td>
+      <td style="font-weight:600;">${r.Name||'—'}</td>
+      <td style="max-width:130px;overflow:hidden;text-overflow:ellipsis;">${r.EventName||'—'}</td>
+      <td><span class="badge ${SB[r.Scope]||'bm'}">${r.Scope||'—'}</span></td>
+      <td style="font-size:11px;color:var(--muted);">${r.CollegeName||'—'}</td>
+      <td style="color:var(--green);font-size:11px;">${fDT(r.ChairDate)}</td>
+      <td><div style="display:flex;gap:3px;">${r.Phone?`
+        <a href="https://wa.me/91${r.Phone}?text=${wm(r.Name,'✅ Your pre-approval is FULLY APPROVED! Attend and upload proof on ECE-EMS after.')}" target="_blank" class="btn bwa bxs">💬</a>
+        <a href="tel:${r.Phone}" class="btn bcall bxs">📞</a>`:'—'}
+      </div></td>
+    </tr>`).join('')
+    : '<tr><td colspan="7" class="empty">No approvals recorded yet</td></tr>';
+}
+
+function rRejTbl() {
+  T('rejBadge', REJD.length+' records');
+  G('rejTbl').innerHTML = REJD.length ? REJD.map(r=>`
+    <tr>
+      <td class="mono">${r.RegNo||'—'}</td>
+      <td style="font-weight:600;">${r.Name||'—'}</td>
+      <td style="max-width:130px;overflow:hidden;text-overflow:ellipsis;">${r.EventName||'—'}</td>
+      <td><span class="badge ${SB[r.Scope]||'bm'}">${r.Scope||'—'}</span></td>
+      <td style="color:var(--red);font-size:11px;">${fDT(r.ChairDate)}</td>
+      <td><div style="display:flex;gap:3px;">${r.Phone?`
+        <a href="https://wa.me/91${r.Phone}?text=${wm(r.Name,'Your pre-approval was not approved. Please contact your faculty.')}" target="_blank" class="btn bwa bxs">💬</a>
+        <a href="tel:${r.Phone}" class="btn bcall bxs">📞</a>`:'—'}
+      </div></td>
+    </tr>`).join('')
+    : '<tr><td colspan="6" class="empty">No rejections recorded</td></tr>';
+}
+
+/* ══════════════════════════════════════════════════════════════
+   STUDENT LIST
+══════════════════════════════════════════════════════════════ */
+function fstu() {
+  const q   = (G('srchS')?.value||'').toLowerCase();
+  const fil = G('stuF')?.value||'';
+  let data  = STUS;
+  if (q)   data = data.filter(s=>(s.Name||'').toLowerCase().includes(q)||(s.RegNo||'').toLowerCase().includes(q));
+  if (fil==='submitted') data = data.filter(s=>s.submissionCount>0);
+  if (fil==='none')      data = data.filter(s=>s.submissionCount===0);
+  if (fil==='pending')   data = data.filter(s=>PEND.some(p=>p.RegNo===s.RegNo));
+  rstu(data);
+}
+
+function rstu(data) {
+  if (!data.length) { G('stuList').innerHTML=`<div class="empty">No students found for Section ${SEC}</div>`; return; }
+  G('stuList').innerHTML = data.map(s=>{
+    const sf  = FINS.filter(f=>String(f.RegNo).trim()===String(s.RegNo).trim());
+    const sp  = PEND.filter(p=>String(p.RegNo).trim()===String(s.RegNo).trim());
+    const hp  = sp.length>0;
+    const nsr = (s.submissionCount||sf.length)===0;
+    return `
+    <div class="stuc">
+      <div class="stutop">
+        <div class="stuav">${(s.Name||'?')[0].toUpperCase()}</div>
+        <div class="stuinfo">
+          <div class="stuname">${s.Name||'—'}</div>
+          <div class="stumeta"><span class="mono">${s.RegNo||'—'}</span>${s.Year?' · Yr '+s.Year:''}${s.Phone?' · '+s.Phone:''}</div>
+          <div style="margin-top:4px;display:flex;gap:5px;flex-wrap:wrap;">
+            ${hp?'<span class="pchip">⏳ Needs Approval</span>':''}
+            ${nsr?'<span class="badge bo">📤 Not Submitted</span>':''}
+            ${sp.length>0?`<span class="badge bb">${sp.length} Pre-Approval(s)</span>`:''}
+          </div>
+        </div>
+        <div class="stuscore">${s.totalScore||0}<span style="font-size:10px;color:var(--muted);font-weight:600;"> pts</span></div>
+      </div>
+      <div class="stuacts">
+        ${s.Phone?`
+          <a href="https://wa.me/91${s.Phone}?text=${wm(s.Name,nsr?'Please submit your event participation proof on the ECE-EMS portal. Proof is required for score credit.':'Please check your approval status on the ECE-EMS portal.')}" target="_blank" class="btn bwa bxs">💬 WhatsApp</a>
+          <a href="tel:${s.Phone}" class="btn bcall bxs">📞 Call</a>
+          <a href="sms:${s.Phone}?body=${encodeURIComponent('Hi '+s.Name+', please submit event proof on ECE-EMS portal. — ECE Dept')}" class="btn bsms bxs">📱 SMS</a>`:''}
+        <button class="btn boutl bxs" onclick="vstu('${esc(s.RegNo)}','${esc(s.Name)}')">📋 Full Details</button>
+        ${hp?sp.map(p=>`<button class="btn bapp bxs" onclick="doApp('${p.ID}','${esc(p.Name)}','${p.Phone||''}','')">👑 Approve</button>`).join(''):''}
+        ${nsr&&s.Phone?`<button class="btn bsms bxs" onclick="openRem('${esc(s.Name)}','${s.Phone||''}','${esc(s.RegNo)}')">📤 Remind</button>`:''}
+      </div>
+      ${sf.length>0?`
+        <div class="stusubs">
+          <div style="font-size:10px;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:.5px;margin-bottom:8px;">📋 Submissions (${sf.length})</div>
+          ${sf.map(f=>`
+            <div class="subrow">
+              <div class="subinfo">
+                <div class="subev">${f.EventName||'—'}</div>
+                <div class="submeta">${fD(f.EventDate)} · <span class="badge ${SB[f.Scope]||'bm'}" style="font-size:9px;">${f.Scope||'—'}</span> · ${f.Prize||'—'} · <strong>${f.Score||0} pts</strong></div>
+              </div>
+              <div class="subacts">
+                <span class="badge ${f.Status==='Verified'?'bg':f.Status==='Pending'?'bo':'br'}">${f.Status||'—'}</span>
+                ${f.ProofLink?`<a href="${f.ProofLink}" target="_blank" class="btn boutl bxs">🔗 Proof</a>`:'<span class="badge bo" style="font-size:9px;">No Proof</span>'}
+              </div>
+            </div>`).join('')}
+        </div>`
+      :`<div class="nosub">No final submissions yet — <button class="btn bwa bxs" onclick="openRem('${esc(s.Name)}','${s.Phone||''}','${esc(s.RegNo)}')">📤 Send Reminder</button></div>`}
+    </div>`;
+  }).join('');
+}
+
+/* ══════════════════════════════════════════════════════════════
+   STUDENT DETAIL MODAL
+══════════════════════════════════════════════════════════════ */
+async function vstu(regNo, name) {
+  T('smTitle', name);
+  T('smSub', 'Reg: '+regNo+' · Section '+SEC);
+  G('smContent').innerHTML = '<div class="skel" style="height:200px;border-radius:12px;"></div>';
+  G('stuModal').classList.add('show');
+  const d = await api('getStudentData', { regNo });
+  if (!d.success) { G('smContent').innerHTML=`<div class="empty">Failed: ${d.message}</div>`; return; }
+  const pa=d.preApprovals||[], fi=d.finals||[];
+  G('smContent').innerHTML=`
+    <div style="display:flex;gap:10px;margin-bottom:16px;flex-wrap:wrap;">
+      <div style="flex:1;min-width:70px;background:var(--blue-lt);border:1px solid rgba(37,99,235,.18);border-radius:10px;padding:12px;text-align:center;"><div style="font-family:'Syne',sans-serif;font-size:24px;font-weight:800;color:var(--blue);">${d.totalScore}</div><div style="font-size:10px;color:var(--muted);font-weight:700;text-transform:uppercase;">Total Score</div></div>
+      <div style="flex:1;min-width:70px;background:var(--green-lt);border:1px solid rgba(5,150,105,.18);border-radius:10px;padding:12px;text-align:center;"><div style="font-family:'Syne',sans-serif;font-size:24px;font-weight:800;color:var(--green);">${fi.length}</div><div style="font-size:10px;color:var(--muted);font-weight:700;text-transform:uppercase;">Submissions</div></div>
+      <div style="flex:1;min-width:70px;background:var(--orange-lt);border:1px solid rgba(234,88,12,.18);border-radius:10px;padding:12px;text-align:center;"><div style="font-family:'Syne',sans-serif;font-size:24px;font-weight:800;color:var(--orange);">${pa.length}</div><div style="font-size:10px;color:var(--muted);font-weight:700;text-transform:uppercase;">Pre-Approvals</div></div>
+    </div>
+    <div style="font-size:11px;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:.5px;margin-bottom:8px;">📋 Pre-Approval History</div>
+    ${pa.length?pa.map(r=>`<div style="padding:10px;background:var(--surface2);border:1px solid var(--border);border-radius:10px;margin-bottom:7px;"><div style="font-weight:600;font-size:12px;">${r.EventName||'—'}</div><div style="font-size:11px;color:var(--muted);margin-top:2px;">${fD(r.EventDate)} · ${r.CollegeName||'—'}, ${r.City||'—'}</div><div style="display:flex;gap:6px;margin-top:6px;flex-wrap:wrap;"><span class="badge ${r.HODStatus==='Approved'?'bg':r.HODStatus==='Rejected'?'br':'bo'}">HOD: ${r.HODStatus||'—'}</span><span class="badge ${r.ChairStatus==='Approved'?'bg':r.ChairStatus==='Rejected'?'br':'bb'}">Chair: ${r.ChairStatus||'Pending'}</span><span class="badge bm">${r.Status||'Active'}</span></div></div>`).join(''):'<div class="nosub">No pre-approvals submitted</div>'}
+    <div style="font-size:11px;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:.5px;margin:12px 0 8px;">📄 Final Submissions</div>
+    ${fi.length?fi.map(f=>`<div style="padding:10px;background:var(--surface2);border:1px solid var(--border);border-radius:10px;margin-bottom:7px;"><div style="display:flex;align-items:center;justify-content:space-between;gap:8px;flex-wrap:wrap;"><div style="font-weight:600;font-size:12px;flex:1;">${f.EventName||'—'}</div><span class="badge ${f.Status==='Verified'?'bg':f.Status==='Pending'?'bo':'br'}">${f.Status||'—'}</span></div><div style="font-size:11px;color:var(--muted);margin-top:2px;">${fD(f.EventDate)} · ${f.Scope||'—'} · ${f.Prize||'—'}</div><div style="display:flex;gap:6px;margin-top:6px;flex-wrap:wrap;align-items:center;"><span class="badge bb"><strong>${f.Score||0}</strong> pts</span>${f.ProofLink?`<a href="${f.ProofLink}" target="_blank" class="btn boutl bxs">🔗 Proof</a>`:'<span class="badge bo">No proof</span>'}</div></div>`).join(''):'<div style="background:var(--orange-lt);border:1px solid rgba(234,88,12,.2);border-radius:10px;padding:14px;text-align:center;font-size:12px;color:var(--orange);">⚠️ No final submissions yet</div>'}`;
+}
+
+/* ══════════════════════════════════════════════════════════════
+   APPROVAL MODAL
+══════════════════════════════════════════════════════════════ */
+function openAM(r) {
+  T('amTitle', r.EventName||'Pre-Approval');
+  T('amSub', 'Reg: '+(r.RegNo||'—')+' · '+r.Name);
+  G('amRem').value='';
+  G('amDets').innerHTML=[
+    ['Student',r.Name],['Reg No',r.RegNo||'—'],['Section',r.Section||SEC],['Year',r.Year||'—'],
+    ['Event',r.EventName||'—'],['Date',fD(r.EventDate)],['College',r.CollegeName||'—'],
+    ['City',r.City||'—'],['State',r.State||'—'],['Venue',r.Venue||'—'],
+    ['Description',r.Description||'—'],['HOD Status','<span class="hchip">✅ HOD Approved</span>'],
+    ['Submitted',fDT(r.SubmittedAt)],['Phone',r.Phone||'—'],
+  ].map(([l,v])=>`<div class="drow"><span class="dlbl">${l}</span><span class="dval">${v}</span></div>`).join('');
+  G('amApp').onclick=()=>{ const rem=G('amRem').value; cm('approvalModal'); doApp(r.ID,r.Name,r.Phone||'',rem); };
+  G('amRej').onclick=()=>{ const rem=G('amRem').value; cm('approvalModal'); doRej(r.ID,rem); };
+  G('approvalModal').classList.add('show');
+}
+
+/* ══════════════════════════════════════════════════════════════
+   APPROVE / REJECT
+══════════════════════════════════════════════════════════════ */
+async function doApp(id, name, phone, remarks) {
+  const d = await api('chairApprove',{id, status:'Approved', approvedBy:CU?.Email||'', remarks});
+  toast(d.message||'Approved!', d.success?'success':'error');
+  if (!d.success) return;
+  const rec = PEND.find(r=>r.ID===id);
+  if (rec) { APPD.push({...rec,ChairDate:new Date().toISOString(),Status:'Fully Approved'}); PEND=PEND.filter(r=>r.ID!==id); }
+  const row=G('row_'+id);
+  if (row){row.classList.add('rx');setTimeout(()=>row.remove(),400);}
+  if (phone) setTimeout(()=>window.open(`https://wa.me/91${phone}?text=${wm(name,'✅ Your event pre-approval has been FULLY APPROVED by the Chairperson! You may now attend the event. Please upload proof on ECE-EMS portal after.')}`, '_blank'), 700);
+  api('sendReminder',{regNo:'',message:`Chair approved: ${name}`,type:'Approval'});
+  refreshStats(); rAppTbl(); fpend();
+}
+
+async function doRej(id, remarks) {
+  const d = await api('chairApprove',{id, status:'Rejected', approvedBy:CU?.Email||'', remarks});
+  toast(d.message||'Rejected.', d.success?'success':'error');
+  if (!d.success) return;
+  const rec=PEND.find(r=>r.ID===id);
+  if (rec){REJD.push({...rec,ChairDate:new Date().toISOString(),Status:'Rejected'});PEND=PEND.filter(r=>r.ID!==id);}
+  refreshStats(); rRejTbl(); fpend();
+}
+
+function pRej(id) { const rem=prompt('Reason for rejection (optional):')||''; doRej(id,rem); }
+
+function refreshStats() {
+  const notSub=Math.max(0,STUS.length-new Set(FINS.map(f=>f.RegNo)).size);
+  renderUI({pendingChair:PEND.length,approvedByChair:APPD.length,rejectedByChair:REJD.length,totalStudents:STUS.length,totalFinals:FINS.length,verifiedFinals:FINS.filter(f=>f.Status==='Verified').length,notSubmitted:notSub});
+}
+
+async function approveAll() {
+  if (!PEND.length){toast('No pending requests','info');return;}
+  if (!confirm(`Approve all ${PEND.length} pending requests for Section ${SEC}?`)) return;
+  let cnt=0;
+  for (const r of [...PEND]) {
+    const d=await api('chairApprove',{id:r.ID,status:'Approved',approvedBy:CU?.Email||'',remarks:'Bulk approved by Chairperson'});
+    if (d.success){APPD.push({...r,ChairDate:new Date().toISOString(),Status:'Fully Approved'});PEND=PEND.filter(p=>p.ID!==r.ID);cnt++;}
+  }
+  toast(`👑 Approved ${cnt} requests`,'success');
+  refreshStats(); renderAll();
+}
+
+/* ══════════════════════════════════════════════════════════════
+   REMINDER SYSTEM
+══════════════════════════════════════════════════════════════ */
+function openRem(name, phone, regNo) {
+  const msg=`Hi ${name},\n\nThis is a reminder from the ECE Department.\n\nPlease submit your event participation proof documents on the ECE-EMS portal.\n\nDocuments required:\n• Certificate / Result screenshot\n• Any other participation proof\n\nYour score will only be credited after faculty verification.\n\nThank you,\nECE Department`;
+  G('remMsg').value=msg; T('remSub','Reminder to '+name); G('remPrev').textContent=msg;
+  G('remMsg').oninput=()=>{G('remPrev').textContent=G('remMsg').value;};
+  G('remWa').onclick=()=>{ if(!phone){toast('No phone','error');return;} window.open(`https://wa.me/91${phone}?text=${encodeURIComponent(G('remMsg').value)}`,'_blank'); api('sendReminder',{regNo,message:G('remMsg').value,type:'WhatsApp'}); cm('remModal'); };
+  G('remCall').onclick=()=>{ if(!phone){toast('No phone','error');return;} window.open(`tel:${phone}`); cm('remModal'); };
+  G('remSms').onclick=()=>{ if(!phone){toast('No phone','error');return;} window.open(`sms:${phone}?body=${encodeURIComponent(G('remMsg').value)}`); api('sendReminder',{regNo,message:G('remMsg').value,type:'SMS'}); cm('remModal'); };
+  G('remModal').classList.add('show');
+}
+
+async function bulkRemind() {
+  const ns=STUS.filter(s=>(s.submissionCount||0)===0&&s.Phone);
+  if (!ns.length){toast('All students have submissions!','info');return;}
+  if (!confirm(`Send WhatsApp reminder to ${ns.length} students with no submissions?`)) return;
+  for (const s of ns.slice(0,5)){
+    setTimeout(()=>window.open(`https://wa.me/91${s.Phone}?text=${wm(s.Name,'Please submit your event participation proof on the ECE-EMS portal. Your score depends on it!')}`, '_blank'),500);
+    api('sendReminder',{regNo:s.RegNo,message:'Bulk reminder sent',type:'WhatsApp'});
+  }
+  toast(`Reminders sent to ${Math.min(5,ns.length)} students`,'success');
+}
+
+/* ══════════════════════════════════════════════════════════════
+   LOGOUT
+══════════════════════════════════════════════════════════════ */
+function doLogout() {
+  if (!confirm('Are you sure you want to logout?')) return;
+  localStorage.removeItem('ems_email');
+  localStorage.removeItem('ems_pass');
+  sessionStorage.clear();
+  /* Reset UI */
+  G('lEmail').value = ''; G('lPass').value = '';
+  G('lBtn').disabled = false; G('lBtn').textContent = 'Login to Portal';
+  G('lErr').classList.remove('show');
+  G('loginScreen').classList.remove('hidden');
+  CU=null; SEC=''; PEND=[]; APPD=[]; REJD=[]; STUS=[]; FINS=[];
+}
+
+/* ══════════════════════════════════════════════════════════════
+   SCROLL REVEAL
+══════════════════════════════════════════════════════════════ */
+function initReveal() {
+  const obs=new IntersectionObserver(entries=>{
+    entries.forEach((e,i)=>{ if(e.isIntersecting){setTimeout(()=>e.target.classList.add('vis'),i*55);obs.unobserve(e.target);} });
+  },{threshold:0.04});
+  document.querySelectorAll('.reveal:not(.vis)').forEach(el=>obs.observe(el));
+}
+
+/* ══════════════════════════════════════════════════════════════
+   START
+══════════════════════════════════════════════════════════════ */
+init();
+</script>
+</body>
+</html>

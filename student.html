@@ -1,0 +1,1026 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Student Portal | ECE-EMS</title>
+<link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&family=Space+Grotesk:wght@400;500;600;700&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#f4f6fb;--surface:#fff;--surface2:#f0f3fa;
+  --border:#e2e8f4;--text:#1a2340;--text2:#4a5878;--muted:#8896b3;
+  --blue:#2563eb;--blue-lt:#eff4ff;--blue-mid:#bfcfff;
+  --cyan:#0891b2;--cyan-lt:#ecfeff;
+  --green:#059669;--green-lt:#ecfdf5;
+  --gold:#d97706;--gold-lt:#fffbeb;
+  --red:#dc2626;--red-lt:#fef2f2;
+  --shadow:0 1px 4px rgba(37,99,235,0.07),0 4px 16px rgba(37,99,235,0.06);
+  --shadow-lg:0 8px 32px rgba(37,99,235,0.12);
+  --radius:12px;--radius-lg:18px;
+}
+*{margin:0;padding:0;box-sizing:border-box;}
+body{font-family:'Outfit',sans-serif;background:var(--bg);color:var(--text);min-height:100vh;font-size:14px;}
+
+/* BANNER */
+.banner{background:linear-gradient(135deg,#1e40af 0%,#2563eb 35%,#4338ca 70%,#3730a3 100%);position:relative;overflow:hidden;padding:0 40px;display:flex;align-items:center;justify-content:space-between;min-height:76px;}
+.banner::before{content:'';position:absolute;inset:0;background-image:radial-gradient(circle at 15% 50%,rgba(255,255,255,0.07) 0%,transparent 50%),radial-gradient(circle at 85% 30%,rgba(99,102,241,0.35) 0%,transparent 45%),repeating-linear-gradient(45deg,transparent,transparent 28px,rgba(255,255,255,0.025) 28px,rgba(255,255,255,0.025) 29px);pointer-events:none;}
+.banner::after{content:'';position:absolute;bottom:0;left:0;right:0;height:2px;background:linear-gradient(90deg,rgba(255,255,255,0),rgba(255,255,255,0.3),rgba(255,255,255,0));}
+.banner-left{display:flex;align-items:center;gap:16px;position:relative;z-index:1;}
+.banner-logo{width:50px;height:50px;border-radius:12px;background:rgba(255,255,255,0.15);border:1.5px solid rgba(255,255,255,0.25);display:flex;align-items:center;justify-content:center;font-size:24px;backdrop-filter:blur(4px);box-shadow:0 2px 12px rgba(0,0,0,0.15);flex-shrink:0;}
+.banner-college{font-family:'Space Grotesk',sans-serif;font-size:11px;font-weight:600;letter-spacing:1.2px;color:rgba(255,255,255,0.7);text-transform:uppercase;margin-bottom:2px;}
+.banner-title{font-family:'Space Grotesk',sans-serif;font-size:20px;font-weight:700;color:#fff;letter-spacing:0.3px;line-height:1.1;}
+.banner-subtitle{font-size:12px;color:rgba(255,255,255,0.6);margin-top:2px;}
+.banner-right{display:flex;align-items:center;gap:12px;position:relative;z-index:1;}
+.banner-badge{padding:5px 14px;border-radius:20px;background:rgba(255,255,255,0.15);border:1.5px solid rgba(255,255,255,0.25);color:#fff;font-size:12px;font-weight:700;backdrop-filter:blur(4px);display:flex;align-items:center;gap:6px;}
+.banner-badge-dot{width:7px;height:7px;border-radius:50%;background:#4ade80;box-shadow:0 0 6px #4ade80;animation:blink 2s infinite;}
+@keyframes blink{0%,100%{opacity:1;transform:scale(1);}50%{opacity:0.6;transform:scale(1.3);}}
+.banner-dept{font-family:'Space Grotesk',sans-serif;font-size:13px;font-weight:600;color:rgba(255,255,255,0.85);padding:4px 12px;background:rgba(255,255,255,0.1);border-radius:8px;border:1px solid rgba(255,255,255,0.15);}
+
+/* STUDENT BAR */
+.student-bar{background:var(--surface);border-bottom:1.5px solid var(--border);padding:10px 36px;display:flex;align-items:center;justify-content:space-between;box-shadow:0 1px 4px rgba(37,99,235,0.05);}
+.student-bar-left{display:flex;align-items:center;gap:14px;}
+.student-avatar{width:38px;height:38px;border-radius:10px;background:var(--blue-lt);border:1.5px solid var(--blue-mid);display:flex;align-items:center;justify-content:center;font-size:20px;flex-shrink:0;}
+.student-name{font-family:'Space Grotesk',sans-serif;font-size:15px;font-weight:700;}
+.student-regno{font-family:'JetBrains Mono',monospace;font-size:12px;color:var(--muted);margin-top:1px;}
+.student-pills{display:flex;gap:6px;flex-wrap:wrap;margin-left:6px;}
+.pill{padding:3px 11px;border-radius:20px;font-size:11px;font-weight:600;}
+.pill-blue{background:var(--blue-lt);color:var(--blue);}
+.pill-green{background:var(--green-lt);color:var(--green);}
+.pill-gold{background:var(--gold-lt);color:var(--gold);}
+.logout-btn{padding:7px 16px;border-radius:8px;background:var(--red-lt);color:var(--red);border:1.5px solid #fecaca;font-family:'Outfit',sans-serif;font-size:12px;font-weight:600;cursor:pointer;transition:all 0.18s;}
+.logout-btn:hover{background:#fee2e2;}
+
+/* LAYOUT */
+.main{padding:24px 36px;max-width:1200px;margin:0 auto;}
+.page-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:20px;}
+.page-title{font-family:'Space Grotesk',sans-serif;font-size:22px;font-weight:700;}
+.page-sub{color:var(--muted);font-size:13px;margin-top:2px;}
+
+/* SCORE HERO */
+.score-hero{background:linear-gradient(135deg,var(--blue-lt) 0%,#e0e7ff 50%,var(--cyan-lt) 100%);border:1.5px solid var(--blue-mid);border-radius:var(--radius-lg);padding:20px 28px;margin-bottom:22px;display:flex;align-items:center;gap:24px;box-shadow:var(--shadow);}
+.score-ring{width:82px;height:82px;border-radius:50%;border:3px solid var(--blue);display:flex;flex-direction:column;align-items:center;justify-content:center;flex-shrink:0;background:#fff;box-shadow:0 4px 16px rgba(37,99,235,0.15);}
+.score-big{font-family:'Space Grotesk',sans-serif;font-size:30px;font-weight:700;color:var(--blue);line-height:1;}
+.score-pts{font-size:9px;color:var(--muted);letter-spacing:1px;font-weight:600;text-transform:uppercase;}
+.score-info{flex:1;}
+.score-name{font-family:'Space Grotesk',sans-serif;font-size:18px;font-weight:700;margin-bottom:2px;}
+.score-meta{color:var(--muted);font-size:12px;margin-bottom:10px;}
+.score-badges{display:flex;gap:7px;flex-wrap:wrap;}
+.sbadge{padding:4px 12px;border-radius:20px;font-size:11px;font-weight:600;}
+.sb-blue{background:var(--blue-lt);color:var(--blue);}
+.sb-green{background:var(--green-lt);color:var(--green);}
+.sb-gold{background:var(--gold-lt);color:var(--gold);}
+.score-rank-box{text-align:right;flex-shrink:0;}
+.rank-label{font-size:10px;color:var(--muted);letter-spacing:1px;text-transform:uppercase;font-weight:600;margin-bottom:2px;}
+.rank-num{font-family:'Space Grotesk',sans-serif;font-size:40px;font-weight:700;color:var(--gold);line-height:1;}
+
+/* TABS */
+.tabs{display:flex;gap:2px;background:var(--surface2);border:1.5px solid var(--border);border-radius:var(--radius);padding:4px;margin-bottom:20px;width:fit-content;}
+.tab{padding:8px 20px;border:none;border-radius:8px;background:transparent;color:var(--text2);cursor:pointer;font-family:'Outfit',sans-serif;font-size:13px;font-weight:500;transition:all 0.18s;white-space:nowrap;}
+.tab.active{background:var(--blue);color:#fff;box-shadow:0 2px 8px rgba(37,99,235,0.25);}
+.tab:hover:not(.active){background:var(--border);color:var(--text);}
+.panel{display:none;}.panel.active{display:block;}
+
+/* STEPS */
+.steps{display:flex;align-items:center;margin-bottom:20px;overflow-x:auto;padding-bottom:4px;}
+.step{display:flex;align-items:center;gap:7px;flex-shrink:0;}
+.step-num{width:30px;height:30px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-weight:700;font-size:12px;flex-shrink:0;}
+.step.active .step-num{background:var(--blue);color:#fff;}
+.step.done .step-num{background:var(--green);color:#fff;}
+.step.inactive .step-num{background:var(--surface2);color:var(--muted);border:1.5px solid var(--border);}
+.step-label{font-weight:600;font-size:12px;white-space:nowrap;}
+.step-sub{color:var(--muted);font-size:10px;}
+.step-line{flex:1;height:2px;background:var(--border);margin:0 6px;min-width:20px;}
+
+/* CARDS */
+.card{background:var(--surface);border:1.5px solid var(--border);border-radius:var(--radius-lg);padding:22px 24px;margin-bottom:18px;box-shadow:var(--shadow);}
+.card-title{font-family:'Space Grotesk',sans-serif;font-size:15px;font-weight:700;margin-bottom:4px;}
+.card-sub{color:var(--muted);font-size:12px;margin-bottom:18px;padding-bottom:13px;border-bottom:1.5px solid var(--border);}
+.form-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:13px;}
+.form-group{display:flex;flex-direction:column;gap:5px;}
+.form-group.full{grid-column:1/-1;}
+label{font-size:11px;font-weight:600;letter-spacing:0.7px;color:var(--text2);text-transform:uppercase;}
+input,select{padding:9px 13px;background:var(--surface2);border:1.5px solid var(--border);border-radius:8px;color:var(--text);font-family:'Outfit',sans-serif;font-size:13px;outline:none;transition:all 0.18s;width:100%;}
+input:focus,select:focus{border-color:var(--blue);background:#fff;box-shadow:0 0 0 3px rgba(37,99,235,0.08);}
+input.err,select.err{border-color:var(--red)!important;background:var(--red-lt)!important;}
+input[readonly]{background:var(--surface2);color:var(--muted);cursor:default;}
+input::placeholder{color:var(--muted);}
+select option{background:#fff;color:var(--text);}
+.field-err{font-size:11px;color:var(--red);margin-top:2px;display:none;}
+.field-err.show{display:block;}
+
+/* EVENT BUILDER */
+.event-builder{margin:0 0 14px;padding:14px 16px;background:var(--blue-lt);border:1.5px solid var(--blue-mid);border-radius:var(--radius);}
+.event-builder-title{font-size:11px;font-weight:700;letter-spacing:1px;color:var(--blue);text-transform:uppercase;margin-bottom:11px;}
+
+/* VENUE BOX */
+.venue-box{margin:14px 0;padding:14px 16px;background:var(--cyan-lt);border:1.5px solid #a5f3fc;border-radius:var(--radius);}
+.venue-box-title{font-size:11px;font-weight:700;letter-spacing:1px;color:var(--cyan);text-transform:uppercase;margin-bottom:11px;}
+
+/* APPROVED PA PICKER */
+.pa-picker{margin-bottom:18px;}
+.pa-picker-title{font-size:11px;font-weight:700;letter-spacing:1px;color:var(--green);text-transform:uppercase;margin-bottom:10px;}
+.pa-cards{display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:10px;margin-bottom:12px;}
+.pa-card{border:2px solid var(--border);border-radius:var(--radius);padding:13px 15px;cursor:pointer;background:var(--surface);transition:all 0.18s;position:relative;}
+.pa-card:hover{border-color:var(--blue);background:var(--blue-lt);}
+.pa-card.selected{border-color:var(--green);background:var(--green-lt);}
+.pa-card.selected::after{content:'✓';position:absolute;top:10px;right:12px;font-weight:700;color:var(--green);font-size:15px;}
+.pa-card-event{font-weight:700;font-size:13px;margin-bottom:3px;}
+.pa-card-meta{font-size:11px;color:var(--muted);}
+.pa-card-badges{display:flex;gap:5px;margin-top:7px;flex-wrap:wrap;}
+.pa-card-badge{padding:2px 8px;border-radius:20px;font-size:10px;font-weight:700;}
+.pa-empty{padding:20px;text-align:center;color:var(--muted);font-size:13px;background:var(--surface2);border-radius:var(--radius);border:1.5px dashed var(--border);}
+.pa-divider{display:flex;align-items:center;gap:10px;margin:14px 0;}
+.pa-divider::before,.pa-divider::after{content:'';flex:1;height:1.5px;background:var(--border);}
+.pa-divider span{font-size:11px;font-weight:700;color:var(--muted);white-space:nowrap;}
+
+/* BUTTONS */
+.btn{padding:9px 20px;border-radius:8px;border:none;cursor:pointer;font-family:'Outfit',sans-serif;font-size:13px;font-weight:600;transition:all 0.18s;display:inline-flex;align-items:center;gap:7px;text-decoration:none;white-space:nowrap;}
+.btn-primary{background:var(--blue);color:#fff;box-shadow:0 2px 8px rgba(37,99,235,0.25);}
+.btn-primary:hover{background:#1d4ed8;transform:translateY(-1px);box-shadow:0 4px 16px rgba(37,99,235,0.35);}
+.btn-primary:disabled{opacity:0.6;cursor:not-allowed;transform:none!important;}
+.btn-outline{background:var(--surface);color:var(--blue);border:1.5px solid var(--blue-mid);}
+.btn-outline:hover{background:var(--blue-lt);}
+.btn-ghost{background:var(--surface2);color:var(--text2);border:1.5px solid var(--border);}
+.btn-sm{padding:5px 13px;font-size:12px;}
+.btn-xs{padding:3px 9px;font-size:11px;}
+
+/* INFO BOXES */
+.info-box{padding:12px 15px;border-radius:10px;font-size:13px;margin-bottom:16px;display:flex;gap:10px;align-items:flex-start;line-height:1.5;}
+.info-blue{background:var(--blue-lt);border:1.5px solid var(--blue-mid);color:var(--blue);}
+.info-green{background:var(--green-lt);border:1.5px solid #a7f3d0;color:var(--green);}
+.info-gold{background:var(--gold-lt);border:1.5px solid #fde68a;color:var(--gold);}
+
+/* STATUS CARDS */
+.status-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(240px,1fr));gap:12px;margin-bottom:18px;}
+.status-card{background:var(--surface);border:1.5px solid var(--border);border-radius:var(--radius);padding:14px;box-shadow:var(--shadow);}
+.status-card-title{font-weight:600;font-size:13px;margin-bottom:3px;}
+.status-card-sub{color:var(--muted);font-size:11px;margin-bottom:9px;}
+.status-badge{display:inline-flex;align-items:center;gap:4px;padding:2px 9px;border-radius:20px;font-size:11px;font-weight:700;}
+.s-approved{background:var(--green-lt);color:var(--green);}
+.s-pending{background:var(--gold-lt);color:var(--gold);}
+.s-rejected{background:var(--red-lt);color:var(--red);}
+.s-verified{background:var(--cyan-lt);color:var(--cyan);}
+
+/* TABLE */
+.table-wrap{background:var(--surface);border:1.5px solid var(--border);border-radius:var(--radius-lg);overflow:hidden;box-shadow:var(--shadow);}
+.table-header{display:flex;align-items:center;justify-content:space-between;padding:13px 18px;border-bottom:1.5px solid var(--border);background:var(--surface2);}
+.table-title{font-family:'Space Grotesk',sans-serif;font-size:14px;font-weight:700;}
+table{width:100%;border-collapse:collapse;}
+th{padding:9px 14px;text-align:left;font-size:10px;font-weight:700;letter-spacing:0.8px;color:var(--muted);text-transform:uppercase;background:var(--surface2);border-bottom:1.5px solid var(--border);}
+td{padding:9px 14px;font-size:13px;border-bottom:1px solid var(--border);color:var(--text);}
+tr:last-child td{border-bottom:none;}
+tr:hover td{background:var(--blue-lt);}
+.empty{text-align:center;padding:40px;color:var(--muted);font-size:13px;}
+.badge{padding:3px 9px;border-radius:20px;font-size:11px;font-weight:600;}
+.b-blue{background:var(--blue-lt);color:var(--blue);}
+.b-green{background:var(--green-lt);color:var(--green);}
+.b-gold{background:var(--gold-lt);color:var(--gold);}
+.b-red{background:var(--red-lt);color:var(--red);}
+.b-cyan{background:var(--cyan-lt);color:var(--cyan);}
+.b-muted{background:var(--surface2);color:var(--muted);}
+
+/* HISTORY */
+.history-two{display:grid;grid-template-columns:1fr 1fr;gap:18px;margin-bottom:20px;}
+@media(max-width:800px){.history-two{grid-template-columns:1fr;}}
+.history-section-title{font-family:'Space Grotesk',sans-serif;font-size:13px;font-weight:700;margin-bottom:10px;color:var(--text2);}
+
+/* FILE UPLOAD */
+.file-drop{border:2px dashed var(--blue-mid);border-radius:10px;padding:24px 20px;text-align:center;cursor:pointer;background:var(--blue-lt);transition:all 0.18s;}
+.file-drop:hover{border-color:var(--blue);background:#e0eaff;}
+.file-drop.dragover{border-color:var(--blue);background:#dbeafe;transform:scale(1.01);}
+.file-drop-icon{font-size:28px;margin-bottom:6px;}
+.file-drop-text{font-size:13px;color:var(--text2);font-weight:500;line-height:1.5;}
+.file-preview{display:flex;align-items:center;justify-content:space-between;padding:10px 14px;background:var(--green-lt);border:1.5px solid #a7f3d0;border-radius:10px;margin-top:8px;}
+.file-preview-info{display:flex;align-items:center;gap:10px;}
+.file-icon{font-size:24px;}
+.file-name{font-weight:600;font-size:13px;}
+.file-size{font-size:11px;color:var(--muted);margin-top:1px;}
+.file-remove{background:none;border:none;cursor:pointer;font-size:16px;color:var(--muted);padding:4px;border-radius:6px;transition:all 0.15s;}
+.file-remove:hover{background:var(--red-lt);color:var(--red);}
+
+/* TOAST */
+#toastBox{position:fixed;bottom:24px;right:24px;z-index:9999;display:flex;flex-direction:column;gap:8px;}
+.toast{padding:12px 18px;border-radius:10px;font-size:13px;font-weight:600;box-shadow:var(--shadow-lg);animation:slideIn 0.3s ease;max-width:320px;display:flex;align-items:center;gap:10px;}
+.toast.success{background:#fff;border-left:4px solid var(--green);color:var(--green);}
+.toast.error{background:#fff;border-left:4px solid var(--red);color:var(--red);}
+.toast.info{background:#fff;border-left:4px solid var(--blue);color:var(--blue);}
+@keyframes slideIn{from{transform:translateX(100%);opacity:0}to{transform:translateX(0);opacity:1}}
+@keyframes fadeOut{to{opacity:0;transform:translateX(30px)}}
+</style>
+</head>
+<body>
+
+<!-- BANNER -->
+<div class="banner">
+  <div class="banner-left">
+    <div class="banner-logo">🎓</div>
+    <div>
+      <div class="banner-college">KCET — Kamaraj College of Engineering & Technology</div>
+      <div class="banner-title">ECE Event Management System</div>
+      <div class="banner-subtitle">Department of Electronics &amp; Communication Engineering</div>
+    </div>
+  </div>
+  <div class="banner-right">
+    <div class="banner-dept">ECE Dept</div>
+    <div class="banner-badge"><div class="banner-badge-dot"></div>Student Portal</div>
+  </div>
+</div>
+
+<div id="toastBox"></div>
+
+<!-- IDENTITY BAR -->
+<div class="student-bar">
+  <div class="student-bar-left">
+    <div class="student-avatar">👤</div>
+    <div>
+      <div class="student-name" id="barName">—</div>
+      <div class="student-regno" id="barRegNo">—</div>
+    </div>
+    <div class="student-pills">
+      <span class="pill pill-blue"  id="barSection">—</span>
+      <span class="pill pill-green" id="barYear">—</span>
+      <span class="pill pill-gold"  id="barScore">0 pts</span>
+    </div>
+  </div>
+  <button class="logout-btn" onclick="doLogout()">🚪 Logout</button>
+</div>
+
+<div class="main">
+  <div class="page-header">
+    <div>
+      <div class="page-title">🎓 Student Portal</div>
+      <div class="page-sub">Submit event pre-approvals, upload proof and track your scores</div>
+    </div>
+    <a href="leaderboard.html" class="btn btn-outline btn-sm">🏆 View Rankings</a>
+  </div>
+
+  <!-- SCORE HERO -->
+  <div class="score-hero">
+    <div class="score-ring">
+      <div class="score-big" id="heroScore">0</div>
+      <div class="score-pts">Points</div>
+    </div>
+    <div class="score-info">
+      <div class="score-name" id="heroName">—</div>
+      <div class="score-meta" id="heroMeta">—</div>
+      <div class="score-badges">
+        <span class="sbadge sb-blue"  id="heroEvents">0 Events</span>
+        <span class="sbadge sb-green" id="heroVerified">0 Verified</span>
+        <span class="sbadge sb-gold"  id="heroWins">0 Wins</span>
+      </div>
+    </div>
+    <div class="score-rank-box">
+      <div class="rank-label">My Rank</div>
+      <div class="rank-num" id="heroRank">—</div>
+    </div>
+  </div>
+
+  <!-- TABS -->
+  <div class="tabs">
+    <button class="tab active" onclick="switchTab('preapproval')">📝 Pre-Approval</button>
+    <button class="tab" onclick="switchTab('submit')">📤 Submit Proof</button>
+    <button class="tab" onclick="switchTab('history')">📁 My Events</button>
+  </div>
+
+  <!-- ══ PRE-APPROVAL TAB ══ -->
+  <div class="panel active" id="panel-preapproval">
+    <div class="steps">
+      <div class="step active"><div class="step-num">1</div><div><div class="step-label">Pre-Approval</div><div class="step-sub">Before attending</div></div></div>
+      <div class="step-line"></div>
+      <div class="step inactive"><div class="step-num">2</div><div><div class="step-label">HOD Approval</div><div class="step-sub">Dept review</div></div></div>
+      <div class="step-line"></div>
+      <div class="step inactive"><div class="step-num">3</div><div><div class="step-label">Chairperson</div><div class="step-sub">Final approval</div></div></div>
+      <div class="step-line"></div>
+      <div class="step inactive"><div class="step-num">4</div><div><div class="step-label">Attend Event</div><div class="step-sub">Participate</div></div></div>
+      <div class="step-line"></div>
+      <div class="step inactive"><div class="step-num">5</div><div><div class="step-label">Submit Proof</div><div class="step-sub">Upload certificate</div></div></div>
+    </div>
+
+    <div class="info-box info-blue"><span>📌</span><span>Submit pre-approval at least <strong>3 days before</strong> the event. Both HOD and Chairperson must approve before you attend.</span></div>
+
+    <div class="card">
+      <div class="card-title">📝 Pre-Approval Request</div>
+      <div class="card-sub">Submit this form before attending any event to get official permission</div>
+
+      <div class="form-grid" style="margin-bottom:14px;">
+        <div class="form-group"><label>Reg No</label><input id="paRegNo" readonly></div>
+        <div class="form-group"><label>Full Name</label><input id="paName" readonly></div>
+        <div class="form-group">
+          <label>Phone *</label>
+          <input id="paPhone" placeholder="10-digit mobile number" maxlength="10">
+          <span class="field-err" id="errPaPhone">Enter a valid 10-digit phone number</span>
+        </div>
+        <div class="form-group"><label>Section</label><input id="paSection" readonly></div>
+        <div class="form-group">
+          <label>Year *</label>
+          <select id="paYear">
+            <option value="">-- Select Year --</option>
+            <option>I</option><option>II</option><option>III</option><option>IV</option>
+          </select>
+          <span class="field-err" id="errPaYear">Please select your year</span>
+        </div>
+      </div>
+
+      <div class="event-builder">
+        <div class="event-builder-title">🎯 Event Details</div>
+        <div class="form-grid">
+          <div class="form-group">
+            <label>Category *</label>
+            <select id="paCategory"><option value="">-- Select --</option></select>
+            <span class="field-err" id="errPaCategory">Required</span>
+          </div>
+          <div class="form-group">
+            <label>Event Type *</label>
+            <select id="paType"><option value="">-- Select --</option></select>
+            <span class="field-err" id="errPaType">Required</span>
+          </div>
+          <div class="form-group">
+            <label>Scope *</label>
+            <select id="paScope"><option value="">-- Select --</option></select>
+            <span class="field-err" id="errPaScope">Required</span>
+          </div>
+          <div class="form-group">
+            <label>Sponsored</label>
+            <select id="paSponsored"><option value="">-- Select --</option></select>
+          </div>
+        </div>
+      </div>
+
+      <div class="form-grid" style="margin-bottom:14px;">
+        <div class="form-group">
+          <label>Event Date *</label>
+          <input id="paDate" type="date">
+          <span class="field-err" id="errPaDate">Please select the event date</span>
+        </div>
+      </div>
+
+      <div class="venue-box">
+        <div class="venue-box-title">🏛️ Venue &amp; Institution Details</div>
+        <div class="form-grid">
+          <div class="form-group">
+            <label>Organising College / Institution *</label>
+            <input id="paCollege" placeholder="e.g. Anna University, IIT Madras">
+            <span class="field-err" id="errPaCollege">Required</span>
+          </div>
+          <div class="form-group">
+            <label>City *</label>
+            <input id="paCity" placeholder="e.g. Chennai, Coimbatore">
+            <span class="field-err" id="errPaCity">Required</span>
+          </div>
+          <div class="form-group">
+            <label>State *</label>
+            <input id="paState" placeholder="e.g. Tamil Nadu">
+            <span class="field-err" id="errPaState">Required</span>
+          </div>
+          <div class="form-group">
+            <label>Specific Venue / Hall</label>
+            <input id="paVenue" placeholder="e.g. Main Auditorium, Online">
+          </div>
+        </div>
+      </div>
+
+      <div class="form-grid">
+        <div class="form-group full">
+          <label>Brief Description</label>
+          <input id="paDesc" placeholder="What will you do at this event?">
+        </div>
+      </div>
+
+      <div style="margin-top:18px;display:flex;gap:12px;align-items:center;">
+        <button class="btn btn-primary" id="btnPA" onclick="submitPreApproval()">📝 Submit Pre-Approval</button>
+        <span style="font-size:12px;color:var(--muted);">Approval status visible in My Events tab</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- ══ SUBMIT PROOF TAB ══ -->
+  <div class="panel" id="panel-submit">
+    <div class="info-box info-green"><span>✅</span><span>Select an approved pre-approval below to auto-fill event details, then upload your certificate. Or fill in all details manually for a new direct submission.</span></div>
+
+    <div class="card">
+      <div class="card-title">📤 Final Submission</div>
+      <div class="card-sub">Upload proof of participation after attending the event</div>
+
+      <!-- APPROVED PRE-APPROVAL PICKER -->
+      <div class="pa-picker">
+        <div class="pa-picker-title">✅ Select from Approved Pre-Approvals</div>
+        <div class="pa-cards" id="approvedPACards">
+          <div class="pa-empty">Loading approved pre-approvals...</div>
+        </div>
+        <div class="pa-divider"><span>OR FILL IN MANUALLY BELOW</span></div>
+      </div>
+
+      <!-- STUDENT INFO -->
+      <div class="form-grid" style="margin-bottom:14px;">
+        <div class="form-group"><label>Reg No</label><input id="fsRegNo" readonly></div>
+        <div class="form-group"><label>Full Name</label><input id="fsName" readonly></div>
+        <div class="form-group">
+          <label>Phone *</label>
+          <input id="fsPhone" placeholder="10-digit mobile number" maxlength="10">
+          <span class="field-err" id="errFsPhone">Enter valid 10-digit number</span>
+        </div>
+        <div class="form-group"><label>Section</label><input id="fsSection" readonly></div>
+        <div class="form-group">
+          <label>Year *</label>
+          <select id="fsYear">
+            <option value="">-- Select Year --</option>
+            <option>I</option><option>II</option><option>III</option><option>IV</option>
+          </select>
+          <span class="field-err" id="errFsYear">Required</span>
+        </div>
+      </div>
+
+      <!-- EVENT DETAILS -->
+      <div class="event-builder">
+        <div class="event-builder-title">🎯 Event Details</div>
+        <div class="form-grid">
+          <div class="form-group">
+            <label>Category *</label>
+            <select id="fsCategory"><option value="">-- Select --</option></select>
+            <span class="field-err" id="errFsCategory">Required</span>
+          </div>
+          <div class="form-group">
+            <label>Event Type *</label>
+            <select id="fsType"><option value="">-- Select --</option></select>
+            <span class="field-err" id="errFsType">Required</span>
+          </div>
+          <div class="form-group">
+            <label>Scope *</label>
+            <select id="fsScope"><option value="">-- Select --</option></select>
+            <span class="field-err" id="errFsScope">Required</span>
+          </div>
+          <div class="form-group">
+            <label>Sponsored</label>
+            <select id="fsSponsored"><option value="">-- Select --</option></select>
+          </div>
+        </div>
+      </div>
+
+      <!-- DATE + PRIZE -->
+      <div class="form-grid" style="margin-bottom:14px;">
+        <div class="form-group">
+          <label>Event Date *</label>
+          <input id="fsDate" type="date">
+          <span class="field-err" id="errFsDate">Required</span>
+        </div>
+        <div class="form-group">
+          <label>Prize / Achievement *</label>
+          <select id="fsPrize"><option value="">-- Select Prize --</option></select>
+          <span class="field-err" id="errFsPrize">Required</span>
+        </div>
+        <div class="form-group">
+          <label>Cash Prize Amount (₹)</label>
+          <input id="fsAmount" type="number" placeholder="0 if none" min="0">
+        </div>
+      </div>
+
+      <!-- VENUE -->
+      <div class="venue-box">
+        <div class="venue-box-title">🏛️ Venue &amp; Institution Details</div>
+        <div class="form-grid">
+          <div class="form-group">
+            <label>Organising College / Institution *</label>
+            <input id="fsCollege" placeholder="e.g. Anna University">
+            <span class="field-err" id="errFsCollege">Required</span>
+          </div>
+          <div class="form-group">
+            <label>City *</label>
+            <input id="fsCity" placeholder="e.g. Chennai">
+            <span class="field-err" id="errFsCity">Required</span>
+          </div>
+          <div class="form-group">
+            <label>State *</label>
+            <input id="fsState" placeholder="e.g. Tamil Nadu">
+            <span class="field-err" id="errFsState">Required</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- FILE UPLOAD -->
+      <div class="form-group full" style="margin-top:4px;">
+        <label>Proof Document *&nbsp;<span style="font-weight:400;text-transform:none;letter-spacing:0;color:var(--muted);">(PDF or Image — max 3.5 MB · images auto-compressed)</span></label>
+        <div class="file-drop" id="fileDrop" onclick="document.getElementById('fsProofFile').click()">
+          <div class="file-drop-icon">📎</div>
+          <div class="file-drop-text">Click to choose or drag &amp; drop<br><span style="font-size:11px;color:var(--muted);">PDF, JPG, PNG, JPEG accepted</span></div>
+          <input type="file" id="fsProofFile" accept=".pdf,.jpg,.jpeg,.png" style="display:none" onchange="onFileSelected(this)">
+        </div>
+        <div class="file-preview" id="filePreview" style="display:none;">
+          <div class="file-preview-info">
+            <span class="file-icon" id="fileIcon">📄</span>
+            <div>
+              <div class="file-name" id="fileName">—</div>
+              <div class="file-size" id="fileSize">—</div>
+            </div>
+          </div>
+          <button class="file-remove" onclick="removeFile()">✕</button>
+        </div>
+        <span class="field-err" id="errFsProof">Please select a proof file</span>
+      </div>
+
+      <!-- UPLOAD PROGRESS -->
+      <div id="uploadProgress" style="display:none;margin-top:10px;">
+        <div style="display:flex;justify-content:space-between;font-size:12px;color:var(--text2);margin-bottom:5px;">
+          <span>⬆️ Uploading to Google Drive...</span>
+          <span id="uploadPct">0%</span>
+        </div>
+        <div style="height:6px;background:var(--surface2);border-radius:4px;overflow:hidden;">
+          <div id="uploadBar" style="height:100%;background:var(--blue);border-radius:4px;width:0%;transition:width 0.3s;"></div>
+        </div>
+      </div>
+
+      <div style="margin-top:18px;display:flex;gap:12px;align-items:center;flex-wrap:wrap;">
+        <button class="btn btn-primary" id="btnFS" onclick="submitFinal()">📤 Submit Final Proof</button>
+        <button class="btn btn-ghost btn-sm" onclick="clearFSForm()">🔄 Clear Form</button>
+      </div>
+    </div>
+
+    <div class="info-box info-gold"><span>⚠️</span><span><strong>Duplicate Prevention:</strong> System rejects duplicate entries (same Reg No + Event + Date).</span></div>
+  </div>
+
+  <!-- ══ HISTORY TAB ══ -->
+  <div class="panel" id="panel-history">
+    <div class="history-two">
+      <div>
+        <div class="history-section-title">📋 Pre-Approvals</div>
+        <div id="preApprovalCards"><div class="empty">Loading...</div></div>
+      </div>
+      <div>
+        <div class="history-section-title">📁 Final Submissions</div>
+        <div id="finalCards"><div class="empty">Loading...</div></div>
+      </div>
+    </div>
+    <div class="table-wrap">
+      <div class="table-header">
+        <div class="table-title">📊 Submission History</div>
+        <button class="btn btn-ghost btn-sm" onclick="loadHistory()">🔄 Refresh</button>
+      </div>
+      <table><thead><tr>
+        <th>Event</th><th>Date</th><th>College</th><th>City, State</th><th>Prize</th><th>Score</th><th>Status</th><th>Proof</th>
+      </tr></thead>
+      <tbody id="historyTable"><tr><td colspan="8" class="empty">Loading...</td></tr></tbody></table>
+    </div>
+  </div>
+
+</div><!-- /.main -->
+
+<script>
+/* ── CONFIG ── */
+const GAS_URL = 'https://script.google.com/macros/s/AKfycbyhfNlPrsU1NfuJr6Wjf7Kgo6EiA8ASca2EZQ-1lSIgNswDccZ4CukIhcTxN0YdOMRciA/exec';
+
+/* ── SESSION — read from localStorage (set by login.html) ── */
+let EMS_USER  = {};
+let DROPDOWNS = {};
+let approvedPAs = []; // Fully approved pre-approvals for the picker
+
+(function checkSession() {
+  const raw = localStorage.getItem('ems_user');
+  if (!raw) { window.location.href = 'index.html'; return; }
+  try {
+    EMS_USER = JSON.parse(raw);
+    if (!EMS_USER.RegNo) { window.location.href = 'index.html'; return; }
+  } catch { window.location.href = 'index.html'; return; }
+  updateIdentityBar();
+  prefillUser();
+})();
+
+function doLogout() {
+  localStorage.removeItem('ems_user');
+  window.location.href = 'index.html';
+}
+
+/* ── API ── */
+async function api(action, params = {}) {
+  try {
+    const res = await fetch(GAS_URL, {
+      method: 'POST',
+      headers: { 'Content-Type': 'text/plain' },
+      body: JSON.stringify({ action, ...params })
+    });
+    return await res.json();
+  } catch (e) {
+    return { success: false, message: 'Network error: ' + e.message };
+  }
+}
+
+/* ── TOAST ── */
+function toast(msg, type = 'info') {
+  const box = document.getElementById('toastBox');
+  const el  = document.createElement('div');
+  el.className = 'toast ' + type;
+  el.innerHTML = `<span>${{success:'✅',error:'❌',info:'ℹ️'}[type]||'ℹ️'}</span><span>${msg}</span>`;
+  box.appendChild(el);
+  setTimeout(() => { el.style.animation='fadeOut 0.4s ease forwards'; setTimeout(()=>el.remove(),400); }, 3500);
+}
+
+/* ── HELPERS ── */
+function fmtDate(d) {
+  if (!d) return '—';
+  try { return new Date(d).toLocaleDateString('en-IN',{day:'2-digit',month:'short',year:'numeric'}); } catch { return d; }
+}
+function scoreColor(s) {
+  const n=Number(s)||0;
+  if(n>=20) return 'var(--gold)';
+  if(n>=10) return 'var(--blue)';
+  if(n>=5)  return 'var(--green)';
+  return 'var(--muted)';
+}
+function setErr(fid, eid, show) {
+  document.getElementById(fid)?.classList.toggle('err', show);
+  const e = document.getElementById(eid); if (e) e.classList.toggle('show', show);
+}
+function clearErrs(pairs) { pairs.forEach(([f,e]) => setErr(f,e,false)); }
+
+/* ── IDENTITY BAR ── */
+function updateIdentityBar() {
+  document.getElementById('barName').textContent    = EMS_USER.Name    || '—';
+  document.getElementById('barRegNo').textContent   = EMS_USER.RegNo   || '—';
+  document.getElementById('barSection').textContent = 'Section ' + (EMS_USER.Section || '—');
+  document.getElementById('barYear').textContent    = 'Year '    + (EMS_USER.Year    || '—');
+}
+
+/* ── PREFILL ── */
+function prefillUser() {
+  const u = EMS_USER;
+  const s = (id,v) => { const el=document.getElementById(id); if(el&&v) el.value=v; };
+  s('paRegNo',u.RegNo); s('fsRegNo',u.RegNo);
+  s('paName', u.Name);  s('fsName', u.Name);
+  s('paPhone',u.Phone); s('fsPhone',u.Phone);
+  s('paSection',u.Section); s('fsSection',u.Section);
+  s('paYear',u.Year);   s('fsYear',u.Year);
+}
+
+/* ── LOAD DROPDOWNS ── */
+async function loadDropdowns() {
+  const data = await api('getDropdowns');
+  if (!data.success) { toast('Could not load event data: '+data.message,'error'); return; }
+  DROPDOWNS = data;
+  const fill = (id, arr) => {
+    const sel = document.getElementById(id); if (!sel) return;
+    sel.innerHTML = '<option value="">-- Select --</option>' +
+      (arr||[]).map(v=>`<option value="${v}">${v}</option>`).join('');
+  };
+  fill('paCategory',data.categories); fill('fsCategory',data.categories);
+  fill('paType',    data.types);      fill('fsType',    data.types);
+  fill('paScope',   data.scopes);     fill('fsScope',   data.scopes);
+  fill('paSponsored',data.sponsored); fill('fsSponsored',data.sponsored);
+  const pSel = document.getElementById('fsPrize');
+  pSel.innerHTML = '<option value="">-- Select Prize --</option>' +
+    (data.prizes||[]).map(p=>`<option value="${p}">${p}</option>`).join('');
+}
+
+/* ── LOAD STUDENT SCORE ── */
+async function loadStudentScore() {
+  const regNo = EMS_USER.RegNo; if (!regNo) return;
+  const data  = await api('getStudentData',{regNo});
+  if (!data.success) return;
+  const finals = data.finals||[];
+  const score  = data.totalScore||0;
+  document.getElementById('heroScore').textContent    = score;
+  document.getElementById('heroName').textContent     = EMS_USER.Name||regNo;
+  document.getElementById('heroMeta').textContent     = `${regNo}  ·  Section ${EMS_USER.Section||'—'}  ·  Year ${EMS_USER.Year||'—'}`;
+  document.getElementById('heroEvents').textContent   = finals.length+' Events';
+  document.getElementById('heroVerified').textContent = finals.filter(f=>f.Status==='Verified').length+' Verified';
+  document.getElementById('heroWins').textContent     = finals.filter(f=>f.Prize&&(f.Prize.includes('Prize')||f.Prize==='Winner')).length+' Wins';
+  document.getElementById('barScore').textContent     = score+' pts';
+  // store for proof tab
+  approvedPAs = (data.preApprovals||[]).filter(p=>
+    p.ChairStatus==='Approved' || p.Status==='Fully Approved'
+  );
+  const lb = await api('leaderboard',{limit:500});
+  if (lb.success) {
+    const me=(lb.students||[]).find(s=>s.regNo===regNo);
+    document.getElementById('heroRank').textContent = me?'#'+me.rank:'—';
+  }
+}
+
+/* ── TAB SWITCH ── */
+function switchTab(t) {
+  const list=['preapproval','submit','history'];
+  document.querySelectorAll('.tab').forEach((b,i)=>b.classList.toggle('active',list[i]===t));
+  document.querySelectorAll('.panel').forEach(p=>p.classList.remove('active'));
+  document.getElementById('panel-'+t).classList.add('active');
+  if (t==='submit')  renderApprovedPACards();
+  if (t==='history') loadHistory();
+}
+
+/* ── APPROVED PA CARDS ── */
+function renderApprovedPACards() {
+  const container = document.getElementById('approvedPACards');
+  if (!approvedPAs.length) {
+    container.innerHTML = '<div class="pa-empty">No fully approved pre-approvals yet.<br>Submit a pre-approval and wait for HOD + Chairperson approval first.</div>';
+    return;
+  }
+  container.innerHTML = approvedPAs.map((p,i) => `
+    <div class="pa-card" id="pac-${i}" onclick="selectPA(${i})">
+      <div class="pa-card-event">${p.EventName||'—'}</div>
+      <div class="pa-card-meta">${fmtDate(p.EventDate)} &nbsp;·&nbsp; ${p.CollegeName||''}${p.City?', '+p.City:''}</div>
+      <div class="pa-card-badges">
+        <span class="pa-card-badge" style="background:var(--green-lt);color:var(--green);">✓ HOD Approved</span>
+        <span class="pa-card-badge" style="background:var(--blue-lt);color:var(--blue);">✓ Chair Approved</span>
+        ${p.Scope?`<span class="pa-card-badge" style="background:var(--gold-lt);color:var(--gold);">${p.Scope}</span>`:''}
+      </div>
+    </div>`).join('');
+}
+
+function selectPA(idx) {
+  // Deselect all
+  document.querySelectorAll('.pa-card').forEach(c=>c.classList.remove('selected'));
+  const card = document.getElementById('pac-'+idx);
+  if (!card) return;
+  card.classList.add('selected');
+  const p = approvedPAs[idx];
+
+  // Look up event details from DROPDOWNS using EventID
+  const ev = (DROPDOWNS.events||[]).find(e=>e.id===p.EventID) || {};
+
+  const s = (id,v) => { const el=document.getElementById(id); if(el&&v!==undefined&&v!=='') el.value=v; };
+  // Event detail fields — from DROPDOWNS event lookup (most accurate)
+  s('fsCategory', ev.category  || p.Category   || '');
+  s('fsType',     ev.type      || p.Type        || '');
+  s('fsScope',    ev.scope     || p.Scope       || '');
+  s('fsSponsored',ev.sponsored || p.Sponsored   || '');
+  // Date and venue from PA record
+  s('fsDate',     p.EventDate  || '');
+  s('fsCollege',  p.CollegeName|| '');
+  s('fsCity',     p.City       || '');
+  s('fsState',    p.State      || '');
+  toast('Event details filled from pre-approval ✓', 'success');
+}
+
+/* ── CLEAR FS FORM ── */
+function clearFSForm() {
+  document.querySelectorAll('.pa-card').forEach(c=>c.classList.remove('selected'));
+  ['fsCategory','fsType','fsScope','fsSponsored','fsDate','fsPrize'].forEach(id=>{
+    const el=document.getElementById(id); if(el) el.value='';
+  });
+  ['fsCollege','fsCity','fsState','fsAmount'].forEach(id=>{
+    const el=document.getElementById(id); if(el) el.value='';
+  });
+  removeFile();
+  prefillUser(); // restore readonly fields
+}
+
+/* ── SUBMIT PRE-APPROVAL ── */
+async function submitPreApproval() {
+  clearErrs([
+    ['paCategory','errPaCategory'],['paType','errPaType'],['paScope','errPaScope'],
+    ['paYear','errPaYear'],['paDate','errPaDate'],['paPhone','errPaPhone'],
+    ['paCollege','errPaCollege'],['paCity','errPaCity'],['paState','errPaState']
+  ]);
+  const regNo    = document.getElementById('paRegNo').value.trim();
+  const name     = document.getElementById('paName').value.trim();
+  const phone    = document.getElementById('paPhone').value.trim();
+  const section  = document.getElementById('paSection').value.trim();
+  const year     = document.getElementById('paYear').value;
+  const category = document.getElementById('paCategory').value;
+  const type     = document.getElementById('paType').value;
+  const scope    = document.getElementById('paScope').value;
+  const sponsored= document.getElementById('paSponsored').value;
+  const eventDate= document.getElementById('paDate').value;
+  const college  = document.getElementById('paCollege').value.trim();
+  const city     = document.getElementById('paCity').value.trim();
+  const state    = document.getElementById('paState').value.trim();
+  const venue    = document.getElementById('paVenue').value.trim();
+  const desc     = document.getElementById('paDesc').value.trim();
+
+  let err=false;
+  if(!category)               {setErr('paCategory','errPaCategory',true);err=true;}
+  if(!type)                   {setErr('paType','errPaType',true);        err=true;}
+  if(!scope)                  {setErr('paScope','errPaScope',true);      err=true;}
+  if(!year)                   {setErr('paYear','errPaYear',true);        err=true;}
+  if(!eventDate)              {setErr('paDate','errPaDate',true);        err=true;}
+  if(!college)                {setErr('paCollege','errPaCollege',true);  err=true;}
+  if(!city)                   {setErr('paCity','errPaCity',true);        err=true;}
+  if(!state)                  {setErr('paState','errPaState',true);      err=true;}
+  if(phone&&phone.length!==10){setErr('paPhone','errPaPhone',true);      err=true;}
+  if(err){toast('Please fix the highlighted fields','error');return;}
+
+  const btn=document.getElementById('btnPA');
+  btn.innerHTML='⏳ Submitting...'; btn.disabled=true;
+  const res = await api('preApproval',{
+    regNo,name,phone,section,year,
+    category,type,scope,sponsored,eventDate,
+    collegeName:college,city,state,venue,description:desc
+  });
+  toast(res.message,res.success?'success':'error');
+  btn.innerHTML='📝 Submit Pre-Approval'; btn.disabled=false;
+  if(res.success){
+    ['paDate','paCollege','paCity','paState','paVenue','paDesc'].forEach(id=>document.getElementById(id).value='');
+    loadStudentScore();
+  }
+}
+
+/* ── FILE UPLOAD ── */
+let selectedFile = null;
+const MAX_FILE_BYTES = 3.5 * 1024 * 1024; // 3.5 MB — safe under GAS 6 MB POST limit
+
+function onFileSelected(input) {
+  const file=input.files[0]; if(!file) return;
+  if(file.size > MAX_FILE_BYTES){
+    toast('File too large. Maximum size is 3.5 MB. Compress your PDF or resize the image.','error');
+    input.value=''; return;
+  }
+  const ok=['application/pdf','image/jpeg','image/jpg','image/png'];
+  if(!ok.includes(file.type)){toast('Only PDF, JPG, JPEG, PNG accepted.','error');input.value='';return;}
+  selectedFile=file;
+  const icons={'application/pdf':'📄','image/jpeg':'🖼️','image/jpg':'🖼️','image/png':'🖼️'};
+  document.getElementById('fileIcon').textContent    = icons[file.type]||'📎';
+  document.getElementById('fileName').textContent    = file.name;
+  document.getElementById('fileSize').textContent    = (file.size/1024).toFixed(1)+' KB';
+  document.getElementById('fileDrop').style.display  = 'none';
+  document.getElementById('filePreview').style.display='flex';
+  setErr('fsProofFile','errFsProof',false);
+}
+function removeFile(){
+  selectedFile=null;
+  document.getElementById('fsProofFile').value='';
+  document.getElementById('fileDrop').style.display='block';
+  document.getElementById('filePreview').style.display='none';
+}
+function setUploadProgress(pct){
+  const p=document.getElementById('uploadProgress');
+  p.style.display=pct<100?'block':'none';
+  document.getElementById('uploadBar').style.width=pct+'%';
+  document.getElementById('uploadPct').textContent=pct+'%';
+}
+function fileToBase64(file){
+  return new Promise((resolve, reject) => {
+    // For images, compress via canvas before base64 encoding
+    if (file.type.startsWith('image/')) {
+      const img = new Image();
+      const url = URL.createObjectURL(file);
+      img.onload = () => {
+        URL.revokeObjectURL(url);
+        // Scale down if either dimension > 1800px
+        let w = img.width, h = img.height;
+        const maxDim = 1800;
+        if (w > maxDim || h > maxDim) {
+          if (w > h) { h = Math.round(h * maxDim / w); w = maxDim; }
+          else       { w = Math.round(w * maxDim / h); h = maxDim; }
+        }
+        const canvas = document.createElement('canvas');
+        canvas.width = w; canvas.height = h;
+        canvas.getContext('2d').drawImage(img, 0, 0, w, h);
+        // JPEG quality 0.82 — good quality, much smaller
+        const dataUrl = canvas.toDataURL('image/jpeg', 0.82);
+        resolve(dataUrl.split(',')[1]);
+      };
+      img.onerror = reject;
+      img.src = url;
+    } else {
+      // PDF — read as-is
+      const r = new FileReader();
+      r.onload  = () => resolve(r.result.split(',')[1]);
+      r.onerror = reject;
+      r.readAsDataURL(file);
+    }
+  });
+}
+document.addEventListener('DOMContentLoaded',()=>{
+  const drop=document.getElementById('fileDrop'); if(!drop) return;
+  drop.addEventListener('dragover', e=>{e.preventDefault();drop.classList.add('dragover');});
+  drop.addEventListener('dragleave',()=>drop.classList.remove('dragover'));
+  drop.addEventListener('drop',e=>{
+    e.preventDefault();drop.classList.remove('dragover');
+    const file=e.dataTransfer.files[0];
+    if(file){const inp=document.getElementById('fsProofFile');const dt=new DataTransfer();dt.items.add(file);inp.files=dt.files;onFileSelected(inp);}
+  });
+});
+
+/* ── SUBMIT FINAL PROOF ── */
+async function submitFinal() {
+  clearErrs([
+    ['fsCategory','errFsCategory'],['fsType','errFsType'],['fsScope','errFsScope'],
+    ['fsYear','errFsYear'],['fsDate','errFsDate'],['fsPrize','errFsPrize'],
+    ['fsPhone','errFsPhone'],
+    ['fsCollege','errFsCollege'],['fsCity','errFsCity'],['fsState','errFsState'],
+    ['fsProofFile','errFsProof']
+  ]);
+  const regNo    = document.getElementById('fsRegNo').value.trim();
+  const name     = document.getElementById('fsName').value.trim();
+  const phone    = document.getElementById('fsPhone').value.trim();
+  const section  = document.getElementById('fsSection').value.trim();
+  const year     = document.getElementById('fsYear').value;
+  const category = document.getElementById('fsCategory').value;
+  const type     = document.getElementById('fsType').value;
+  const scope    = document.getElementById('fsScope').value;
+  const sponsored= document.getElementById('fsSponsored').value;
+  const eventDate= document.getElementById('fsDate').value;
+  const prize    = document.getElementById('fsPrize').value;
+  const amount   = document.getElementById('fsAmount').value||0;
+  const college  = document.getElementById('fsCollege').value.trim();
+  const city     = document.getElementById('fsCity').value.trim();
+  const state    = document.getElementById('fsState').value.trim();
+
+  let err=false;
+  if(!category)               {setErr('fsCategory','errFsCategory',true);err=true;}
+  if(!type)                   {setErr('fsType','errFsType',true);        err=true;}
+  if(!scope)                  {setErr('fsScope','errFsScope',true);      err=true;}
+  if(!year)                   {setErr('fsYear','errFsYear',true);        err=true;}
+  if(!eventDate)              {setErr('fsDate','errFsDate',true);        err=true;}
+  if(!prize)                  {setErr('fsPrize','errFsPrize',true);      err=true;}
+  if(!college)                {setErr('fsCollege','errFsCollege',true);  err=true;}
+  if(!city)                   {setErr('fsCity','errFsCity',true);        err=true;}
+  if(!state)                  {setErr('fsState','errFsState',true);      err=true;}
+  if(phone&&phone.length!==10){setErr('fsPhone','errFsPhone',true);      err=true;}
+  if(!selectedFile)           {setErr('fsProofFile','errFsProof',true);  err=true;}
+  if(err){toast('Please fix the highlighted fields','error');return;}
+
+  const btn=document.getElementById('btnFS');
+  btn.innerHTML='⏳ Uploading file...'; btn.disabled=true;
+  setUploadProgress(20);
+
+  let fileBase64, fileName, mimeType;
+  try {
+    fileBase64 = await fileToBase64(selectedFile);
+    // Canvas compression outputs JPEG for images
+    if (selectedFile.type.startsWith('image/')) {
+      mimeType = 'image/jpeg';
+      fileName = selectedFile.name.replace(/\.[^.]+$/, '.jpg');
+    } else {
+      mimeType = selectedFile.type;
+      fileName = selectedFile.name;
+    }
+    // Show actual size after compression
+    const compressedKB = Math.round(fileBase64.length * 0.75 / 1024);
+    document.getElementById('fileSize').textContent = compressedKB + ' KB (compressed)';
+  } catch(e) {
+    toast('Could not read file: ' + e.message, 'error');
+    btn.innerHTML='📤 Submit Final Proof'; btn.disabled=false;
+    setUploadProgress(100); return;
+  }
+  setUploadProgress(50);
+  btn.innerHTML='⏳ Submitting...';
+
+  const res=await api('submitFinal',{
+    regNo,name,phone,section,year,
+    category,type,scope,sponsored,eventDate,
+    collegeName:college,city,state,
+    prize,amount,
+    fileBase64,fileName,mimeType
+  });
+  setUploadProgress(100);
+  toast(res.message,res.success?'success':'error');
+  btn.innerHTML='📤 Submit Final Proof'; btn.disabled=false;
+
+  if(res.success){
+    clearFSForm();
+    loadStudentScore();
+    if(res.proofLink)   toast('📎 Proof saved to Drive','info');
+    if(res.folderPath)  toast('📁 Saved in: ' + res.folderPath, 'info');
+  }
+}
+
+/* ── HISTORY ── */
+async function loadHistory(){
+  const regNo=EMS_USER.RegNo; if(!regNo) return;
+  const data=await api('getStudentData',{regNo});
+  if(!data.success){toast(data.message,'error');return;}
+
+  const paHtml=(data.preApprovals||[]).map(p=>`
+    <div class="status-card">
+      <div class="status-card-title">${p.EventName||'—'}</div>
+      <div class="status-card-sub">${fmtDate(p.EventDate)}</div>
+      <div style="display:flex;gap:6px;flex-wrap:wrap;">
+        <span class="status-badge ${p.HODStatus==='Approved'?'s-approved':p.HODStatus==='Rejected'?'s-rejected':'s-pending'}">HOD: ${p.HODStatus||'Pending'}</span>
+        <span class="status-badge ${p.ChairStatus==='Approved'?'s-approved':p.ChairStatus==='Rejected'?'s-rejected':'s-pending'}">Chair: ${p.ChairStatus||'Pending'}</span>
+      </div>
+      ${(p.Status==='Fully Approved')?`<div style="margin-top:8px;"><button class="btn btn-primary btn-xs" onclick="switchTab('submit')">📤 Submit Proof</button></div>`:''}
+    </div>`).join('')||'<div class="empty">No pre-approvals yet.</div>';
+  document.getElementById('preApprovalCards').innerHTML=paHtml;
+
+  const fHtml=(data.finals||[]).map(f=>`
+    <div class="status-card">
+      <div class="status-card-title">${f.EventName||'—'}</div>
+      <div class="status-card-sub">${fmtDate(f.EventDate)} · ${f.Category||''}</div>
+      ${(f.CollegeName||f.City||f.State)?`<div style="font-size:11px;color:var(--muted);margin-bottom:7px;">🏛️ ${[f.CollegeName,f.City,f.State].filter(Boolean).join(', ')}</div>`:''}
+      <div style="display:flex;gap:6px;flex-wrap:wrap;margin-bottom:8px;">
+        <span class="status-badge ${f.Status==='Verified'?'s-verified':f.Status==='Rejected'?'s-rejected':'s-pending'}">${f.Status}</span>
+        <span class="status-badge" style="background:var(--gold-lt);color:var(--gold);">${f.Prize}</span>
+      </div>
+      <div style="display:flex;align-items:center;justify-content:space-between;">
+        <span style="font-family:'Space Grotesk',sans-serif;font-size:20px;font-weight:700;color:${scoreColor(f.Score)};">${f.Score} pts</span>
+        ${f.ProofLink?`<a href="${f.ProofLink}" target="_blank" class="btn btn-outline btn-xs">🔗 View Proof</a>`:''}
+      </div>
+    </div>`).join('')||'<div class="empty">No final submissions yet.</div>';
+  document.getElementById('finalCards').innerHTML=fHtml;
+
+  const rows=(data.finals||[]).map(f=>`<tr>
+    <td style="font-weight:500;">${f.EventName||'—'}</td>
+    <td style="color:var(--muted);">${fmtDate(f.EventDate)}</td>
+    <td style="font-size:12px;">${f.CollegeName||'—'}</td>
+    <td style="font-size:12px;">${[f.City,f.State].filter(Boolean).join(', ')||'—'}</td>
+    <td><span class="badge b-gold">${f.Prize}</span></td>
+    <td style="font-weight:700;color:${scoreColor(f.Score)};">${f.Score}</td>
+    <td><span class="badge ${f.Status==='Verified'?'b-cyan':f.Status==='Rejected'?'b-red':'b-muted'}">${f.Status}</span></td>
+    <td>${f.ProofLink?`<a href="${f.ProofLink}" target="_blank" style="color:var(--blue);font-size:12px;font-weight:600;">View ↗</a>`:'—'}</td>
+  </tr>`).join('');
+  document.getElementById('historyTable').innerHTML=rows||'<tr><td colspan="8" class="empty">No submissions yet.</td></tr>';
+}
+
+/* ── INIT ── */
+window.addEventListener('DOMContentLoaded',()=>{
+  Promise.all([loadDropdowns(),loadStudentScore()]);
+});
+</script>
+</body>
+</html>
