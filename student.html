@@ -34,14 +34,12 @@
 
   --r:10px;--r-md:14px;--r-lg:18px;--r-xl:22px;
 
-  /* Safe areas */
   --sat:env(safe-area-inset-top,0px);
   --sar:env(safe-area-inset-right,0px);
   --sab:env(safe-area-inset-bottom,0px);
   --sal:env(safe-area-inset-left,0px);
-  --hit:44px;
+  --hit:48px;
 
-  /* Fluid spacing */
   --sp1:clamp(4px,1vw,6px);
   --sp2:clamp(8px,2vw,12px);
   --sp3:clamp(12px,3vw,18px);
@@ -94,123 +92,54 @@ img,svg{display:block;max-width:100%}
 
 /* ═══════ STUDENT BAR ═══════ */
 .sbar{background:var(--surface);border-bottom:1.5px solid var(--border);box-shadow:0 2px 10px rgba(37,99,235,.06)}
-
-/* ── Desktop / tablet layout: single row ── */
 .sbar-inner{
   display:flex;align-items:center;gap:10px;
   padding:10px var(--px-r) 10px var(--px);
   min-height:62px;
 }
-
-/* Avatar */
 .sbar-avatar{
   width:40px;height:40px;border-radius:10px;
   background:var(--blue-lt);border:2px solid var(--blue-mid);
   display:flex;align-items:center;justify-content:center;
   font-size:20px;flex-shrink:0;
 }
-
-/* Name + regno block */
 .sbar-info{flex:1;min-width:0}
-.sbar-name{
-  font-size:15px;font-weight:800;
-  white-space:nowrap;overflow:hidden;text-overflow:ellipsis;letter-spacing:-.2px;
-}
-.sbar-meta{
-  font-family:'JetBrains Mono',monospace;
-  font-size:11px;color:var(--muted);margin-top:1px;
-  white-space:nowrap;overflow:hidden;text-overflow:ellipsis;
-}
-
-/* Pills row — desktop only */
+.sbar-name{font-size:15px;font-weight:800;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;letter-spacing:-.2px}
+.sbar-meta{font-family:'JetBrains Mono',monospace;font-size:11px;color:var(--muted);margin-top:1px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
 .sbar-pills{display:flex;gap:4px;flex-wrap:nowrap;overflow:hidden;flex-shrink:0}
 .pill{padding:2px 9px;border-radius:20px;font-size:10px;font-weight:700;white-space:nowrap}
 .pill-b{background:var(--blue-lt);color:var(--blue)}
 .pill-g{background:var(--green-lt);color:var(--green)}
 .pill-go{background:var(--gold-lt);color:var(--gold)}
-
-/* Score chip — mobile only */
-.sbar-chip{
-  display:none;align-items:center;gap:4px;
-  padding:4px 10px;border-radius:20px;
-  background:var(--gold-lt);color:var(--gold);
-  font-size:11px;font-weight:700;flex-shrink:0;white-space:nowrap;
-}
-
-/* ── LOGOUT BUTTON — always visible, properly styled ── */
+.sbar-chip{display:none;align-items:center;gap:4px;padding:4px 10px;border-radius:20px;background:var(--gold-lt);color:var(--gold);font-size:11px;font-weight:700;flex-shrink:0;white-space:nowrap}
 .logout-btn{
-  /* Core layout */
-  display:inline-flex;
-  align-items:center;
-  justify-content:center;
-  gap:6px;
-  flex-shrink:0;
-
-  /* Size — never collapses */
-  height:40px;
-  padding:0 16px;
-
-  /* Style */
-  border-radius:10px;
-  background:#fef2f2;
-  color:#dc2626;
-  border:1.5px solid #fecaca;
-  font-family:'Plus Jakarta Sans',sans-serif;
-  font-size:13px;
-  font-weight:700;
-  letter-spacing:-.1px;
-  cursor:pointer;
-  white-space:nowrap;
-  transition:background .18s,box-shadow .18s,transform .1s;
-
-  /* Never hidden */
-  visibility:visible !important;
-  opacity:1 !important;
-  pointer-events:auto !important;
+  display:inline-flex;align-items:center;justify-content:center;gap:6px;flex-shrink:0;
+  height:40px;padding:0 16px;
+  border-radius:10px;background:#fef2f2;color:#dc2626;border:1.5px solid #fecaca;
+  font-family:'Plus Jakarta Sans',sans-serif;font-size:13px;font-weight:700;letter-spacing:-.1px;
+  cursor:pointer;white-space:nowrap;transition:background .18s,box-shadow .18s,transform .1s;
+  visibility:visible!important;opacity:1!important;pointer-events:auto!important;
 }
 .logout-btn:hover{background:#fee2e2;box-shadow:0 2px 8px rgba(220,38,38,.15)}
 .logout-btn:active{transform:scale(.95)}
 .logout-btn .lo-icon{font-size:15px;line-height:1;flex-shrink:0}
 .logout-btn .lo-text{line-height:1}
 
-/* ── MOBILE BREAKPOINTS ── */
-
-/* ≤ 640px: hide desktop pills, show score chip, shrink logout slightly */
 @media(max-width:640px){
-  .sbar-pills{display:none}
-  .sbar-chip{display:flex}
+  .sbar-pills{display:none}.sbar-chip{display:flex}
   .sbar-avatar{width:36px;height:36px;font-size:18px}
-  .sbar-name{font-size:13px}
-  .sbar-meta{font-size:10px}
+  .sbar-name{font-size:13px}.sbar-meta{font-size:10px}
   .logout-btn{height:38px;padding:0 14px;font-size:12px}
 }
-
-/* ≤ 480px: hide logout text, keep icon + border — clear red button */
 @media(max-width:480px){
   .lo-text{display:none}
-  .logout-btn{
-    height:38px;
-    width:42px;
-    padding:0;
-    border-radius:10px;
-    font-size:15px;
-    /* Stronger visual so it looks intentional */
-    background:#fef2f2;
-    border:1.5px solid #fca5a5;
-    box-shadow:0 1px 4px rgba(220,38,38,.12);
-  }
+  .logout-btn{height:38px;width:42px;padding:0;border-radius:10px;font-size:15px;background:#fef2f2;border:1.5px solid #fca5a5;box-shadow:0 1px 4px rgba(220,38,38,.12)}
   .logout-btn .lo-icon{font-size:17px}
 }
-
-/* ≤ 360px: micro adjustments */
-@media(max-width:360px){
-  .sbar-meta{display:none}
-  .sbar-chip{display:none}
-  .logout-btn{width:40px;height:38px}
-}
+@media(max-width:360px){.sbar-meta{display:none}.sbar-chip{display:none}.logout-btn{width:40px;height:38px}}
 
 /* ═══════ MAIN ═══════ */
-.main{padding:var(--sp3) var(--px);padding-right:var(--px-r);padding-bottom:calc(var(--sp5) + var(--sab));max-width:1200px;margin:0 auto}
+.main{padding:var(--sp3) var(--px);padding-right:var(--px-r);padding-bottom:calc(var(--sp5) + var(--sab) + 20px);max-width:1200px;margin:0 auto}
 .page-hdr{display:flex;align-items:flex-start;justify-content:space-between;margin-bottom:var(--sp3);gap:8px}
 .page-title{font-size:clamp(18px,5vw,24px);font-weight:800;letter-spacing:-.4px}
 .page-sub{color:var(--muted);font-size:clamp(11px,2.8vw,13px);margin-top:3px;line-height:1.45}
@@ -229,10 +158,8 @@ img,svg{display:block;max-width:100%}
 .hero-meta{color:var(--muted);font-size:clamp(10px,2.5vw,12px);margin-bottom:8px;line-height:1.45}
 .hero-badges{display:flex;gap:6px;flex-wrap:wrap}
 .hbadge{padding:3px 10px;border-radius:20px;font-size:10px;font-weight:700}
-.hb-b{background:var(--blue-lt);color:var(--blue)}
-.hb-g{background:var(--green-lt);color:var(--green)}
-.hb-go{background:var(--gold-lt);color:var(--gold)}
-.hb-p{background:var(--purple-lt);color:var(--purple)}
+.hb-b{background:var(--blue-lt);color:var(--blue)}.hb-g{background:var(--green-lt);color:var(--green)}
+.hb-go{background:var(--gold-lt);color:var(--gold)}.hb-p{background:var(--purple-lt);color:var(--purple)}
 .hero-rank{text-align:right;flex-shrink:0}
 .rank-lbl{font-size:10px;color:var(--muted);letter-spacing:1px;text-transform:uppercase;font-weight:700;margin-bottom:2px}
 .rank-val{font-size:clamp(28px,7vw,42px);font-weight:800;color:var(--gold);line-height:1;letter-spacing:-2px}
@@ -247,7 +174,8 @@ img,svg{display:block;max-width:100%}
 .qstat-lbl{font-size:10px;font-weight:600;color:var(--muted);text-transform:uppercase;letter-spacing:.6px;margin-top:3px}
 .qstat-icon{font-size:18px;margin-bottom:4px}
 
-/* ═══════ TABS ═══════ */
+/* ═══════ TABS — MOBILE BOTTOM BAR ═══════ */
+/* Desktop: top pill tabs */
 .tabs-wrap{overflow-x:auto;-webkit-overflow-scrolling:touch;scrollbar-width:none;margin-bottom:var(--sp3);mask-image:linear-gradient(90deg,transparent,#000 16px,#000 calc(100% - 16px),transparent);-webkit-mask-image:linear-gradient(90deg,transparent,#000 16px,#000 calc(100% - 16px),transparent)}
 .tabs-wrap::-webkit-scrollbar{display:none}
 .tabs{display:inline-flex;gap:3px;background:var(--surface2);border:1.5px solid var(--border);border-radius:var(--r-md);padding:4px;width:max-content;min-width:100%}
@@ -255,9 +183,39 @@ img,svg{display:block;max-width:100%}
 .tab.active{background:var(--blue);color:#fff;box-shadow:0 2px 10px rgba(37,99,235,.3)}
 .tab:hover:not(.active){background:var(--border);color:var(--text)}
 .panel{display:none}.panel.active{display:block}
-/* Tab badge */
 .tab-badge{background:var(--red);color:#fff;font-size:9px;font-weight:800;padding:1px 5px;border-radius:10px;min-width:16px;text-align:center;line-height:1.4}
 .tab.active .tab-badge{background:rgba(255,255,255,.3);color:#fff}
+
+/* Mobile bottom nav bar */
+.mobile-tab-bar{
+  display:none;
+  position:fixed;bottom:0;left:0;right:0;z-index:400;
+  background:var(--surface);border-top:1.5px solid var(--border);
+  box-shadow:0 -4px 20px rgba(37,99,235,.1);
+  padding:0 4px calc(var(--sab) + 4px);
+  height:calc(60px + var(--sab));
+  justify-content:space-around;align-items:flex-start;
+  padding-top:4px;
+}
+.mtn{
+  display:flex;flex-direction:column;align-items:center;justify-content:center;
+  gap:3px;flex:1;padding:6px 4px;border:none;background:transparent;
+  font-family:'Plus Jakarta Sans',sans-serif;cursor:pointer;
+  border-radius:10px;transition:all .18s;position:relative;min-width:0;
+}
+.mtn-icon{font-size:20px;line-height:1;transition:transform .2s}
+.mtn-label{font-size:9px;font-weight:700;color:var(--muted);letter-spacing:.3px;transition:color .18s;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:100%;text-align:center}
+.mtn.active .mtn-icon{transform:scale(1.1)}
+.mtn.active .mtn-label{color:var(--blue)}
+.mtn.active::before{content:'';position:absolute;top:0;left:50%;transform:translateX(-50%);width:36px;height:3px;background:var(--blue);border-radius:0 0 4px 4px}
+.mtn-badge{position:absolute;top:2px;right:calc(50% - 22px);background:var(--red);color:#fff;font-size:8px;font-weight:800;min-width:15px;height:15px;border-radius:8px;display:none;align-items:center;justify-content:center;border:1.5px solid #fff;padding:0 3px}
+
+@media(max-width:640px){
+  .tabs-wrap{display:none}
+  .mobile-tab-bar{display:flex}
+  /* Push main content above bottom bar */
+  .main{padding-bottom:calc(70px + var(--sab) + 16px)!important}
+}
 
 /* ═══════ STEPS RIBBON ═══════ */
 .steps-wrap{overflow-x:auto;-webkit-overflow-scrolling:touch;scrollbar-width:none;margin-bottom:var(--sp3);padding-bottom:4px}
@@ -278,19 +236,20 @@ img,svg{display:block;max-width:100%}
 .card-hdr{display:flex;align-items:center;justify-content:space-between;gap:8px;margin-bottom:4px;flex-wrap:wrap}
 .card-title{font-size:clamp(14px,3.5vw,16px);font-weight:800;letter-spacing:-.2px}
 .card-sub{color:var(--muted);font-size:clamp(11px,2.8vw,13px);margin-bottom:var(--sp3);padding-bottom:clamp(10px,2.5vw,14px);border-bottom:1.5px solid var(--border);line-height:1.45}
+@media(max-width:480px){.card{padding:var(--sp3) var(--sp3)}}
 
 /* ═══════ FORM ═══════ */
 .form-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(190px,100%),1fr));gap:clamp(10px,2.5vw,13px)}
 .fg{display:flex;flex-direction:column;gap:5px}
 .fg.full{grid-column:1/-1}
 label,.lbl{font-size:10px;font-weight:700;letter-spacing:.7px;color:var(--text2);text-transform:uppercase}
-input,select{padding:10px 13px;background:var(--surface2);border:1.5px solid var(--border);border-radius:9px;color:var(--text);font-family:'Plus Jakarta Sans',sans-serif;font-size:16px;outline:none;transition:border-color .18s,background .18s,box-shadow .18s;width:100%;min-height:var(--hit);-webkit-appearance:none;appearance:none}
+input,select{padding:12px 14px;background:var(--surface2);border:1.5px solid var(--border);border-radius:9px;color:var(--text);font-family:'Plus Jakarta Sans',sans-serif;font-size:16px;outline:none;transition:border-color .18s,background .18s,box-shadow .18s;width:100%;min-height:var(--hit);-webkit-appearance:none;appearance:none}
 input:focus,select:focus{border-color:var(--blue);background:#fff;box-shadow:0 0 0 3px rgba(37,99,235,.1)}
 input.err,select.err{border-color:var(--red)!important;background:var(--red-lt)!important}
 input[readonly]{background:var(--surface2);color:var(--muted);cursor:default}
 input::placeholder{color:var(--muted)}
 select{background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' fill='none'%3E%3Cpath d='M1 1l5 5 5-5' stroke='%237a8db0' stroke-width='1.8' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");background-repeat:no-repeat;background-position:right 13px center;padding-right:36px}
-.ferr{font-size:10px;color:var(--red);margin-top:2px;display:none}
+.ferr{font-size:11px;color:var(--red);margin-top:2px;display:none;font-weight:600}
 .ferr.show{display:block}
 
 /* ═══════ SUB-SECTION BOXES ═══════ */
@@ -309,7 +268,7 @@ select{background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/
 .ib-purple{background:var(--purple-lt);border:1.5px solid #ddd6fe;color:var(--purple)}
 
 /* ═══════ BUTTONS ═══════ */
-.btn{padding:0 clamp(14px,4vw,20px);height:clamp(40px,9vw,44px);border-radius:9px;border:none;cursor:pointer;font-family:'Plus Jakarta Sans',sans-serif;font-size:clamp(12px,3vw,13px);font-weight:700;transition:all .18s;display:inline-flex;align-items:center;gap:6px;text-decoration:none;white-space:nowrap;justify-content:center;-webkit-user-select:none;user-select:none;flex-shrink:0}
+.btn{padding:0 clamp(14px,4vw,20px);height:clamp(44px,9vw,48px);border-radius:9px;border:none;cursor:pointer;font-family:'Plus Jakarta Sans',sans-serif;font-size:clamp(13px,3vw,14px);font-weight:700;transition:all .18s;display:inline-flex;align-items:center;gap:6px;text-decoration:none;white-space:nowrap;justify-content:center;-webkit-user-select:none;user-select:none;flex-shrink:0}
 .btn:active{transform:scale(.96)}
 .btn-pri{background:var(--blue);color:#fff;box-shadow:0 2px 10px rgba(37,99,235,.3)}
 .btn-pri:hover{background:var(--blue-dk);transform:translateY(-1px);box-shadow:0 4px 18px rgba(37,99,235,.4)}
@@ -320,8 +279,8 @@ select{background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/
 .btn-ghost{background:var(--surface2);color:var(--text2);border:1.5px solid var(--border)}
 .btn-green{background:var(--green);color:#fff;box-shadow:0 2px 10px rgba(5,150,105,.25)}
 .btn-green:hover{background:var(--green-dk)}
-.btn-sm{height:36px;padding:0 14px;font-size:12px}
-.btn-xs{height:28px;padding:0 10px;font-size:11px}
+.btn-sm{height:38px;padding:0 14px;font-size:12px}
+.btn-xs{height:30px;padding:0 10px;font-size:11px}
 .btn-row{margin-top:var(--sp3);display:flex;gap:var(--sp2);align-items:center;flex-wrap:wrap}
 .btn-hint{font-size:11px;color:var(--muted);line-height:1.4}
 @media(max-width:480px){.btn-fw{width:100%}}
@@ -345,96 +304,65 @@ select{background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/
 .pa-divider span{font-size:10px;font-weight:800;color:var(--muted);white-space:nowrap}
 
 /* ═══════ FILE UPLOAD ═══════ */
-.file-drop{border:2px dashed var(--blue-mid);border-radius:12px;padding:clamp(18px,5vw,28px) 20px;text-align:center;cursor:pointer;background:var(--blue-lt);transition:all .18s}
+.file-drop{border:2px dashed var(--blue-mid);border-radius:12px;padding:clamp(20px,5vw,32px) 20px;text-align:center;cursor:pointer;background:var(--blue-lt);transition:all .18s}
 .file-drop:hover{border-color:var(--blue);background:#dce8ff}
 .file-drop:active{transform:scale(.99)}
 .file-drop.dragover{border-color:var(--blue);background:#dbeafe;transform:scale(1.01)}
-.file-drop-icon{font-size:clamp(24px,6vw,32px);margin-bottom:6px}
-.file-drop-txt{font-size:clamp(12px,3vw,13px);color:var(--text2);font-weight:600;line-height:1.55}
-.file-prev{display:flex;align-items:center;justify-content:space-between;padding:10px 14px;background:var(--green-lt);border:1.5px solid var(--green-mid);border-radius:10px;margin-top:8px;gap:8px}
+.file-drop-icon{font-size:clamp(28px,7vw,36px);margin-bottom:8px}
+.file-drop-txt{font-size:clamp(12px,3vw,14px);color:var(--text2);font-weight:600;line-height:1.55}
+.file-prev{display:flex;align-items:center;justify-content:space-between;padding:12px 14px;background:var(--green-lt);border:1.5px solid var(--green-mid);border-radius:10px;margin-top:8px;gap:8px}
 .file-prev-info{display:flex;align-items:center;gap:10px;min-width:0;flex:1}
-.file-icon{font-size:24px;flex-shrink:0}
+.file-icon{font-size:26px;flex-shrink:0}
 .file-name{font-weight:700;font-size:13px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
 .file-sz{font-size:10px;color:var(--muted);margin-top:1px}
-.file-rm{background:none;border:none;cursor:pointer;font-size:16px;color:var(--muted);padding:8px;border-radius:8px;transition:all .15s;flex-shrink:0;min-width:var(--hit);min-height:var(--hit);display:flex;align-items:center;justify-content:center}
+.file-rm{background:none;border:none;cursor:pointer;font-size:18px;color:var(--muted);padding:8px;border-radius:8px;transition:all .15s;flex-shrink:0;min-width:44px;min-height:44px;display:flex;align-items:center;justify-content:center}
 .file-rm:hover{background:var(--red-lt);color:var(--red)}
 #uploadProg{display:none;margin-top:10px}
 .uprog-row{display:flex;justify-content:space-between;font-size:12px;color:var(--text2);margin-bottom:5px}
 .uprog-track{height:6px;background:var(--surface2);border-radius:4px;overflow:hidden}
 #uploadBar{height:100%;background:var(--blue);border-radius:4px;width:0%;transition:width .3s}
 
-/* ═══════════════════════════════════════
-   APPROVAL TRACKER — Rich Visual
-═══════════════════════════════════════ */
+/* ═══════ APPROVAL TRACKER ═══════ */
 .atrack-wrap{margin:10px 0 6px}
 .atrack-header{font-size:10px;font-weight:800;letter-spacing:.8px;color:var(--muted);text-transform:uppercase;margin-bottom:8px;display:flex;align-items:center;gap:6px}
 .atrack-header::after{content:'';flex:1;height:1px;background:var(--border)}
-
-/* Timeline layout */
 .atrack{display:flex;align-items:stretch;gap:0;position:relative}
-.atrack-step{
-  flex:1;display:flex;flex-direction:column;align-items:center;
-  position:relative;
-}
-/* Connector line between steps */
-.atrack-step:not(:last-child)::after{
-  content:'';position:absolute;top:20px;left:calc(50% + 20px);
-  width:calc(100% - 40px);height:2.5px;
-  background:var(--border);border-radius:2px;z-index:0;transition:background .4s;
-}
+.atrack-step{flex:1;display:flex;flex-direction:column;align-items:center;position:relative}
+.atrack-step:not(:last-child)::after{content:'';position:absolute;top:20px;left:calc(50% + 20px);width:calc(100% - 40px);height:2.5px;background:var(--border);border-radius:2px;z-index:0;transition:background .4s}
 .atrack-step.done:not(:last-child)::after{background:var(--green)}
 .atrack-step.rejected:not(:last-child)::after{background:var(--red-mid)}
-
-.atrack-node{
-  width:40px;height:40px;border-radius:50%;
-  display:flex;align-items:center;justify-content:center;
-  font-size:16px;position:relative;z-index:1;
-  transition:all .25s;border:2.5px solid transparent;flex-shrink:0;
-}
+.atrack-node{width:40px;height:40px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:16px;position:relative;z-index:1;transition:all .25s;border:2.5px solid transparent;flex-shrink:0}
 .atrack-step.pending  .atrack-node{background:var(--gold-lt);border-color:var(--gold-mid);color:var(--gold);animation:anim-pend 2s ease-in-out infinite}
 .atrack-step.done     .atrack-node{background:var(--green-lt);border-color:var(--green-mid);color:var(--green)}
 .atrack-step.rejected .atrack-node{background:var(--red-lt);border-color:var(--red-mid);color:var(--red)}
 .atrack-step.locked   .atrack-node{background:var(--surface2);border-color:var(--border);color:var(--muted);opacity:.6}
 .atrack-step.waiting  .atrack-node{background:var(--surface2);border-color:var(--border);color:var(--muted)}
-
 @keyframes anim-pend{0%,100%{box-shadow:0 0 0 0 rgba(217,119,6,.3)}50%{box-shadow:0 0 0 6px rgba(217,119,6,0)}}
-
-.atrack-info{text-align:center;margin-top:7px;padding:0 4px}
-.atrack-role{font-size:10px;font-weight:700;color:var(--text2);white-space:nowrap}
+.atrack-info{text-align:center;margin-top:7px;padding:0 2px}
+.atrack-role{font-size:10px;font-weight:700;color:var(--text2);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:60px}
 .atrack-status-txt{font-size:9px;font-weight:700;margin-top:2px;white-space:nowrap}
 .atrack-step.pending  .atrack-status-txt{color:var(--gold)}
 .atrack-step.done     .atrack-status-txt{color:var(--green)}
 .atrack-step.rejected .atrack-status-txt{color:var(--red)}
-.atrack-step.locked   .atrack-status-txt{color:var(--muted)}
-.atrack-step.waiting  .atrack-status-txt{color:var(--muted)}
+.atrack-step.locked   .atrack-status-txt,.atrack-step.waiting .atrack-status-txt{color:var(--muted)}
 .atrack-date{font-size:9px;color:var(--muted);margin-top:1px}
-
-/* Overall status pill */
-.atrack-overall{display:flex;align-items:center;justify-content:center;margin-top:10px}
 .atrack-pill{padding:4px 14px;border-radius:20px;font-size:11px;font-weight:800;display:inline-flex;align-items:center;gap:5px}
 .ap-approved{background:var(--green-lt);color:var(--green);border:1.5px solid var(--green-mid)}
 .ap-pending{background:var(--gold-lt);color:var(--gold);border:1.5px solid var(--gold-mid)}
 .ap-rejected{background:var(--red-lt);color:var(--red);border:1.5px solid var(--red-mid)}
 
-/* ═══════ HISTORY / CARDS ═══════ */
+/* ═══════ HISTORY LAYOUT ═══════ */
 .hist-two{display:grid;grid-template-columns:1fr 1fr;gap:var(--sp3);margin-bottom:var(--sp4)}
 @media(max-width:680px){.hist-two{grid-template-columns:1fr}}
 .hist-sec-title{font-size:clamp(12px,3vw,14px);font-weight:800;margin-bottom:10px;color:var(--text2);display:flex;align-items:center;gap:6px}
 .hist-count{background:var(--blue-lt);color:var(--blue);font-size:10px;font-weight:800;padding:1px 7px;border-radius:10px}
-
-/* Pre-approval card in history */
 .pa-hist-card{background:var(--surface);border:1.5px solid var(--border);border-radius:var(--r-md);padding:14px 16px;margin-bottom:10px;box-shadow:var(--shadow-sm);transition:box-shadow .18s}
 .pa-hist-card:hover{box-shadow:var(--shadow)}
 .pa-hist-name{font-weight:800;font-size:13px;margin-bottom:2px}
 .pa-hist-sub{font-size:11px;color:var(--muted);margin-bottom:8px}
-/* Progress bar for stages */
-.stage-bar{display:flex;gap:0;border-radius:6px;overflow:hidden;height:6px;background:var(--border);margin:6px 0 8px}
+.stage-bar{display:flex;gap:0;border-radius:6px;overflow:hidden;height:7px;background:var(--border);margin:6px 0 8px}
 .stage-seg{height:100%;flex:1;transition:background .3s}
-.stage-seg.done{background:var(--green)}
-.stage-seg.active{background:var(--gold)}
-.stage-seg.reject{background:var(--red)}
-
-/* Final submission card in history */
+.stage-seg.done{background:var(--green)}.stage-seg.active{background:var(--gold)}.stage-seg.reject{background:var(--red)}
 .fs-hist-card{background:var(--surface);border:1.5px solid var(--border);border-radius:var(--r-md);padding:14px 16px;margin-bottom:10px;box-shadow:var(--shadow-sm);transition:box-shadow .18s}
 .fs-hist-card:hover{box-shadow:var(--shadow)}
 .fs-hist-name{font-weight:800;font-size:13px;margin-bottom:2px}
@@ -450,34 +378,44 @@ select{background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/
 .tbl-scroll::-webkit-scrollbar-thumb{background:var(--border);border-radius:2px}
 table{width:100%;border-collapse:collapse;min-width:580px}
 th{padding:9px clamp(10px,2.5vw,14px);text-align:left;font-size:10px;font-weight:800;letter-spacing:.8px;color:var(--muted);text-transform:uppercase;background:var(--surface2);border-bottom:1.5px solid var(--border);white-space:nowrap}
-td{padding:9px clamp(10px,2.5vw,14px);font-size:13px;border-bottom:1px solid var(--border);color:var(--text)}
+td{padding:10px clamp(10px,2.5vw,14px);font-size:13px;border-bottom:1px solid var(--border);color:var(--text)}
 tr:last-child td{border-bottom:none}
 tr:hover td{background:var(--blue-lt)}
 .empty{text-align:center;padding:36px;color:var(--muted);font-size:13px}
 
+/* ═══════ MOBILE CARD VIEW (replaces table on mobile) ═══════ */
+.mobile-cards{display:none}
+.mc-item{background:var(--surface);border:1.5px solid var(--border);border-radius:var(--r-md);padding:14px 16px;margin-bottom:8px;box-shadow:var(--shadow-sm)}
+.mc-row{display:flex;align-items:center;justify-content:space-between;gap:8px;margin-bottom:6px}
+.mc-title{font-weight:800;font-size:14px;flex:1;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.mc-meta{font-size:11px;color:var(--muted);margin-bottom:8px}
+.mc-footer{display:flex;align-items:center;justify-content:space-between;gap:8px;flex-wrap:wrap}
+@media(max-width:580px){
+  .tbl-scroll table{display:none}
+  .mobile-cards{display:block}
+}
+
 /* ═══════ BADGES ═══════ */
 .badge{padding:2px 9px;border-radius:20px;font-size:11px;font-weight:700;display:inline-block}
-.b-blue{background:var(--blue-lt);color:var(--blue)}
-.b-green{background:var(--green-lt);color:var(--green)}
-.b-gold{background:var(--gold-lt);color:var(--gold)}
-.b-red{background:var(--red-lt);color:var(--red)}
-.b-cyan{background:var(--cyan-lt);color:var(--cyan)}
-.b-muted{background:var(--surface2);color:var(--muted)}
+.b-blue{background:var(--blue-lt);color:var(--blue)}.b-green{background:var(--green-lt);color:var(--green)}
+.b-gold{background:var(--gold-lt);color:var(--gold)}.b-red{background:var(--red-lt);color:var(--red)}
+.b-cyan{background:var(--cyan-lt);color:var(--cyan)}.b-muted{background:var(--surface2);color:var(--muted)}
 .b-purple{background:var(--purple-lt);color:var(--purple)}
 
 /* ═══════ NOTIFICATION BANNER ═══════ */
 .notif-banner{border-radius:var(--r-md);padding:10px 14px;margin-bottom:var(--sp3);display:flex;align-items:center;gap:10px;font-size:12px;font-weight:600;animation:slideDown .4s ease}
 @keyframes slideDown{from{opacity:0;transform:translateY(-8px)}to{opacity:1;transform:none}}
-.notif-close{margin-left:auto;background:none;border:none;cursor:pointer;color:inherit;opacity:.7;font-size:16px;padding:2px;flex-shrink:0}
+.notif-close{margin-left:auto;background:none;border:none;cursor:pointer;color:inherit;opacity:.7;font-size:18px;padding:4px;flex-shrink:0;min-width:44px;min-height:44px;display:flex;align-items:center;justify-content:center}
 
 /* ═══════ EMPTY STATE ═══════ */
 .empty-state{text-align:center;padding:40px 20px}
-.empty-state-icon{font-size:40px;margin-bottom:10px}
+.empty-state-icon{font-size:44px;margin-bottom:10px}
 .empty-state-title{font-size:16px;font-weight:800;margin-bottom:6px}
 .empty-state-sub{font-size:13px;color:var(--muted);line-height:1.5}
 
 /* ═══════ TOAST ═══════ */
 #toastBox{position:fixed;bottom:max(20px,var(--sab));right:max(16px,var(--sar));z-index:9999;display:flex;flex-direction:column;gap:8px;max-width:min(320px,calc(100vw - 32px))}
+@media(max-width:640px){#toastBox{bottom:calc(70px + var(--sab) + 10px)}}
 .toast{padding:12px 16px;border-radius:10px;font-size:13px;font-weight:700;box-shadow:var(--shadow-lg);animation:slideIn .3s ease;display:flex;align-items:center;gap:10px;word-break:break-word}
 .toast.success{background:#fff;border-left:4px solid var(--green);color:var(--green)}
 .toast.error{background:#fff;border-left:4px solid var(--red);color:var(--red)}
@@ -485,13 +423,17 @@ tr:hover td{background:var(--blue-lt)}
 @keyframes slideIn{from{transform:translateX(100%);opacity:0}to{transform:translateX(0);opacity:1}}
 @keyframes fadeOut{to{opacity:0;transform:translateX(30px)}}
 
+/* ═══════ FILE NAME PREVIEW BADGE ═══════ */
+.filename-preview{background:var(--blue-lt);border:1.5px solid var(--blue-mid);border-radius:8px;padding:8px 12px;margin-top:6px;font-size:11px;font-weight:700;color:var(--blue);display:flex;align-items:center;gap:6px;word-break:break-all}
+.filename-preview-icon{font-size:14px;flex-shrink:0}
+
 /* ═══════ MISC ═══════ */
 :focus-visible{outline:2px solid var(--blue);outline-offset:2px;border-radius:4px}
 .divider{height:1.5px;background:var(--border);margin:var(--sp3) 0}
 @media(prefers-reduced-motion:reduce){*,*::before,*::after{animation-duration:.01ms!important;transition-duration:.01ms!important}}
-@media print{.banner,.sbar,.tabs-wrap,#toastBox{display:none!important}.main{padding:0}.card{box-shadow:none;border:1px solid #ccc;page-break-inside:avoid}}
+@media print{.banner,.sbar,.tabs-wrap,.mobile-tab-bar,#toastBox{display:none!important}.main{padding:0}.card{box-shadow:none;border:1px solid #ccc;page-break-inside:avoid}}
 
-/* ═══════ APPROVAL TIMELINE (full page) ═══════ */
+/* ═══════ APPROVAL TIMELINE ═══════ */
 .timeline{position:relative;padding-left:28px}
 .timeline::before{content:'';position:absolute;left:10px;top:6px;bottom:6px;width:2px;background:var(--border);border-radius:2px}
 .tl-item{position:relative;margin-bottom:16px}
@@ -507,10 +449,9 @@ tr:hover td{background:var(--blue-lt)}
 .tl-sub{font-size:11px;color:var(--muted)}
 .tl-meta{font-size:10px;color:var(--muted);margin-top:4px;display:flex;gap:8px;flex-wrap:wrap}
 
-/* ═══════ STICKY NOTIFY DOT ═══════ */
-.notify-dot{position:fixed;bottom:max(80px,calc(var(--sab) + 80px));right:max(20px,var(--sar));z-index:500;width:52px;height:52px;border-radius:50%;background:var(--blue);color:#fff;font-size:22px;display:flex;align-items:center;justify-content:center;box-shadow:var(--shadow-lg);cursor:pointer;transition:transform .2s;border:3px solid #fff}
-.notify-dot:hover{transform:scale(1.1)}
-.notify-dot .nd-badge{position:absolute;top:-2px;right:-2px;background:var(--red);color:#fff;font-size:9px;font-weight:800;min-width:18px;height:18px;border-radius:9px;display:flex;align-items:center;justify-content:center;border:2px solid #fff}
+/* ═══════ LOADING SPINNER ═══════ */
+.spinner{display:inline-block;width:18px;height:18px;border:2.5px solid rgba(255,255,255,.3);border-top-color:#fff;border-radius:50%;animation:spin .7s linear infinite;flex-shrink:0}
+@keyframes spin{to{transform:rotate(360deg)}}
 </style>
 </head>
 <body>
@@ -613,13 +554,13 @@ tr:hover td{background:var(--blue-lt)}
     </div>
   </div>
 
-  <!-- ═══ TABS ═══ -->
+  <!-- ═══ DESKTOP TABS ═══ -->
   <div class="tabs-wrap">
     <div class="tabs">
       <button class="tab active" onclick="switchTab('preapproval')">📝 Pre-Approval</button>
       <button class="tab" onclick="switchTab('submit')">📤 Submit Proof</button>
       <button class="tab" id="tabHistory" onclick="switchTab('history')">📁 My Events</button>
-      <button class="tab" onclick="switchTab('tracker')">🔍 Approval Tracker <span class="tab-badge" id="trackerBadge" style="display:none">0</span></button>
+      <button class="tab" onclick="switchTab('tracker')">🔍 Tracker <span class="tab-badge" id="trackerBadge" style="display:none">0</span></button>
     </div>
   </div>
 
@@ -787,6 +728,11 @@ tr:hover td{background:var(--blue-lt)}
           <div class="file-prev-info"><span class="file-icon" id="fileIcon">📄</span><div><div class="file-name" id="fileName">—</div><div class="file-sz" id="fileSz">—</div></div></div>
           <button class="file-rm" onclick="removeFile()" aria-label="Remove">✕</button>
         </div>
+        <!-- ★ NEW: Shows exact filename that will be saved to Drive -->
+        <div class="filename-preview" id="fileNamePreview" style="display:none">
+          <span class="filename-preview-icon">📁</span>
+          <span>Saved to Drive as: <strong id="driveFileName">—</strong></span>
+        </div>
         <span class="ferr" id="errFsProof">Please select a proof file</span>
       </div>
 
@@ -826,7 +772,7 @@ tr:hover td{background:var(--blue-lt)}
       <div class="table-hdr">
         <div class="table-title">📊 Full Submission History</div>
         <div style="display:flex;gap:8px;flex-wrap:wrap">
-          <select id="filterStatus" class="btn btn-ghost btn-sm" style="height:32px;min-height:32px;padding:0 10px;font-size:12px;cursor:pointer" onchange="filterTable()">
+          <select id="filterStatus" class="btn btn-ghost btn-sm" style="height:38px;min-height:38px;padding:0 10px;font-size:12px;cursor:pointer" onchange="filterTable()">
             <option value="">All Status</option>
             <option value="Pending">Pending</option>
             <option value="Verified">Verified</option>
@@ -844,18 +790,19 @@ tr:hover td{background:var(--blue-lt)}
           <tbody id="historyTable"><tr><td colspan="8" class="empty">Loading...</td></tr></tbody>
         </table>
       </div>
+      <!-- Mobile card view for history table -->
+      <div class="mobile-cards" id="historyMobileCards"></div>
     </div>
   </div>
 
   <!-- ════════════════════════════════════
-       TAB 4 — APPROVAL TRACKER (NEW!)
+       TAB 4 — APPROVAL TRACKER
   ════════════════════════════════════ -->
   <div class="panel" id="panel-tracker">
     <div class="info-box ib-purple">
       <span class="info-icon">🔍</span>
       <span>Real-time approval status for all your pre-approvals. <strong>Chairperson</strong> approves first, then <strong>HOD</strong>. Track every stage here.</span>
     </div>
-
     <div id="trackerContent">
       <div class="empty-state">
         <div class="empty-state-icon">⏳</div>
@@ -867,11 +814,32 @@ tr:hover td{background:var(--blue-lt)}
 
 </div><!-- /.main -->
 
+<!-- ═══ MOBILE BOTTOM TAB BAR ═══ -->
+<nav class="mobile-tab-bar" id="mobileTabBar">
+  <button class="mtn active" id="mtn-preapproval" onclick="switchTab('preapproval')">
+    <span class="mtn-icon">📝</span>
+    <span class="mtn-label">Pre-Approval</span>
+  </button>
+  <button class="mtn" id="mtn-submit" onclick="switchTab('submit')">
+    <span class="mtn-icon">📤</span>
+    <span class="mtn-label">Submit Proof</span>
+  </button>
+  <button class="mtn" id="mtn-history" onclick="switchTab('history')">
+    <span class="mtn-icon">📁</span>
+    <span class="mtn-label">My Events</span>
+  </button>
+  <button class="mtn" id="mtn-tracker" onclick="switchTab('tracker')">
+    <span class="mtn-icon">🔍</span>
+    <span class="mtn-label">Tracker</span>
+    <span class="mtn-badge" id="mtnBadge">0</span>
+  </button>
+</nav>
+
 <script>
 /* ══════════════════════════════════════════
    CONFIG & STATE
 ══════════════════════════════════════════ */
-const GAS_URL='https://script.google.com/macros/s/AKfycbyZXP5hovUYJ2EfheJhZaYtfihhCijGjfX_PgDJ1c_zWxxm6CrCCYaKdQ0dH_iWo8vS-A/exec';
+const GAS_URL='https://script.google.com/macros/s/AKfycbyhfNlPrsU1NfuJr6Wjf7Kgo6EiA8ASca2EZQ-1lSIgNswDccZ4CukIhcTxN0YdOMRciA/exec';
 let EMS_USER={}, DROPDOWNS={}, approvedPAs=[], allPreApprovals=[], allFinals=[];
 
 /* ══════════════════════════════════════════
@@ -902,8 +870,7 @@ async function api(action,params={}){
 ══════════════════════════════════════════ */
 function toast(msg,type='info'){
   const box=document.getElementById('toastBox');
-  const el=document.createElement('div');
-  el.className='toast '+type;
+  const el=document.createElement('div');el.className='toast '+type;
   el.innerHTML=`<span>${{success:'✅',error:'❌',info:'ℹ️'}[type]||'ℹ️'}</span><span>${msg}</span>`;
   box.appendChild(el);
   setTimeout(()=>{el.style.animation='fadeOut .4s ease forwards';setTimeout(()=>el.remove(),400);},3800);
@@ -912,17 +879,22 @@ function toast(msg,type='info'){
 /* ══════════════════════════════════════════
    HELPERS
 ══════════════════════════════════════════ */
-function fmtDate(d){
-  if(!d||d==='')return'—';
-  try{return new Date(d).toLocaleDateString('en-IN',{day:'2-digit',month:'short',year:'numeric'});}catch{return d;}
-}
-function fmtDateTime(d){
-  if(!d||d==='')return'—';
-  try{return new Date(d).toLocaleString('en-IN',{day:'2-digit',month:'short',hour:'2-digit',minute:'2-digit'});}catch{return d;}
-}
+function fmtDate(d){if(!d||d==='')return'—';try{return new Date(d).toLocaleDateString('en-IN',{day:'2-digit',month:'short',year:'numeric'});}catch{return d;}}
 function scoreColor(s){const n=Number(s)||0;if(n>=20)return'var(--gold)';if(n>=10)return'var(--blue)';if(n>=5)return'var(--green)';return'var(--muted)';}
 function setErr(fid,eid,show){document.getElementById(fid)?.classList.toggle('err',show);const e=document.getElementById(eid);if(e)e.classList.toggle('show',show);}
 function clearErrs(pairs){pairs.forEach(([f,e])=>setErr(f,e,false));}
+
+/* ══════════════════════════════════════════
+   ★ DRIVE FILENAME BUILDER
+   Format: {RegNo}_{EventID}.ext
+══════════════════════════════════════════ */
+function buildDriveFileName(regNo, eventId, originalName){
+  // Sanitise: remove special chars from regNo & eventId
+  const safeReg=(regNo||'').replace(/[^a-zA-Z0-9]/g,'');
+  const safeEvt=(eventId||'').replace(/[^a-zA-Z0-9]/g,'');
+  const ext=originalName?'.'+originalName.split('.').pop().toLowerCase():'';
+  return `${safeReg}_${safeEvt}${ext}`;
+}
 
 /* ══════════════════════════════════════════
    IDENTITY BAR
@@ -962,7 +934,6 @@ async function loadStudentScore(){
   const regNo=EMS_USER.RegNo;if(!regNo)return;
   const data=await api('getStudentData',{regNo});
   if(!data.success)return;
-
   allPreApprovals=data.preApprovals||[];
   allFinals=data.finals||[];
   const score=data.totalScore||0;
@@ -987,18 +958,20 @@ async function loadStudentScore(){
   document.getElementById('qsApproved').textContent=allPreApprovals.filter(p=>p.Status==='Fully Approved').length;
   document.getElementById('qsScore').textContent=score;
 
-  // Approved PAs for submit tab
   approvedPAs=allPreApprovals.filter(p=>p.Status==='Fully Approved'||(p.ChairStatus==='Approved'&&p.HODStatus==='Approved'));
 
-  // Tracker badge
+  // Tracker badge (desktop + mobile)
   const tbadge=document.getElementById('trackerBadge');
-  if(pendingPA.length>0){tbadge.textContent=pendingPA.length;tbadge.style.display='flex';}
-  else tbadge.style.display='none';
+  const mbadge=document.getElementById('mtnBadge');
+  if(pendingPA.length>0){
+    tbadge.textContent=pendingPA.length;tbadge.style.display='flex';
+    mbadge.textContent=pendingPA.length;mbadge.style.display='flex';
+  }else{
+    tbadge.style.display='none';mbadge.style.display='none';
+  }
 
-  // Pending banner
   renderPendingBanner(pendingPA);
 
-  // Rank
   const lb=await api('leaderboard',{limit:500});
   if(lb.success){const me=(lb.students||[]).find(s=>s.regNo===regNo);document.getElementById('heroRank').textContent=me?'#'+me.rank:'—';}
 }
@@ -1019,16 +992,20 @@ function renderPendingBanner(pendingPA){
   el.innerHTML=`<div class="notif-banner ib-gold" style="border:1.5px solid var(--gold-mid)">
     <span>⏳</span>
     <span>${lines.join(' · ')} — <a href="#" onclick="switchTab('tracker');return false" style="color:var(--gold);font-weight:800;text-decoration:underline">View Tracker</a></span>
-    <button class="notif-close" onclick="this.parentElement.parentElement.style.display='none'">×</button>
+    <button class="notif-close" onclick="this.parentElement.parentElement.style.display='none'" aria-label="Dismiss">×</button>
   </div>`;
 }
 
 /* ══════════════════════════════════════════
-   TAB SWITCH
+   TAB SWITCH — HANDLES BOTH DESKTOP + MOBILE
 ══════════════════════════════════════════ */
 function switchTab(t){
   const list=['preapproval','submit','history','tracker'];
-  document.querySelectorAll('.tab').forEach((b,i)=>b.classList.toggle('active',list[i]===t));
+  // Desktop tabs
+  document.querySelectorAll('.tabs .tab').forEach((b,i)=>b.classList.toggle('active',list[i]===t));
+  // Mobile bottom nav
+  list.forEach(tab=>{document.getElementById('mtn-'+tab)?.classList.toggle('active',tab===t);});
+  // Panels
   document.querySelectorAll('.panel').forEach(p=>p.classList.remove('active'));
   document.getElementById('panel-'+t).classList.add('active');
   if(t==='submit')renderApprovedPACards();
@@ -1067,22 +1044,48 @@ function renderApprovedPACards(){
   });
 }
 
+// Track selected PA's EventID for Drive filename
+let selectedPAEventID='';
+
 function selectPA(idx){
   document.querySelectorAll('.pa-card').forEach(c=>c.classList.remove('sel'));
   document.getElementById('pac-'+idx)?.classList.add('sel');
-  const p=approvedPAs[idx],ev=(DROPDOWNS.events||[]).find(e=>e.id===p.EventID)||{};
+  const p=approvedPAs[idx];
+  // ★ Store EventID for filename generation
+  selectedPAEventID=p.EventID||'';
+  const ev=(DROPDOWNS.events||[]).find(e=>e.id===p.EventID)||{};
   const s=(id,v)=>{const el=document.getElementById(id);if(el&&v!==undefined&&v!=='')el.value=v;};
   s('fsCategory',ev.category||p.Category||'');s('fsType',ev.type||p.Type||'');
   s('fsScope',ev.scope||p.Scope||'');s('fsSponsored',ev.sponsored||p.Sponsored||'');
   s('fsDate',p.EventDate||'');s('fsCollege',p.CollegeName||'');s('fsCity',p.City||'');s('fsState',p.State||'');
+  // Update filename preview if a file is already selected
+  updateDriveFileNamePreview();
   toast('Event details filled ✓','success');
 }
 
 function clearFSForm(){
   document.querySelectorAll('.pa-card').forEach(c=>c.classList.remove('sel'));
+  selectedPAEventID='';
   ['fsCategory','fsType','fsScope','fsSponsored','fsDate','fsPrize'].forEach(id=>{const el=document.getElementById(id);if(el)el.value='';});
   ['fsCollege','fsCity','fsState','fsAmount'].forEach(id=>{const el=document.getElementById(id);if(el)el.value='';});
   removeFile();prefillUser();
+}
+
+/* ══════════════════════════════════════════
+   ★ DRIVE FILENAME PREVIEW — Update in real-time
+══════════════════════════════════════════ */
+function updateDriveFileNamePreview(){
+  const regNo=EMS_USER.RegNo||'';
+  // EventID: from selected PA card, or from a manual EventID field if any
+  const eventId=selectedPAEventID||'EVT';
+  const origName=selectedFile?selectedFile.name:'proof.jpg';
+  if(selectedFile){
+    const fname=buildDriveFileName(regNo,eventId,origName);
+    document.getElementById('driveFileName').textContent=fname;
+    document.getElementById('fileNamePreview').style.display='flex';
+  }else{
+    document.getElementById('fileNamePreview').style.display='none';
+  }
 }
 
 /* ══════════════════════════════════════════
@@ -1105,7 +1108,8 @@ async function submitPreApproval(){
   if(!state){setErr('paState','errPaState',true);err=true;}
   if(phone&&phone.length!==10){setErr('paPhone','errPaPhone',true);err=true;}
   if(err){toast('Please fix the highlighted fields','error');document.querySelector('.err')?.scrollIntoView({behavior:'smooth',block:'center'});return;}
-  const btn=document.getElementById('btnPA');btn.innerHTML='⏳ Submitting...';btn.disabled=true;
+  const btn=document.getElementById('btnPA');
+  btn.innerHTML='<span class="spinner"></span> Submitting...';btn.disabled=true;
   const res=await api('preApproval',{regNo,name,phone,section,year,category,type,scope,sponsored,eventDate,collegeName:college,city,state,venue,description:desc});
   toast(res.message,res.success?'success':'error');
   btn.innerHTML='📝 Submit Pre-Approval';btn.disabled=false;
@@ -1116,6 +1120,7 @@ async function submitPreApproval(){
    FILE UPLOAD
 ══════════════════════════════════════════ */
 let selectedFile=null;const MAX_BYTES=3.5*1024*1024;
+
 function onFileSelected(input){
   const file=input.files[0];if(!file)return;
   if(file.size>MAX_BYTES){toast('File too large (max 3.5 MB)','error');input.value='';return;}
@@ -1129,28 +1134,58 @@ function onFileSelected(input){
   document.getElementById('fileDrop').style.display='none';
   document.getElementById('filePrev').style.display='flex';
   setErr('fsProofFile','errFsProof',false);
+  // ★ Show Drive filename preview
+  updateDriveFileNamePreview();
 }
-function removeFile(){selectedFile=null;document.getElementById('fsProofFile').value='';document.getElementById('fileDrop').style.display='block';document.getElementById('filePrev').style.display='none';}
-function setUploadProgress(pct){const p=document.getElementById('uploadProg');p.style.display=pct<100?'block':'none';document.getElementById('uploadBar').style.width=pct+'%';document.getElementById('uploadPct').textContent=pct+'%';}
+
+function removeFile(){
+  selectedFile=null;
+  document.getElementById('fsProofFile').value='';
+  document.getElementById('fileDrop').style.display='block';
+  document.getElementById('filePrev').style.display='none';
+  document.getElementById('fileNamePreview').style.display='none';
+}
+
+function setUploadProgress(pct){
+  const p=document.getElementById('uploadProg');p.style.display=pct<100&&pct>0?'block':'none';
+  document.getElementById('uploadBar').style.width=pct+'%';
+  document.getElementById('uploadPct').textContent=pct+'%';
+}
+
 function fileToBase64(file){
   return new Promise((resolve,reject)=>{
     if(file.type.startsWith('image/')){
       const img=new Image(),url=URL.createObjectURL(file);
-      img.onload=()=>{URL.revokeObjectURL(url);let w=img.width,h=img.height;const mx=1800;if(w>mx||h>mx){if(w>h){h=Math.round(h*mx/w);w=mx;}else{w=Math.round(w*mx/h);h=mx;}}const cv=document.createElement('canvas');cv.width=w;cv.height=h;cv.getContext('2d').drawImage(img,0,0,w,h);resolve(cv.toDataURL('image/jpeg',0.82).split(',')[1]);};
+      img.onload=()=>{
+        URL.revokeObjectURL(url);
+        let w=img.width,h=img.height;const mx=1800;
+        if(w>mx||h>mx){if(w>h){h=Math.round(h*mx/w);w=mx;}else{w=Math.round(w*mx/h);h=mx;}}
+        const cv=document.createElement('canvas');cv.width=w;cv.height=h;
+        cv.getContext('2d').drawImage(img,0,0,w,h);
+        resolve(cv.toDataURL('image/jpeg',0.82).split(',')[1]);
+      };
       img.onerror=reject;img.src=url;
-    }else{const r=new FileReader();r.onload=()=>resolve(r.result.split(',')[1]);r.onerror=reject;r.readAsDataURL(file);}
+    }else{
+      const r=new FileReader();r.onload=()=>resolve(r.result.split(',')[1]);r.onerror=reject;r.readAsDataURL(file);
+    }
   });
 }
+
 document.addEventListener('DOMContentLoaded',()=>{
   const drop=document.getElementById('fileDrop');if(!drop)return;
   drop.addEventListener('dragover',e=>{e.preventDefault();drop.classList.add('dragover');});
   drop.addEventListener('dragleave',()=>drop.classList.remove('dragover'));
-  drop.addEventListener('drop',e=>{e.preventDefault();drop.classList.remove('dragover');const file=e.dataTransfer.files[0];if(file){const inp=document.getElementById('fsProofFile');const dt=new DataTransfer();dt.items.add(file);inp.files=dt.files;onFileSelected(inp);}});
+  drop.addEventListener('drop',e=>{
+    e.preventDefault();drop.classList.remove('dragover');
+    const file=e.dataTransfer.files[0];
+    if(file){const inp=document.getElementById('fsProofFile');const dt=new DataTransfer();dt.items.add(file);inp.files=dt.files;onFileSelected(inp);}
+  });
   drop.addEventListener('keydown',e=>{if(e.key==='Enter'||e.key===' '){e.preventDefault();document.getElementById('fsProofFile').click();}});
 });
 
 /* ══════════════════════════════════════════
    SUBMIT FINAL PROOF
+   ★ KEY CHANGE: fileName sent as {RegNo}_{EventID}.ext
 ══════════════════════════════════════════ */
 async function submitFinal(){
   clearErrs([['fsCategory','errFsCategory'],['fsType','errFsType'],['fsScope','errFsScope'],['fsYear','errFsYear'],['fsDate','errFsDate'],['fsPrize','errFsPrize'],['fsPhone','errFsPhone'],['fsCollege','errFsCollege'],['fsCity','errFsCity'],['fsState','errFsState'],['fsProofFile','errFsProof']]);
@@ -1159,20 +1194,53 @@ async function submitFinal(){
   const year=document.getElementById('fsYear').value,category=document.getElementById('fsCategory').value,type=document.getElementById('fsType').value,scope=document.getElementById('fsScope').value,sponsored=document.getElementById('fsSponsored').value,eventDate=document.getElementById('fsDate').value,prize=document.getElementById('fsPrize').value;
   const amount=document.getElementById('fsAmount').value||0,college=g('fsCollege'),city=g('fsCity'),state=g('fsState');
   let err=false;
-  if(!category){setErr('fsCategory','errFsCategory',true);err=true;}if(!type){setErr('fsType','errFsType',true);err=true;}if(!scope){setErr('fsScope','errFsScope',true);err=true;}if(!year){setErr('fsYear','errFsYear',true);err=true;}if(!eventDate){setErr('fsDate','errFsDate',true);err=true;}if(!prize){setErr('fsPrize','errFsPrize',true);err=true;}if(!college){setErr('fsCollege','errFsCollege',true);err=true;}if(!city){setErr('fsCity','errFsCity',true);err=true;}if(!state){setErr('fsState','errFsState',true);err=true;}if(phone&&phone.length!==10){setErr('fsPhone','errFsPhone',true);err=true;}if(!selectedFile){setErr('fsProofFile','errFsProof',true);err=true;}
+  if(!category){setErr('fsCategory','errFsCategory',true);err=true;}
+  if(!type){setErr('fsType','errFsType',true);err=true;}
+  if(!scope){setErr('fsScope','errFsScope',true);err=true;}
+  if(!year){setErr('fsYear','errFsYear',true);err=true;}
+  if(!eventDate){setErr('fsDate','errFsDate',true);err=true;}
+  if(!prize){setErr('fsPrize','errFsPrize',true);err=true;}
+  if(!college){setErr('fsCollege','errFsCollege',true);err=true;}
+  if(!city){setErr('fsCity','errFsCity',true);err=true;}
+  if(!state){setErr('fsState','errFsState',true);err=true;}
+  if(phone&&phone.length!==10){setErr('fsPhone','errFsPhone',true);err=true;}
+  if(!selectedFile){setErr('fsProofFile','errFsProof',true);err=true;}
   if(err){toast('Please fix the highlighted fields','error');document.querySelector('.err')?.scrollIntoView({behavior:'smooth',block:'center'});return;}
-  const btn=document.getElementById('btnFS');btn.innerHTML='⏳ Uploading...';btn.disabled=true;setUploadProgress(20);
+
+  const btn=document.getElementById('btnFS');
+  btn.innerHTML='<span class="spinner"></span> Uploading...';btn.disabled=true;setUploadProgress(20);
+
   let fileBase64,fileName,mimeType;
   try{
     fileBase64=await fileToBase64(selectedFile);
-    if(selectedFile.type.startsWith('image/')){mimeType='image/jpeg';fileName=selectedFile.name.replace(/\.[^.]+$/,'.jpg');}
-    else{mimeType=selectedFile.type;fileName=selectedFile.name;}
+    if(selectedFile.type.startsWith('image/')){
+      mimeType='image/jpeg';
+      // ★ Use {RegNo}_{EventID}.jpg format
+      const eventId=selectedPAEventID||'EVT';
+      fileName=buildDriveFileName(regNo,eventId,selectedFile.name.replace(/\.[^.]+$/,'.jpg'));
+    }else{
+      mimeType=selectedFile.type;
+      // ★ Use {RegNo}_{EventID}.pdf format
+      const eventId=selectedPAEventID||'EVT';
+      fileName=buildDriveFileName(regNo,eventId,selectedFile.name);
+    }
     document.getElementById('fileSz').textContent=Math.round(fileBase64.length*.75/1024)+' KB (compressed)';
-  }catch(e){toast('Could not read file: '+e.message,'error');btn.innerHTML='📤 Submit Final Proof';btn.disabled=false;setUploadProgress(100);return;}
-  setUploadProgress(50);btn.innerHTML='⏳ Submitting...';
+  }catch(e){
+    toast('Could not read file: '+e.message,'error');
+    btn.innerHTML='📤 Submit Final Proof';btn.disabled=false;setUploadProgress(0);return;
+  }
+
+  setUploadProgress(50);btn.innerHTML='<span class="spinner"></span> Submitting...';
+
   const res=await api('submitFinal',{regNo,name,phone,section,year,category,type,scope,sponsored,eventDate,collegeName:college,city,state,prize,amount,fileBase64,fileName,mimeType});
-  setUploadProgress(100);toast(res.message,res.success?'success':'error');btn.innerHTML='📤 Submit Final Proof';btn.disabled=false;
-  if(res.success){clearFSForm();loadStudentScore();if(res.proofLink)toast('📎 Proof saved to Drive','info');if(res.folderPath)toast('📁 Saved in: '+res.folderPath,'info');}
+  setUploadProgress(0);
+  toast(res.message,res.success?'success':'error');
+  btn.innerHTML='📤 Submit Final Proof';btn.disabled=false;
+  if(res.success){
+    clearFSForm();loadStudentScore();
+    if(res.proofLink)toast('📎 Proof saved to Drive','info');
+    if(res.folderPath)toast('📁 Saved in: '+res.folderPath,'info');
+  }
 }
 
 /* ══════════════════════════════════════════
@@ -1183,17 +1251,13 @@ async function loadHistory(){
   const regNo=EMS_USER.RegNo;if(!regNo)return;
   const data=await api('getStudentData',{regNo});
   if(!data.success){toast(data.message,'error');return;}
-  allPreApprovals=data.preApprovals||[];
-  allFinals=data.finals||[];
-  histAll=allFinals;
-  renderHistoryCards();
-  renderHistoryTable(allFinals);
+  allPreApprovals=data.preApprovals||[];allFinals=data.finals||[];histAll=allFinals;
+  renderHistoryCards();renderHistoryTable(allFinals);renderHistoryMobileCards(allFinals);
   document.getElementById('paCount').textContent=allPreApprovals.length;
   document.getElementById('fsCount').textContent=allFinals.length;
 }
 
 function renderHistoryCards(){
-  // Pre-approval cards with stage progress bar
   const paHtml=allPreApprovals.map(p=>{
     const chairDone=p.ChairStatus==='Approved',chairRej=p.ChairStatus==='Rejected';
     const hodDone=p.HODStatus==='Approved',hodRej=p.HODStatus==='Rejected';
@@ -1224,7 +1288,6 @@ function renderHistoryCards(){
   }).join('')||`<div class="empty-state"><div class="empty-state-icon">📋</div><div class="empty-state-title">No pre-approvals yet</div><div class="empty-state-sub">Submit your first pre-approval request</div><div style="margin-top:12px"><button class="btn btn-pri btn-sm" onclick="switchTab('preapproval')">📝 Submit Now</button></div></div>`;
   document.getElementById('preApprovalCards').innerHTML=paHtml;
 
-  // Final submission cards
   const fHtml=allFinals.map(f=>`
     <div class="fs-hist-card">
       <div class="fs-hist-name">${f.EventName||'—'}</div>
@@ -1259,14 +1322,37 @@ function renderHistoryTable(data){
   document.getElementById('historyTable').innerHTML=rows||'<tr><td colspan="8" class="empty">No submissions yet</td></tr>';
 }
 
+// ★ Mobile card layout for history (replaces wide table on small screens)
+function renderHistoryMobileCards(data){
+  const c=document.getElementById('historyMobileCards');
+  if(!data.length){c.innerHTML='<div class="empty" style="padding:24px;text-align:center;color:var(--muted)">No submissions yet</div>';return;}
+  c.innerHTML=data.map(f=>`
+    <div class="mc-item">
+      <div class="mc-row">
+        <div class="mc-title">${f.EventName||'—'}</div>
+        <span class="badge ${f.Status==='Verified'?'b-cyan':f.Status==='Rejected'?'b-red':'b-muted'}">${f.Status}</span>
+      </div>
+      <div class="mc-meta">📅 ${fmtDate(f.EventDate)} · 🏛️ ${f.CollegeName||'—'}${f.City?', '+f.City:''}</div>
+      <div class="mc-footer">
+        <div style="display:flex;gap:6px;align-items:center">
+          <span class="badge b-gold">${f.Prize}</span>
+          <span style="font-weight:800;color:${scoreColor(f.Score)}">${f.Score} pts</span>
+          ${f.Amount&&Number(f.Amount)>0?`<span style="font-size:11px;color:var(--green);font-weight:700">💰 ₹${Number(f.Amount).toLocaleString('en-IN')}</span>`:''}
+        </div>
+        ${f.ProofLink?`<a href="${f.ProofLink}" target="_blank" rel="noopener" class="btn btn-out btn-xs">🔗 View</a>`:''}
+      </div>
+    </div>`).join('');
+}
+
 function filterTable(){
   const status=document.getElementById('filterStatus').value;
   const filtered=status?histAll.filter(f=>f.Status===status):histAll;
   renderHistoryTable(filtered);
+  renderHistoryMobileCards(filtered);
 }
 
 /* ══════════════════════════════════════════
-   APPROVAL TRACKER TAB — THE BIG FEATURE
+   APPROVAL TRACKER TAB
 ══════════════════════════════════════════ */
 function renderTracker(){
   const c=document.getElementById('trackerContent');
@@ -1276,70 +1362,55 @@ function renderTracker(){
       <div class="empty-state-title">No Pre-Approvals Found</div>
       <div class="empty-state-sub">Submit a pre-approval first to track its approval journey here.</div>
       <div style="margin-top:14px"><button class="btn btn-pri" onclick="switchTab('preapproval')">📝 Submit Pre-Approval</button></div>
-    </div>`;
-    return;
+    </div>`;return;
   }
 
-  // Sort: pending first, then by date desc
   const sorted=[...allPreApprovals].sort((a,b)=>{
     const aFull=a.Status==='Fully Approved'?1:0,bFull=b.Status==='Fully Approved'?1:0;
     return aFull-bFull||new Date(b.SubmittedAt||0)-new Date(a.SubmittedAt||0);
   });
 
-  const html=sorted.map((p,idx)=>{
+  const html=sorted.map((p)=>{
     const chairSt=p.ChairStatus||'Pending';
     const hodSt=p.HODStatus||'Pending';
     const hodLocked=chairSt!=='Approved';
     const fullyApproved=p.Status==='Fully Approved'||(chairSt==='Approved'&&hodSt==='Approved');
     const anyRejected=chairSt==='Rejected'||hodSt==='Rejected';
 
-    // Determine node states
-    // Step 1: Submit (always done)
-    // Step 2: Chairperson
     const chairNodeCls=chairSt==='Approved'?'done':chairSt==='Rejected'?'rejected':'pending';
     const chairIcon=chairSt==='Approved'?'✅':chairSt==='Rejected'?'❌':'⏳';
     const chairTxt=chairSt==='Approved'?'Approved':chairSt==='Rejected'?'Rejected':'Awaiting...';
-    // Step 3: HOD (locked until chair approved)
     const hodNodeCls=hodLocked?'locked':(hodSt==='Approved'?'done':hodSt==='Rejected'?'rejected':'pending');
     const hodIcon=hodLocked?'🔒':(hodSt==='Approved'?'✅':hodSt==='Rejected'?'❌':'⏳');
     const hodTxt=hodLocked?'Locked':(hodSt==='Approved'?'Approved':hodSt==='Rejected'?'Rejected':'Awaiting...');
-    // Step 4: Attend
     const attendCls=fullyApproved?'waiting':'locked';
-    // Step 5: Proof submitted
     const hasProof=allFinals.some(f=>f.EventID===p.EventID&&f.EventDate===p.EventDate);
     const proofCls=hasProof?'done':(fullyApproved?'waiting':'locked');
     const proofIcon=hasProof?'✅':(fullyApproved?'📤':'🔒');
-    // Step 6: Verified
     const isVerified=allFinals.some(f=>f.EventID===p.EventID&&f.EventDate===p.EventDate&&f.Status==='Verified');
     const verifyCls=isVerified?'done':(hasProof?'waiting':'locked');
 
-    // Overall pill
     let pillCls,pillTxt,pillIcon;
     if(anyRejected){pillCls='ap-rejected';pillTxt='Rejected';pillIcon='❌';}
-    else if(fullyApproved&&isVerified){pillCls='ap-approved';pillTxt='Completed & Verified';pillIcon='🏅';}
-    else if(fullyApproved&&hasProof){pillCls='ap-pending';pillTxt='Proof Under Review';pillIcon='🔎';}
+    else if(fullyApproved&&isVerified){pillCls='ap-approved';pillTxt='Completed';pillIcon='🏅';}
+    else if(fullyApproved&&hasProof){pillCls='ap-pending';pillTxt='Under Review';pillIcon='🔎';}
     else if(fullyApproved){pillCls='ap-approved';pillTxt='Ready to Attend';pillIcon='🎉';}
     else if(chairSt==='Approved'){pillCls='ap-pending';pillTxt='Awaiting HOD';pillIcon='⏳';}
-    else{pillCls='ap-pending';pillTxt='Awaiting Chairperson';pillIcon='⏳';}
+    else{pillCls='ap-pending';pillTxt='Awaiting Chair';pillIcon='⏳';}
 
-    // Percentage complete
     let pct=0;
-    if(chairSt==='Approved')pct=33;
-    if(hodSt==='Approved')pct=50;
-    if(hasProof)pct=75;
-    if(isVerified)pct=100;
-    if(anyRejected)pct=0;
+    if(chairSt==='Approved')pct=33;if(hodSt==='Approved')pct=50;
+    if(hasProof)pct=75;if(isVerified)pct=100;if(anyRejected)pct=0;
 
-    // Timeline entries
     const tlItems=[];
     tlItems.push({state:'done',title:'Pre-Approval Submitted',sub:`Submitted on ${fmtDate(p.SubmittedAt||p.EventDate)}`,icon:'📝'});
     if(chairSt==='Approved') tlItems.push({state:'done',title:'Chairperson Approved',sub:`Approved by ${p.ChairBy||'Chairperson'} · ${fmtDate(p.ChairDate)}`,icon:'✅'});
     else if(chairSt==='Rejected') tlItems.push({state:'rejected',title:'Chairperson Rejected',sub:`Rejected by ${p.ChairBy||'Chairperson'} · ${fmtDate(p.ChairDate)}`,icon:'❌'});
-    else tlItems.push({state:'active',title:'Awaiting Chairperson Approval',sub:'Your request is in the Chairperson\'s queue',icon:'⏳'});
+    else tlItems.push({state:'active',title:'Awaiting Chairperson Approval',sub:"Your request is in the Chairperson's queue",icon:'⏳'});
     if(chairSt==='Approved'){
       if(hodSt==='Approved') tlItems.push({state:'done',title:'HOD Approved',sub:`Approved by ${p.HODBy||'HOD'} · ${fmtDate(p.HODDate)}`,icon:'✅'});
       else if(hodSt==='Rejected') tlItems.push({state:'rejected',title:'HOD Rejected',sub:`Rejected by ${p.HODBy||'HOD'} · ${fmtDate(p.HODDate)}`,icon:'❌'});
-      else tlItems.push({state:'active',title:'Awaiting HOD Approval',sub:'Chairperson approved ✓ — now in HOD\'s queue',icon:'⏳'});
+      else tlItems.push({state:'active',title:'Awaiting HOD Approval',sub:"Chairperson approved ✓ — now in HOD's queue",icon:'⏳'});
     }
     if(fullyApproved){
       if(hasProof){
@@ -1365,14 +1436,13 @@ function renderTracker(){
     return `
     <div class="card" style="margin-bottom:var(--sp3);border-left:4px solid ${anyRejected?'var(--red)':fullyApproved&&isVerified?'var(--green)':fullyApproved?'var(--blue)':'var(--gold)'}">
       <div style="display:flex;align-items:flex-start;justify-content:space-between;gap:10px;flex-wrap:wrap;margin-bottom:4px">
-        <div>
-          <div style="font-size:15px;font-weight:800;letter-spacing:-.2px">${p.EventName||'—'}</div>
+        <div style="flex:1;min-width:0">
+          <div style="font-size:15px;font-weight:800;letter-spacing:-.2px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">${p.EventName||'—'}</div>
           <div style="font-size:11px;color:var(--muted);margin-top:2px">${fmtDate(p.EventDate)} · ${p.CollegeName||''}${p.City?', '+p.City:''} · ${p.Scope||''}</div>
         </div>
-        <span class="atrack-pill ${pillCls}">${pillIcon} ${pillTxt}</span>
+        <span class="atrack-pill ${pillCls}" style="flex-shrink:0">${pillIcon} ${pillTxt}</span>
       </div>
 
-      <!-- Progress bar -->
       <div style="margin:10px 0 6px">
         <div style="display:flex;justify-content:space-between;font-size:10px;color:var(--muted);margin-bottom:4px;font-weight:700">
           <span>Progress</span><span>${pct}%</span>
@@ -1382,7 +1452,6 @@ function renderTracker(){
         </div>
       </div>
 
-      <!-- Visual 6-step tracker -->
       <div class="atrack-wrap">
         <div class="atrack-header">Approval Journey</div>
         <div class="atrack">
@@ -1412,38 +1481,33 @@ function renderTracker(){
           </div>
           <div class="atrack-step ${proofCls}">
             <div class="atrack-node">${proofIcon}</div>
-            <div class="atrack-info"><div class="atrack-role">Upload Proof</div><div class="atrack-status-txt">${hasProof?'Uploaded':fullyApproved?'Pending':'Locked'}</div></div>
+            <div class="atrack-info"><div class="atrack-role">Upload</div><div class="atrack-status-txt">${hasProof?'Uploaded':fullyApproved?'Pending':'Locked'}</div></div>
           </div>
           <div class="atrack-step ${verifyCls}">
             <div class="atrack-node">${isVerified?'🏅':hasProof?'⏳':'🔒'}</div>
             <div class="atrack-info">
               <div class="atrack-role">Verified</div>
-              <div class="atrack-status-txt">${isVerified?'Score Awarded':hasProof?'In Review':'Locked'}</div>
+              <div class="atrack-status-txt">${isVerified?'Score!':hasProof?'In Review':'Locked'}</div>
               ${isVerified&&proofSection?`<div class="atrack-date">${proofSection.Score} pts</div>`:''}
             </div>
           </div>
         </div>
       </div>
 
-      <!-- Detail timeline -->
       <details style="margin-top:12px">
-        <summary style="cursor:pointer;font-size:12px;font-weight:700;color:var(--blue);user-select:none;padding:6px 0;list-style:none;display:flex;align-items:center;gap:5px">
+        <summary style="cursor:pointer;font-size:12px;font-weight:700;color:var(--blue);user-select:none;padding:8px 0;list-style:none;display:flex;align-items:center;gap:5px">
           <span>▶</span> View Detailed Timeline
         </summary>
-        <div style="margin-top:10px">
-          <div class="timeline">${timelineHtml}</div>
-        </div>
+        <div style="margin-top:10px"><div class="timeline">${timelineHtml}</div></div>
       </details>
 
-      ${anyRejected?`<div class="info-box ib-red" style="margin-top:10px;margin-bottom:0"><span class="info-icon">❌</span><span>Your pre-approval was rejected. Please re-submit a new request if needed. Contact your ${chairSt==='Rejected'?'Chairperson':'HOD'} for more details.</span></div>`:''}
+      ${anyRejected?`<div class="info-box ib-red" style="margin-top:10px;margin-bottom:0"><span class="info-icon">❌</span><span>Your pre-approval was rejected. Please re-submit if needed. Contact your ${chairSt==='Rejected'?'Chairperson':'HOD'} for details.</span></div>`:''}
       ${fullyApproved&&!hasProof?`<div style="margin-top:10px"><button class="btn btn-green btn-sm" onclick="switchTab('submit')">🎉 Upload Certificate Now</button></div>`:''}
-      ${isVerified&&proofSection?`<div class="info-box ib-green" style="margin-top:10px;margin-bottom:0"><span class="info-icon">🏅</span><span>Congratulations! You earned <strong>${proofSection.Score} points</strong> for this event. ${proofSection.ProofLink?`<a href="${proofSection.ProofLink}" target="_blank" style="color:var(--green);font-weight:800">View Proof ↗</a>`:''}</span></div>`:''}
+      ${isVerified&&proofSection?`<div class="info-box ib-green" style="margin-top:10px;margin-bottom:0"><span class="info-icon">🏅</span><span>Congratulations! You earned <strong>${proofSection.Score} points</strong>. ${proofSection.ProofLink?`<a href="${proofSection.ProofLink}" target="_blank" style="color:var(--green);font-weight:800">View Proof ↗</a>`:''}</span></div>`:''}
     </div>`;
   }).join('');
 
   c.innerHTML=html;
-
-  // Animate progress bars
   setTimeout(()=>{
     c.querySelectorAll('[style*="transition:width"]').forEach(el=>{const w=el.style.width;el.style.width='0%';requestAnimationFrame(()=>requestAnimationFrame(()=>el.style.width=w));});
   },100);
