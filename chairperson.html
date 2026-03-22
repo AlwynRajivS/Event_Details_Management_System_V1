@@ -16,945 +16,478 @@
   --surface3: #e6ecff;
   --border: rgba(37,99,235,.13);
   --border2: rgba(37,99,235,.22);
-
   --text: #111827;
   --text2: #1e3a8a;
   --muted: #64748b;
   --muted2: #94a3b8;
-
   --blue: #2563eb;
   --blue-dk: #1d4ed8;
   --blue-lt: rgba(37,99,235,.09);
   --blue-md: rgba(37,99,235,.18);
-  --blue-glow: rgba(37,99,235,.25);
   --indigo: #4338ca;
-
   --cyan: #0891b2;
   --cyan-lt: rgba(8,145,178,.10);
-
   --green: #059669;
   --green-dk: #047857;
   --green-lt: rgba(5,150,105,.10);
   --green-md: rgba(5,150,105,.20);
-
   --gold: #d97706;
   --gold-lt: rgba(217,119,6,.10);
-
   --red: #dc2626;
   --red-dk: #b91c1c;
   --red-lt: rgba(220,38,38,.09);
   --red-md: rgba(220,38,38,.18);
-
   --orange: #ea580c;
   --orange-lt: rgba(234,88,12,.10);
-
   --purple: #7c3aed;
   --purple-lt: rgba(124,58,237,.10);
-
-  --r: 10px;
-  --r-md: 14px;
-  --r-lg: 18px;
-  --r-xl: 22px;
-  --r-2xl: 28px;
-
+  --r: 10px; --r-md: 14px; --r-lg: 18px; --r-xl: 22px; --r-2xl: 28px;
   --sh: 0 1px 3px rgba(0,0,0,.05), 0 4px 16px rgba(37,99,235,.08);
   --sh-md: 0 4px 20px rgba(37,99,235,.12), 0 10px 40px rgba(37,99,235,.07);
   --sh-lg: 0 8px 40px rgba(37,99,235,.18);
-
   --sat: env(safe-area-inset-top, 0px);
   --sar: env(safe-area-inset-right, 0px);
   --sab: env(safe-area-inset-bottom, 0px);
   --sal: env(safe-area-inset-left, 0px);
-
   --nav-h: 60px;
   --bottom-h: 70px;
 }
-
 *,*::before,*::after { margin:0; padding:0; box-sizing:border-box; -webkit-tap-highlight-color: transparent; }
 html { scroll-behavior: smooth; -webkit-text-size-adjust: 100%; }
-
-body {
-  font-family: 'DM Sans', sans-serif;
-  background: var(--bg);
-  color: var(--text);
-  min-height: 100vh;
-  font-size: 14px;
-  overscroll-behavior: none;
-}
-
-body::before {
-  content: '';
-  position: fixed; inset: 0;
-  pointer-events: none; z-index: 0;
-  background:
-    radial-gradient(ellipse 60% 40% at 0% 0%, rgba(37,99,235,.055), transparent 60%),
-    radial-gradient(ellipse 40% 30% at 100% 100%, rgba(8,145,178,.04), transparent 60%);
-}
-
-/* ══ FONTS ══ */
+body { font-family: 'DM Sans', sans-serif; background: var(--bg); color: var(--text); min-height: 100vh; font-size: 14px; overscroll-behavior: none; }
+body::before { content:''; position:fixed; inset:0; pointer-events:none; z-index:0;
+  background: radial-gradient(ellipse 60% 40% at 0% 0%, rgba(37,99,235,.055), transparent 60%),
+    radial-gradient(ellipse 40% 30% at 100% 100%, rgba(8,145,178,.04), transparent 60%); }
 h1,h2,h3,.font-syne { font-family: 'Syne', sans-serif; }
 .mono { font-family: 'DM Mono', monospace; font-size: .82em; color: var(--muted); }
 
-/* ══════════════════════════════
-   SPLASH
-══════════════════════════════ */
-#splash {
-  position: fixed; inset: 0;
-  background: linear-gradient(145deg, #0f172a 0%, #1e3a8a 50%, #2563eb 100%);
-  z-index: 9999;
-  display: flex; align-items: center; justify-content: center;
-  flex-direction: column; gap: 16px;
-  transition: opacity .5s, transform .5s;
-}
-#splash.fade { opacity: 0; transform: scale(1.04); pointer-events: none; }
-#splash.gone { display: none; }
+/* ══ SPLASH ══ */
+#splash { position:fixed; inset:0; background:linear-gradient(145deg,#0f172a 0%,#1e3a8a 50%,#2563eb 100%);
+  z-index:9999; display:flex; align-items:center; justify-content:center; flex-direction:column; gap:16px;
+  transition: opacity .5s, transform .5s; }
+#splash.fade { opacity:0; transform:scale(1.04); pointer-events:none; }
+#splash.gone { display:none; }
+.spl-ring { width:80px; height:80px; border-radius:50%; background:rgba(255,255,255,.08); border:2px solid rgba(255,255,255,.2);
+  display:flex; align-items:center; justify-content:center; font-size:34px;
+  box-shadow:0 0 0 0 rgba(37,99,235,.5); animation:splRing 2.4s ease-in-out infinite; }
+@keyframes splRing { 0%,100%{box-shadow:0 0 0 0 rgba(37,99,235,.5)} 50%{box-shadow:0 0 0 20px rgba(37,99,235,0)} }
+.spl-title { font-family:'Syne',sans-serif; font-size:26px; font-weight:800; color:#fff; letter-spacing:-.4px; }
+.spl-sub { font-size:13px; color:rgba(255,255,255,.55); letter-spacing:.5px; }
+.spl-prog { width:200px; height:3px; background:rgba(255,255,255,.1); border-radius:3px; overflow:hidden; margin-top:8px; }
+.spl-bar { height:100%; width:30%; background:linear-gradient(90deg,rgba(255,255,255,.4),#fff); border-radius:3px; animation:sBar 1.8s ease-in-out infinite; }
+@keyframes sBar { 0%{width:0;margin-left:0} 50%{width:50%;margin-left:25%} 100%{width:0;margin-left:100%} }
 
-.spl-ring {
-  width: 80px; height: 80px; border-radius: 50%;
-  background: rgba(255,255,255,.08);
-  border: 2px solid rgba(255,255,255,.2);
-  display: flex; align-items: center; justify-content: center;
-  font-size: 34px;
-  box-shadow: 0 0 0 0 rgba(37,99,235,.5);
-  animation: splRing 2.4s ease-in-out infinite;
-}
-@keyframes splRing {
-  0%,100% { box-shadow: 0 0 0 0 rgba(37,99,235,.5); }
-  50% { box-shadow: 0 0 0 20px rgba(37,99,235,0); }
-}
-.spl-title { font-family: 'Syne', sans-serif; font-size: 26px; font-weight: 800; color: #fff; letter-spacing: -.4px; }
-.spl-sub { font-size: 13px; color: rgba(255,255,255,.55); letter-spacing: .5px; }
-.spl-prog {
-  width: 200px; height: 3px; background: rgba(255,255,255,.1);
-  border-radius: 3px; overflow: hidden; margin-top: 8px;
-}
-.spl-bar {
-  height: 100%; width: 30%;
-  background: linear-gradient(90deg, rgba(255,255,255,.4), #fff);
-  border-radius: 3px;
-  animation: sBar 1.8s ease-in-out infinite;
-}
-@keyframes sBar {
-  0% { width: 0; margin-left: 0; }
-  50% { width: 50%; margin-left: 25%; }
-  100% { width: 0; margin-left: 100%; }
-}
-
-/* ══════════════════════════════
-   LAYOUT
-══════════════════════════════ */
-.layout {
-  display: flex;
-  flex-direction: column;
-  min-height: 100vh;
-  position: relative; z-index: 1;
-}
+/* ══ LAYOUT ══ */
+.layout { display:flex; flex-direction:column; min-height:100vh; position:relative; z-index:1; }
 
 /* ══ TOP NAV ══ */
-.top-nav {
-  position: sticky; top: 0; z-index: 400;
-  height: calc(var(--nav-h) + var(--sat));
-  padding-top: var(--sat);
-  background: rgba(255,255,255,.94);
-  backdrop-filter: blur(20px);
-  -webkit-backdrop-filter: blur(20px);
-  border-bottom: 1px solid var(--border2);
-  box-shadow: 0 2px 20px rgba(37,99,235,.09);
-  display: flex; align-items: center;
-  padding-left: max(16px, var(--sal));
-  padding-right: max(16px, var(--sar));
-  gap: 10px;
-}
+.top-nav { position:sticky; top:0; z-index:400; height:calc(var(--nav-h) + var(--sat)); padding-top:var(--sat);
+  background:rgba(255,255,255,.94); backdrop-filter:blur(20px); -webkit-backdrop-filter:blur(20px);
+  border-bottom:1px solid var(--border2); box-shadow:0 2px 20px rgba(37,99,235,.09);
+  display:flex; align-items:center;
+  padding-left:max(16px,var(--sal)); padding-right:max(16px,var(--sar)); gap:10px; }
+.nav-logo { width:40px; height:40px; border-radius:12px; background:linear-gradient(145deg,#1e40af,#2563eb);
+  display:flex; align-items:center; justify-content:center; font-size:19px; flex-shrink:0; box-shadow:0 3px 12px rgba(37,99,235,.3); }
+.nav-brand { flex:1; min-width:0; }
+.nav-title { font-family:'Syne',sans-serif; font-size:clamp(14px,4vw,17px); font-weight:800; letter-spacing:-.3px;
+  white-space:nowrap; overflow:hidden; text-overflow:ellipsis; color:var(--text2); }
+.nav-sub { font-size:10px; color:var(--muted); letter-spacing:.3px; margin-top:1px; display:none; }
+@media(min-width:400px){.nav-sub{display:block}}
+.nav-right { display:flex; align-items:center; gap:8px; flex-shrink:0; }
+.live-badge { display:flex; align-items:center; gap:5px; padding:4px 10px; border-radius:20px;
+  background:rgba(5,150,105,.10); border:1px solid rgba(5,150,105,.2); font-size:10px; font-weight:700; color:var(--green); }
+.live-dot { width:6px; height:6px; border-radius:50%; background:var(--green); flex-shrink:0; animation:livePulse 2s infinite; }
+@keyframes livePulse{0%,100%{opacity:1}50%{opacity:.3}}
+.user-chip { display:none; align-items:center; gap:7px; padding:4px 10px 4px 4px; background:var(--surface2);
+  border:1.5px solid var(--border2); border-radius:20px; font-size:11px; font-weight:700; color:var(--text2); }
+@media(min-width:480px){.user-chip{display:flex}}
+.uav { width:28px; height:28px; border-radius:50%; background:linear-gradient(145deg,var(--blue),var(--blue-dk));
+  display:flex; align-items:center; justify-content:center; font-size:11px; color:#fff; font-weight:900; flex-shrink:0; }
+.logout-btn { display:inline-flex; align-items:center; gap:5px; height:38px; padding:0 12px; border-radius:10px;
+  background:var(--red-lt); color:var(--red-dk); border:1.5px solid rgba(220,38,38,.2);
+  font-family:'DM Sans',sans-serif; font-size:12px; font-weight:600; cursor:pointer;
+  transition:background .18s,transform .1s; white-space:nowrap; flex-shrink:0; }
+.logout-btn:hover{background:var(--red-md)}.logout-btn:active{transform:scale(.95)}
+.lo-txt{display:none}@media(min-width:420px){.lo-txt{display:inline}}
 
-.nav-logo {
-  width: 40px; height: 40px; border-radius: 12px;
-  background: linear-gradient(145deg, #1e40af, #2563eb);
-  display: flex; align-items: center; justify-content: center;
-  font-size: 19px; flex-shrink: 0;
-  box-shadow: 0 3px 12px rgba(37,99,235,.3);
-}
-.nav-brand { flex: 1; min-width: 0; }
-.nav-title {
-  font-family: 'Syne', sans-serif;
-  font-size: clamp(14px, 4vw, 17px);
-  font-weight: 800; letter-spacing: -.3px;
-  white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
-  color: var(--text2);
-}
-.nav-sub { font-size: 10px; color: var(--muted); letter-spacing: .3px; margin-top: 1px; display: none; }
-@media (min-width: 400px) { .nav-sub { display: block; } }
+/* ══ CONTENT ══ */
+.content { flex:1; padding:clamp(14px,3.5vw,22px) max(16px,var(--sal));
+  padding-right:max(16px,var(--sar));
+  padding-bottom:calc(var(--bottom-h) + max(16px,var(--sab)) + 16px);
+  max-width:1400px; margin:0 auto; width:100%; }
+@media(min-width:768px){.content{padding-bottom:clamp(24px,5vw,40px)}}
 
-.nav-right { display: flex; align-items: center; gap: 8px; flex-shrink: 0; }
-
-.live-badge {
-  display: flex; align-items: center; gap: 5px;
-  padding: 4px 10px; border-radius: 20px;
-  background: rgba(5,150,105,.10);
-  border: 1px solid rgba(5,150,105,.2);
-  font-size: 10px; font-weight: 700; color: var(--green);
-  white-space: nowrap;
-}
-.live-dot {
-  width: 6px; height: 6px; border-radius: 50%;
-  background: var(--green); flex-shrink: 0;
-  animation: livePulse 2s infinite;
-}
-@keyframes livePulse { 0%,100%{opacity:1} 50%{opacity:.3} }
-
-.user-chip {
-  display: none; align-items: center; gap: 7px;
-  padding: 4px 10px 4px 4px;
-  background: var(--surface2);
-  border: 1.5px solid var(--border2);
-  border-radius: 20px; font-size: 11px; font-weight: 700; color: var(--text2);
-}
-@media (min-width: 480px) { .user-chip { display: flex; } }
-.uav {
-  width: 28px; height: 28px; border-radius: 50%;
-  background: linear-gradient(145deg, var(--blue), var(--blue-dk));
-  display: flex; align-items: center; justify-content: center;
-  font-size: 11px; color: #fff; font-weight: 900; flex-shrink: 0;
-}
-
-.logout-btn {
-  display: inline-flex; align-items: center; gap: 5px;
-  height: 38px; padding: 0 12px; border-radius: 10px;
-  background: var(--red-lt); color: var(--red-dk);
-  border: 1.5px solid rgba(220,38,38,.2);
-  font-family: 'DM Sans', sans-serif;
-  font-size: 12px; font-weight: 600; cursor: pointer;
-  transition: background .18s, transform .1s;
-  white-space: nowrap; flex-shrink: 0;
-}
-.logout-btn:hover { background: var(--red-md); }
-.logout-btn:active { transform: scale(.95); }
-.lo-txt { display: none; }
-@media (min-width: 420px) { .lo-txt { display: inline; } }
-
-/* ══ CONTENT AREA ══ */
-.content {
-  flex: 1;
-  padding: clamp(14px, 3.5vw, 22px) max(16px, var(--sal));
-  padding-right: max(16px, var(--sar));
-  padding-bottom: calc(var(--bottom-h) + max(16px, var(--sab)) + 16px);
-  max-width: 1400px; margin: 0 auto; width: 100%;
-}
-
-/* ══ BOTTOM NAV (mobile) ══ */
-.bottom-nav {
-  display: flex;
-  position: fixed;
-  bottom: 0; left: 0; right: 0;
-  z-index: 300;
-  height: calc(var(--bottom-h) + var(--sab));
-  padding-bottom: var(--sab);
-  background: rgba(255,255,255,.97);
-  backdrop-filter: blur(20px);
-  -webkit-backdrop-filter: blur(20px);
-  border-top: 1px solid var(--border2);
-  box-shadow: 0 -4px 24px rgba(37,99,235,.10);
-}
-@media (min-width: 768px) { .bottom-nav { display: none; } }
-
-.bn-item {
-  flex: 1; display: flex; flex-direction: column;
-  align-items: center; justify-content: center; gap: 3px;
-  border: none; background: transparent; cursor: pointer;
-  padding: 8px 4px; color: var(--muted);
-  font-family: 'DM Sans', sans-serif;
-  font-size: 10px; font-weight: 600; letter-spacing: .1px;
-  transition: color .18s; position: relative;
-  min-width: 0;
-}
-.bn-item.on { color: var(--blue); }
-.bn-icon { font-size: 20px; line-height: 1; transition: transform .2s; }
-.bn-item.on .bn-icon { transform: scale(1.1); }
-.bn-lbl { font-size: 9px; white-space: nowrap; overflow: hidden; max-width: 56px; text-overflow: ellipsis; }
-.bn-badge {
-  position: absolute; top: 6px; right: calc(50% - 20px);
-  background: var(--red); color: #fff;
-  font-size: 8px; font-weight: 900;
-  min-width: 15px; height: 15px; border-radius: 8px;
-  display: flex; align-items: center; justify-content: center;
-  padding: 0 3px; border: 1.5px solid #fff;
-}
+/* ══ BOTTOM NAV ══ */
+.bottom-nav { display:flex; position:fixed; bottom:0; left:0; right:0; z-index:300;
+  height:calc(var(--bottom-h) + var(--sab)); padding-bottom:var(--sab);
+  background:rgba(255,255,255,.97); backdrop-filter:blur(20px); -webkit-backdrop-filter:blur(20px);
+  border-top:1px solid var(--border2); box-shadow:0 -4px 24px rgba(37,99,235,.10); }
+@media(min-width:768px){.bottom-nav{display:none}}
+.bn-item { flex:1; display:flex; flex-direction:column; align-items:center; justify-content:center; gap:3px;
+  border:none; background:transparent; cursor:pointer; padding:8px 4px; color:var(--muted);
+  font-family:'DM Sans',sans-serif; font-size:10px; font-weight:600; letter-spacing:.1px;
+  transition:color .18s; position:relative; min-width:0; }
+.bn-item.on{color:var(--blue)}
+.bn-icon{font-size:20px;line-height:1;transition:transform .2s}
+.bn-item.on .bn-icon{transform:scale(1.1)}
+.bn-lbl{font-size:9px;white-space:nowrap;overflow:hidden;max-width:56px;text-overflow:ellipsis}
+.bn-badge { position:absolute; top:6px; right:calc(50% - 20px); background:var(--red); color:#fff;
+  font-size:8px; font-weight:900; min-width:15px; height:15px; border-radius:8px;
+  display:flex; align-items:center; justify-content:center; padding:0 3px; border:1.5px solid #fff; }
 
 /* ══ DESKTOP TABS ══ */
-.desk-tabs {
-  display: none;
-  background: var(--surface);
-  border: 1.5px solid var(--border2);
-  border-radius: var(--r-lg); padding: 5px; gap: 3px;
-  margin-bottom: 20px;
-  box-shadow: var(--sh);
-}
-@media (min-width: 768px) { .desk-tabs { display: flex; } }
-.d-tab {
-  flex: 1; padding: 9px 10px; border: none;
-  border-radius: 10px; background: transparent;
-  color: var(--muted); cursor: pointer;
-  font-family: 'DM Sans', sans-serif;
-  font-size: 12px; font-weight: 600; letter-spacing: .1px;
-  transition: all .2s; white-space: nowrap;
-  display: flex; align-items: center; justify-content: center; gap: 5px;
-  min-height: 40px;
-}
-.d-tab.on {
-  background: linear-gradient(135deg, var(--blue), var(--blue-dk));
-  color: #fff;
-  box-shadow: 0 3px 14px rgba(37,99,235,.3);
-}
-.d-tab:hover:not(.on) { background: var(--surface2); color: var(--text); }
-.d-badge {
-  background: var(--red); color: #fff;
-  border-radius: 8px; padding: 1px 5px;
-  font-size: 9px; font-weight: 900;
-}
-.d-tab.on .d-badge { background: rgba(255,255,255,.3); }
+.desk-tabs { display:none; background:var(--surface); border:1.5px solid var(--border2);
+  border-radius:var(--r-lg); padding:5px; gap:3px; margin-bottom:20px; box-shadow:var(--sh); }
+@media(min-width:768px){.desk-tabs{display:flex}}
+.d-tab { flex:1; padding:9px 10px; border:none; border-radius:10px; background:transparent; color:var(--muted);
+  cursor:pointer; font-family:'DM Sans',sans-serif; font-size:12px; font-weight:600; letter-spacing:.1px;
+  transition:all .2s; white-space:nowrap; display:flex; align-items:center; justify-content:center; gap:5px; min-height:40px; }
+.d-tab.on { background:linear-gradient(135deg,var(--blue),var(--blue-dk)); color:#fff; box-shadow:0 3px 14px rgba(37,99,235,.3); }
+.d-tab:hover:not(.on){background:var(--surface2);color:var(--text)}
+.d-badge { background:var(--red); color:#fff; border-radius:8px; padding:1px 5px; font-size:9px; font-weight:900; }
+.d-tab.on .d-badge{background:rgba(255,255,255,.3)}
 
 /* ══ PANELS ══ */
-.panel { display: none; animation: fadeUp .22s ease; }
-.panel.on { display: block; }
-@keyframes fadeUp { from { opacity:0; transform:translateY(6px); } to { opacity:1; transform:none; } }
+.panel{display:none;animation:fadeUp .22s ease}.panel.on{display:block}
+@keyframes fadeUp{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:none}}
 
-/* ══════════════════════════════
-   PAGE HEADER
-══════════════════════════════ */
-.page-hdr {
-  display: flex; align-items: flex-start; justify-content: space-between;
-  gap: 12px; margin-bottom: 18px; flex-wrap: wrap;
-}
-.page-title {
-  font-family: 'Syne', sans-serif;
-  font-size: clamp(22px, 5.5vw, 32px);
-  font-weight: 800; letter-spacing: -.5px; line-height: 1.1;
-  color: var(--text);
-}
-.page-title span { color: var(--blue); }
-.page-sub { color: var(--muted); font-size: 12px; margin-top: 4px; }
-.page-acts { display: flex; gap: 7px; flex-wrap: wrap; flex-shrink: 0; }
+/* ══ PAGE HEADER ══ */
+.page-hdr { display:flex; align-items:flex-start; justify-content:space-between; gap:12px; margin-bottom:18px; flex-wrap:wrap; }
+.page-title { font-family:'Syne',sans-serif; font-size:clamp(22px,5.5vw,32px); font-weight:800; letter-spacing:-.5px; line-height:1.1; }
+.page-title span{color:var(--blue)}
+.page-sub{color:var(--muted);font-size:12px;margin-top:4px}
+.page-acts{display:flex;gap:7px;flex-wrap:wrap;flex-shrink:0}
 
-/* ══════════════════════════════
-   HERO BANNER
-══════════════════════════════ */
-.hero {
-  background: linear-gradient(145deg, #0f172a 0%, #1e3a8a 50%, #2563eb 100%);
-  border-radius: var(--r-2xl);
-  padding: clamp(20px, 4vw, 30px);
-  margin-bottom: 18px;
-  position: relative; overflow: hidden;
-  box-shadow: 0 10px 50px rgba(37,99,235,.35);
-}
-.hero::before {
-  content: '';
-  position: absolute; inset: 0;
-  background:
-    radial-gradient(ellipse 50% 70% at 95% 50%, rgba(255,255,255,.07), transparent),
-    repeating-linear-gradient(45deg, transparent, transparent 28px, rgba(255,255,255,.015) 28px, rgba(255,255,255,.015) 29px);
-  pointer-events: none;
-}
-.hero-crown {
-  position: absolute; right: clamp(10px, 3vw, 24px); top: 50%;
-  transform: translateY(-50%);
-  font-size: clamp(56px, 14vw, 100px);
-  opacity: .09; pointer-events: none; line-height: 1;
-}
-.hero-inner {
-  position: relative; z-index: 1;
-  display: flex; align-items: center; gap: clamp(14px, 3vw, 24px); flex-wrap: wrap;
-}
-.hero-sec-box { flex-shrink: 0; }
-.hero-sec {
-  font-family: 'Syne', sans-serif;
-  font-size: clamp(42px, 11vw, 72px);
-  font-weight: 800; color: #fff; line-height: 1; letter-spacing: -3px;
-}
-.hero-sec-lbl {
-  font-size: 10px; font-weight: 600; text-transform: uppercase;
-  letter-spacing: 1.2px; color: rgba(255,255,255,.55); margin-top: 4px;
-}
-.hero-div {
-  width: 1px; height: 60px;
-  background: linear-gradient(to bottom, transparent, rgba(255,255,255,.25), transparent);
-  flex-shrink: 0; display: none;
-}
-@media (min-width: 380px) { .hero-div { display: block; } }
-.hero-kpis { display: flex; gap: clamp(18px, 4vw, 32px); flex-wrap: wrap; }
-.hkpi { text-align: center; }
-.hkpi-v {
-  font-family: 'Syne', sans-serif;
-  font-size: clamp(22px, 5.5vw, 28px);
-  font-weight: 800; color: #fff; line-height: 1;
-}
-.hkpi-l {
-  font-size: 9px; font-weight: 600; text-transform: uppercase;
-  letter-spacing: .8px; color: rgba(255,255,255,.5); margin-top: 2px;
-}
-.hero-acts {
-  margin-left: auto; display: flex; flex-direction: column; gap: 6px; flex-shrink: 0;
-}
-.hero-btn {
-  padding: 8px 14px; border-radius: 10px; border: none; cursor: pointer;
-  font-family: 'DM Sans', sans-serif; font-size: 12px; font-weight: 600;
-  display: flex; align-items: center; gap: 6px; white-space: nowrap;
-  transition: all .18s; color: #fff;
-}
-.hb-approve { background: rgba(37,99,235,.25); border: 1px solid rgba(255,255,255,.2); }
-.hb-approve:hover { background: rgba(37,99,235,.4); }
-.hb-verify { background: rgba(5,150,105,.25); border: 1px solid rgba(255,255,255,.18); }
-.hb-verify:hover { background: rgba(5,150,105,.4); }
-.hb-remind { background: rgba(255,255,255,.10); border: 1px solid rgba(255,255,255,.18); }
-.hb-remind:hover { background: rgba(255,255,255,.18); }
+/* ══ HERO ══ */
+.hero { background:linear-gradient(145deg,#0f172a 0%,#1e3a8a 50%,#2563eb 100%); border-radius:var(--r-2xl);
+  padding:clamp(20px,4vw,30px); margin-bottom:18px; position:relative; overflow:hidden;
+  box-shadow:0 10px 50px rgba(37,99,235,.35); }
+.hero::before { content:''; position:absolute; inset:0;
+  background: radial-gradient(ellipse 50% 70% at 95% 50%,rgba(255,255,255,.07),transparent),
+    repeating-linear-gradient(45deg,transparent,transparent 28px,rgba(255,255,255,.015) 28px,rgba(255,255,255,.015) 29px);
+  pointer-events:none; }
+.hero-crown { position:absolute; right:clamp(10px,3vw,24px); top:50%; transform:translateY(-50%);
+  font-size:clamp(56px,14vw,100px); opacity:.09; pointer-events:none; line-height:1; }
+.hero-inner { position:relative; z-index:1; display:flex; align-items:center; gap:clamp(14px,3vw,24px); flex-wrap:wrap; }
+.hero-sec-box{flex-shrink:0}
+.hero-sec { font-family:'Syne',sans-serif; font-size:clamp(42px,11vw,72px); font-weight:800; color:#fff; line-height:1; letter-spacing:-3px; }
+.hero-sec-lbl { font-size:10px; font-weight:600; text-transform:uppercase; letter-spacing:1.2px; color:rgba(255,255,255,.55); margin-top:4px; }
+.hero-div { width:1px; height:60px; background:linear-gradient(to bottom,transparent,rgba(255,255,255,.25),transparent); flex-shrink:0; display:none; }
+@media(min-width:380px){.hero-div{display:block}}
+.hero-kpis{display:flex;gap:clamp(18px,4vw,32px);flex-wrap:wrap}
+.hkpi{text-align:center}
+.hkpi-v { font-family:'Syne',sans-serif; font-size:clamp(22px,5.5vw,28px); font-weight:800; color:#fff; line-height:1; }
+.hkpi-l { font-size:9px; font-weight:600; text-transform:uppercase; letter-spacing:.8px; color:rgba(255,255,255,.5); margin-top:2px; }
+.hero-acts { margin-left:auto; display:flex; flex-direction:column; gap:6px; flex-shrink:0; }
+.hero-btn { padding:8px 14px; border-radius:10px; border:none; cursor:pointer; font-family:'DM Sans',sans-serif;
+  font-size:12px; font-weight:600; display:flex; align-items:center; gap:6px; white-space:nowrap; transition:all .18s; color:#fff; }
+.hb-approve{background:rgba(37,99,235,.25);border:1px solid rgba(255,255,255,.2)}
+.hb-approve:hover{background:rgba(37,99,235,.4)}
+.hb-verify{background:rgba(5,150,105,.25);border:1px solid rgba(255,255,255,.18)}
+.hb-verify:hover{background:rgba(5,150,105,.4)}
+.hb-remind{background:rgba(255,255,255,.10);border:1px solid rgba(255,255,255,.18)}
+.hb-remind:hover{background:rgba(255,255,255,.18)}
+@media(max-width:600px){.hero-acts{display:none}}
 
 /* ══ FLOW INFO ══ */
-.flow-info {
-  display: flex; align-items: flex-start; gap: 10px;
-  background: rgba(37,99,235,.06);
-  border: 1.5px solid rgba(37,99,235,.16);
-  border-radius: var(--r-md); padding: 12px 14px;
-  margin-bottom: 18px; font-size: 12px; font-weight: 500;
-  color: var(--text2); line-height: 1.55;
-}
-.flow-info strong { font-weight: 700; }
+.flow-info { display:flex; align-items:flex-start; gap:10px; background:rgba(37,99,235,.06); border:1.5px solid rgba(37,99,235,.16);
+  border-radius:var(--r-md); padding:12px 14px; margin-bottom:18px; font-size:12px; font-weight:500; color:var(--text2); line-height:1.55; }
 
-/* ══════════════════════════════
-   STAT GRID
-══════════════════════════════ */
-.stat-grid {
-  display: grid;
-  grid-template-columns: repeat(2, 1fr);
-  gap: clamp(8px, 2vw, 12px);
-  margin-bottom: 18px;
-}
-@media (min-width: 480px) { .stat-grid { grid-template-columns: repeat(3, 1fr); } }
-@media (min-width: 900px) { .stat-grid { grid-template-columns: repeat(6, 1fr); } }
+/* ══ STAT GRID ══ */
+.stat-grid { display:grid; grid-template-columns:repeat(2,1fr); gap:clamp(8px,2vw,12px); margin-bottom:18px; }
+@media(min-width:480px){.stat-grid{grid-template-columns:repeat(3,1fr)}}
+@media(min-width:900px){.stat-grid{grid-template-columns:repeat(6,1fr)}}
+.stat-card { background:var(--surface); border:1.5px solid var(--border2); border-radius:var(--r-lg); padding:clamp(12px,3vw,16px);
+  position:relative; overflow:hidden; transition:transform .2s,box-shadow .2s; }
+.stat-card:hover{transform:translateY(-2px);box-shadow:var(--sh-md)}
+.stat-card::before { content:''; position:absolute; top:0; left:0; width:100%; height:3px; border-radius:3px 3px 0 0; }
+.sc-blue::before{background:linear-gradient(90deg,var(--blue),var(--indigo))}
+.sc-green::before{background:linear-gradient(90deg,var(--green),var(--cyan))}
+.sc-cyan::before{background:linear-gradient(90deg,var(--cyan),var(--blue))}
+.sc-purple::before{background:linear-gradient(90deg,var(--purple),var(--indigo))}
+.sc-orange::before{background:linear-gradient(90deg,var(--orange),var(--red))}
+.sc-red::before{background:linear-gradient(90deg,var(--red),#9f1239)}
+.sc-icon { width:32px; height:32px; border-radius:9px; display:flex; align-items:center; justify-content:center; font-size:15px; margin-bottom:10px; }
+.sc-blue .sc-icon{background:var(--blue-lt)}.sc-green .sc-icon{background:var(--green-lt)}.sc-cyan .sc-icon{background:var(--cyan-lt)}
+.sc-purple .sc-icon{background:var(--purple-lt)}.sc-orange .sc-icon{background:var(--orange-lt)}.sc-red .sc-icon{background:var(--red-lt)}
+.sc-num { font-family:'Syne',sans-serif; font-size:clamp(24px,5.5vw,32px); font-weight:800; line-height:1; margin-bottom:3px; }
+.sc-blue .sc-num{color:var(--blue)}.sc-green .sc-num{color:var(--green)}.sc-cyan .sc-num{color:var(--cyan)}
+.sc-purple .sc-num{color:var(--purple)}.sc-orange .sc-num{color:var(--orange)}.sc-red .sc-num{color:var(--red)}
+.sc-lbl{font-size:10px;font-weight:600;color:var(--muted);letter-spacing:.3px}
+.sc-bar{height:3px;background:var(--surface3);border-radius:2px;margin-top:12px;overflow:hidden}
+.sc-fill{height:100%;border-radius:2px;width:0;transition:width 1.5s cubic-bezier(.4,0,.2,1)}
+.sc-blue .sc-fill{background:linear-gradient(90deg,var(--blue),var(--indigo))}
+.sc-green .sc-fill{background:linear-gradient(90deg,var(--green),var(--cyan))}
+.sc-cyan .sc-fill{background:linear-gradient(90deg,var(--cyan),var(--blue))}
+.sc-purple .sc-fill{background:linear-gradient(90deg,var(--purple),var(--indigo))}
+.sc-orange .sc-fill{background:linear-gradient(90deg,var(--orange),var(--red))}
+.sc-red .sc-fill{background:linear-gradient(90deg,var(--red),#9f1239)}
 
-.stat-card {
-  background: var(--surface);
-  border: 1.5px solid var(--border2);
-  border-radius: var(--r-lg);
-  padding: clamp(12px, 3vw, 16px);
-  position: relative; overflow: hidden;
-  transition: transform .2s, box-shadow .2s;
-  cursor: default;
-}
-.stat-card:hover { transform: translateY(-2px); box-shadow: var(--sh-md); }
-.stat-card::before {
-  content: '';
-  position: absolute; top: 0; left: 0;
-  width: 100%; height: 3px; border-radius: 3px 3px 0 0;
-}
-.sc-blue::before { background: linear-gradient(90deg, var(--blue), var(--indigo)); }
-.sc-green::before { background: linear-gradient(90deg, var(--green), var(--cyan)); }
-.sc-cyan::before { background: linear-gradient(90deg, var(--cyan), var(--blue)); }
-.sc-purple::before { background: linear-gradient(90deg, var(--purple), var(--indigo)); }
-.sc-orange::before { background: linear-gradient(90deg, var(--orange), var(--red)); }
-.sc-red::before { background: linear-gradient(90deg, var(--red), #9f1239); }
+/* ══ ANALYTICS ROW ══ */
+.analytics-row { display:grid; grid-template-columns:1fr; gap:12px; margin-bottom:20px; }
+@media(min-width:640px){.analytics-row{grid-template-columns:1fr 1fr}}
+@media(min-width:1100px){.analytics-row{grid-template-columns:5fr 3fr 3fr}}
+.card { background:var(--surface); border:1.5px solid var(--border2); border-radius:var(--r-lg); padding:clamp(14px,3vw,18px); box-shadow:var(--sh); }
+.card-hdr { display:flex; align-items:center; justify-content:space-between; gap:8px; margin-bottom:14px; padding-bottom:12px; border-bottom:1.5px solid var(--border); }
+.card-title { font-family:'Syne',sans-serif; font-size:12px; font-weight:700; color:var(--text); text-transform:uppercase; letter-spacing:.5px; display:flex; align-items:center; gap:6px; }
+.pipeline{display:flex;flex-direction:column;gap:12px}
+.pl-top{display:flex;justify-content:space-between;align-items:center;margin-bottom:5px}
+.pl-name{display:flex;align-items:center;gap:7px;font-size:12px;color:var(--text2);font-weight:500}
+.pl-dot{width:7px;height:7px;border-radius:50%;flex-shrink:0}
+.pl-val{font-size:14px;font-weight:800}
+.pl-bg{height:6px;background:var(--surface3);border-radius:6px;overflow:hidden}
+.pl-fill{height:100%;border-radius:6px;width:0;transition:width 1.5s cubic-bezier(.4,0,.2,1)}
+.pl-pct{font-size:9px;color:var(--muted);text-align:right;margin-top:2px}
+.donut-wrap{display:flex;align-items:center;gap:18px;flex-wrap:wrap}
+.donut-con{position:relative;width:100px;height:100px;flex-shrink:0}
+.donut-svg{transform:rotate(-90deg)}
+.donut-cen{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%) rotate(90deg);text-align:center}
+.donut-pct{font-family:'Syne',sans-serif;font-size:20px;font-weight:800;color:var(--text);line-height:1}
+.donut-lbl{font-size:8px;color:var(--muted);font-weight:700;text-transform:uppercase;letter-spacing:.5px}
+.donut-legend{flex:1;min-width:120px;display:flex;flex-direction:column;gap:9px}
+.d-li{display:flex;align-items:center;gap:8px}
+.d-dot{width:8px;height:8px;border-radius:50%;flex-shrink:0}
+.d-ll{font-size:11px;color:var(--muted);flex:1}
+.d-lv{font-size:13px;font-weight:800;color:var(--text)}
+.scope-bars{display:flex;flex-direction:column;gap:11px}
+.sb-top{display:flex;justify-content:space-between;margin-bottom:4px}
+.sb-lbl{font-size:11px;font-weight:600;color:var(--text2)}
+.sb-val{font-size:12px;font-weight:800;color:var(--text)}
+.sb-bg{height:7px;background:var(--surface3);border-radius:4px;overflow:hidden}
+.sb-fill{height:100%;border-radius:4px;width:0;transition:width 1.3s ease}
 
-.sc-icon {
-  width: 32px; height: 32px; border-radius: 9px;
-  display: flex; align-items: center; justify-content: center;
-  font-size: 15px; margin-bottom: 10px;
-}
-.sc-blue .sc-icon { background: var(--blue-lt); }
-.sc-green .sc-icon { background: var(--green-lt); }
-.sc-cyan .sc-icon { background: var(--cyan-lt); }
-.sc-purple .sc-icon { background: var(--purple-lt); }
-.sc-orange .sc-icon { background: var(--orange-lt); }
-.sc-red .sc-icon { background: var(--red-lt); }
+/* ══ FILTER ROW ══ */
+.filter-row{display:flex;gap:8px;margin-bottom:14px;flex-wrap:wrap;align-items:center}
+.search-box { display:flex; align-items:center; gap:8px; padding:10px 13px; background:var(--surface);
+  border:1.5px solid var(--border2); border-radius:var(--r-md); flex:1; min-width:200px; transition:border-color .2s,box-shadow .2s; }
+.search-box:focus-within{border-color:var(--blue);box-shadow:0 0 0 3px var(--blue-lt)}
+.search-box input { border:none; background:transparent; color:var(--text); font-family:'DM Sans',sans-serif; font-size:14px; outline:none; flex:1; min-width:0; }
+.search-box input::placeholder{color:var(--muted2);font-size:13px}
+.fsel { padding:10px 30px 10px 12px; border-radius:var(--r-md); border:1.5px solid var(--border2); background:var(--surface); color:var(--text);
+  font-family:'DM Sans',sans-serif; font-size:12px; font-weight:600; outline:none; cursor:pointer; min-height:44px;
+  -webkit-appearance:none; appearance:none;
+  background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='10' height='6' fill='none'%3E%3Cpath d='M1 1l4 4 4-4' stroke='%2364748b' stroke-width='1.5' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");
+  background-repeat:no-repeat; background-position:right 11px center; transition:border-color .2s; }
+.fsel:focus{border-color:var(--blue);box-shadow:0 0 0 3px var(--blue-lt)}
 
-.sc-num {
-  font-family: 'Syne', sans-serif;
-  font-size: clamp(24px, 5.5vw, 32px);
-  font-weight: 800; line-height: 1; margin-bottom: 3px;
-}
-.sc-blue .sc-num { color: var(--blue); }
-.sc-green .sc-num { color: var(--green); }
-.sc-cyan .sc-num { color: var(--cyan); }
-.sc-purple .sc-num { color: var(--purple); }
-.sc-orange .sc-num { color: var(--orange); }
-.sc-red .sc-num { color: var(--red); }
+/* ══ TABLE CARD ══ */
+.tbl-card { background:var(--surface); border:1.5px solid var(--border2); border-radius:var(--r-xl); overflow:hidden; box-shadow:var(--sh); margin-bottom:14px; }
+.tbl-hdr { display:flex; align-items:center; justify-content:space-between; gap:8px; padding:13px 16px; border-bottom:1.5px solid var(--border); background:var(--surface2); flex-wrap:wrap; }
+.tbl-hdr-title { font-family:'Syne',sans-serif; font-size:clamp(13px,3.2vw,15px); font-weight:700; color:var(--text); }
+.tbl-scroll { overflow-x:auto; -webkit-overflow-scrolling:touch; scrollbar-width:thin; scrollbar-color:var(--border) transparent; }
+.tbl-scroll::-webkit-scrollbar{height:4px}.tbl-scroll::-webkit-scrollbar-thumb{background:var(--border2);border-radius:2px}
+table{width:100%;border-collapse:collapse;min-width:580px}
+th { padding:10px 14px; text-align:left; font-size:9px; font-weight:800; letter-spacing:.8px; color:var(--muted); text-transform:uppercase;
+  background:var(--surface2); border-bottom:1.5px solid var(--border); white-space:nowrap; }
+td{padding:11px 14px;font-size:12px;border-bottom:1px solid var(--border);color:var(--text);vertical-align:middle}
+tr:last-child td{border-bottom:none}
+tr:hover td{background:rgba(37,99,235,.025)}
+.td-name{font-weight:700;max-width:110px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.td-event{font-weight:600;max-width:140px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.td-small{font-size:10px;color:var(--muted);white-space:nowrap}
+.tbl-empty{text-align:center;padding:44px 20px;color:var(--muted);font-size:13px}
+.empty-icon{font-size:36px;margin-bottom:8px}
 
-.sc-lbl { font-size: 10px; font-weight: 600; color: var(--muted); letter-spacing: .3px; }
-.sc-bar { height: 3px; background: var(--surface3); border-radius: 2px; margin-top: 12px; overflow: hidden; }
-.sc-fill { height: 100%; border-radius: 2px; width: 0; transition: width 1.5s cubic-bezier(.4,0,.2,1); }
-.sc-blue .sc-fill { background: linear-gradient(90deg, var(--blue), var(--indigo)); }
-.sc-green .sc-fill { background: linear-gradient(90deg, var(--green), var(--cyan)); }
-.sc-cyan .sc-fill { background: linear-gradient(90deg, var(--cyan), var(--blue)); }
-.sc-purple .sc-fill { background: linear-gradient(90deg, var(--purple), var(--indigo)); }
-.sc-orange .sc-fill { background: linear-gradient(90deg, var(--orange), var(--red)); }
-.sc-red .sc-fill { background: linear-gradient(90deg, var(--red), #9f1239); }
+/* ══ STUDENT CARDS ══ */
+.stu-card { background:var(--surface); border:1.5px solid var(--border2); border-radius:var(--r-lg);
+  padding:clamp(12px,3vw,16px); margin-bottom:10px; transition:border-color .2s,box-shadow .2s,transform .2s; }
+.stu-card:hover{border-color:rgba(37,99,235,.3);box-shadow:var(--sh-md);transform:translateY(-1px)}
+.stu-top{display:flex;align-items:flex-start;gap:12px;flex-wrap:wrap}
+.stu-av { width:46px; height:46px; border-radius:13px; background:linear-gradient(145deg,var(--blue),var(--blue-dk));
+  display:flex; align-items:center; justify-content:center; font-family:'Syne',sans-serif; font-size:20px; font-weight:800; color:#fff; flex-shrink:0; }
+.stu-info{flex:1;min-width:0}
+.stu-name{font-family:'Syne',sans-serif;font-size:15px;font-weight:700;letter-spacing:-.2px}
+.stu-meta{font-size:11px;color:var(--muted);margin-top:3px;line-height:1.7}
+.stu-tags{display:flex;gap:5px;flex-wrap:wrap;margin-top:6px}
+.stu-score { font-family:'Syne',sans-serif; font-size:clamp(22px,5vw,28px); font-weight:800; color:var(--blue); line-height:1; text-align:right; flex-shrink:0; }
+.stu-score span{font-size:10px;color:var(--muted);font-weight:500;display:block;text-align:right;margin-top:2px}
+.stu-actions{display:flex;gap:6px;margin-top:12px;flex-wrap:wrap}
+.stu-subs{margin-top:12px;padding-top:12px;border-top:1.5px solid var(--border)}
+.subs-title{font-size:10px;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:.5px;margin-bottom:8px}
+.sub-item { display:flex; align-items:center; gap:10px; padding:10px 12px; border-radius:var(--r-md);
+  background:var(--surface2); border:1.5px solid var(--border); margin-bottom:6px; flex-wrap:wrap; }
+.sub-item:last-child{margin-bottom:0}
+.sub-info{flex:1;min-width:120px}
+.sub-ev{font-size:12px;font-weight:700}
+.sub-meta{font-size:10px;color:var(--muted);margin-top:2px}
+.sub-acts{display:flex;gap:5px;align-items:center;flex-shrink:0;flex-wrap:wrap}
 
-/* ══════════════════════════════
-   ANALYTICS ROW
-══════════════════════════════ */
-.analytics-row {
-  display: grid;
-  grid-template-columns: 1fr;
-  gap: 12px; margin-bottom: 20px;
-}
-@media (min-width: 640px) { .analytics-row { grid-template-columns: 1fr 1fr; } }
-@media (min-width: 1100px) { .analytics-row { grid-template-columns: 5fr 3fr 3fr; } }
+/* ══ APPROVAL TRACKER ══ */
+.appr-track{display:flex;align-items:center;margin:10px 0 6px}
+.at-step{display:flex;flex-direction:column;align-items:center;flex:1;position:relative}
+.at-step:not(:last-child)::after { content:''; position:absolute; top:18px; left:calc(50% + 18px); width:calc(100% - 36px); height:2.5px; background:var(--border); border-radius:2px; z-index:0; transition:background .4s; }
+.at-step.done:not(:last-child)::after{background:var(--green)}
+.at-step.rejected:not(:last-child)::after{background:var(--red)}
+.at-node { width:36px; height:36px; border-radius:50%; display:flex; align-items:center; justify-content:center; font-size:14px; position:relative; z-index:1; border:2.5px solid transparent; flex-shrink:0; transition:all .25s; }
+.at-step.done     .at-node{background:var(--green-lt);border-color:rgba(5,150,105,.3)}
+.at-step.rejected .at-node{background:var(--red-lt);border-color:rgba(220,38,38,.3)}
+.at-step.pending  .at-node{background:var(--gold-lt);border-color:rgba(217,119,6,.3);animation:atPend 2s ease-in-out infinite}
+.at-step.locked   .at-node{background:var(--surface2);border-color:var(--border);opacity:.5}
+@keyframes atPend{0%,100%{box-shadow:0 0 0 0 rgba(217,119,6,.3)}50%{box-shadow:0 0 0 6px rgba(217,119,6,0)}}
+.at-lbl{font-size:9px;font-weight:700;color:var(--text2);text-align:center;margin-top:5px;white-space:nowrap}
+.at-st{font-size:9px;font-weight:700;text-align:center;margin-top:1px}
+.at-step.done .at-st{color:var(--green)}.at-step.rejected .at-st{color:var(--red)}
+.at-step.pending .at-st{color:var(--gold)}.at-step.locked .at-st{color:var(--muted)}
 
-.card {
-  background: var(--surface);
-  border: 1.5px solid var(--border2);
-  border-radius: var(--r-lg);
-  padding: clamp(14px, 3vw, 18px);
-  box-shadow: var(--sh);
-}
-.card-hdr {
-  display: flex; align-items: center; justify-content: space-between;
-  gap: 8px; margin-bottom: 14px;
-  padding-bottom: 12px; border-bottom: 1.5px solid var(--border);
-}
-.card-title {
-  font-family: 'Syne', sans-serif;
-  font-size: 12px; font-weight: 700; color: var(--text);
-  text-transform: uppercase; letter-spacing: .5px;
-  display: flex; align-items: center; gap: 6px;
-}
+/* ══ BADGES & BUTTONS ══ */
+.badge { padding:3px 9px; border-radius:20px; font-size:10px; font-weight:700; display:inline-flex; align-items:center; gap:3px; white-space:nowrap; }
+.b-blue{background:rgba(37,99,235,.10);color:var(--blue-dk)}.b-green{background:rgba(5,150,105,.10);color:var(--green-dk)}
+.b-red{background:rgba(220,38,38,.10);color:var(--red-dk)}.b-cyan{background:rgba(8,145,178,.10);color:var(--cyan)}
+.b-orange{background:rgba(234,88,12,.10);color:var(--orange)}.b-purple{background:rgba(124,58,237,.10);color:var(--purple)}
+.b-grey{background:var(--surface3);color:var(--muted)}.b-gold{background:rgba(217,119,6,.10);color:var(--gold)}
+.btn { padding:0 clamp(10px,2.5vw,16px); height:clamp(36px,9vw,42px); border-radius:var(--r-md); border:none; cursor:pointer;
+  font-family:'DM Sans',sans-serif; font-size:clamp(11px,2.8vw,13px); font-weight:600; transition:all .18s;
+  display:inline-flex; align-items:center; gap:5px; white-space:nowrap; justify-content:center;
+  -webkit-user-select:none; user-select:none; flex-shrink:0; min-height:44px; }
+.btn:active{transform:scale(.96)}
+.btn-primary{background:linear-gradient(135deg,var(--blue),var(--blue-dk));color:#fff;box-shadow:0 3px 14px rgba(37,99,235,.28)}
+.btn-primary:hover{transform:translateY(-1px);box-shadow:0 5px 20px rgba(37,99,235,.38)}
+.btn-approve{background:var(--green-lt);color:var(--green-dk);border:1.5px solid rgba(5,150,105,.22)}
+.btn-approve:hover{background:var(--green-md)}
+.btn-reject{background:var(--red-lt);color:var(--red-dk);border:1.5px solid rgba(220,38,38,.22)}
+.btn-reject:hover{background:var(--red-md)}
+.btn-outline{background:var(--surface);color:var(--blue);border:1.5px solid rgba(37,99,235,.25)}
+.btn-outline:hover{background:var(--blue-lt)}
+.btn-ghost{background:var(--surface2);color:var(--text2);border:1.5px solid var(--border2)}
+.btn-ghost:hover{background:var(--surface3)}
+.btn-wa{background:rgba(5,150,105,.08);color:var(--green);border:1.5px solid rgba(5,150,105,.2)}
+.btn-wa:hover{background:var(--green-lt)}
+.btn-call{background:rgba(37,99,235,.08);color:var(--blue);border:1.5px solid rgba(37,99,235,.2)}
+.btn-report{background:rgba(124,58,237,.10);color:var(--purple);border:1.5px solid rgba(124,58,237,.2)}
+.btn-sm{height:36px;padding:0 12px;font-size:12px;min-height:36px}
+.btn-xs{height:30px;padding:0 10px;font-size:11px;border-radius:8px;min-height:30px}
+.btn:disabled{opacity:.55;cursor:not-allowed;transform:none!important}
 
-/* Pipeline */
-.pipeline { display: flex; flex-direction: column; gap: 12px; }
-.pl-row {}
-.pl-top { display: flex; justify-content: space-between; align-items: center; margin-bottom: 5px; }
-.pl-name { display: flex; align-items: center; gap: 7px; font-size: 12px; color: var(--text2); font-weight: 500; }
-.pl-dot { width: 7px; height: 7px; border-radius: 50%; flex-shrink: 0; }
-.pl-val { font-size: 14px; font-weight: 800; }
-.pl-bg { height: 6px; background: var(--surface3); border-radius: 6px; overflow: hidden; }
-.pl-fill { height: 100%; border-radius: 6px; width: 0; transition: width 1.5s cubic-bezier(.4,0,.2,1); }
-.pl-pct { font-size: 9px; color: var(--muted); text-align: right; margin-top: 2px; }
+/* ══ MODALS ══ */
+.overlay { display:none; position:fixed; inset:0; background:rgba(15,23,42,.35); z-index:500;
+  backdrop-filter:blur(12px); -webkit-backdrop-filter:blur(12px); align-items:flex-end; justify-content:center; padding:0; }
+@media(min-width:520px){.overlay{align-items:center;padding:16px}}
+.overlay.show{display:flex}
+.modal { background:#fff; border:1.5px solid var(--border2); border-radius:var(--r-xl) var(--r-xl) 0 0;
+  padding:clamp(18px,4vw,26px); width:100%; max-width:100%; max-height:92dvh; overflow-y:auto;
+  box-shadow:0 -8px 40px rgba(37,99,235,.18); animation:slideUp .28s ease; }
+.modal::before { content:''; display:block; width:44px; height:4px; background:var(--border2); border-radius:2px; margin:0 auto 16px; }
+@media(min-width:520px){
+  .modal{border-radius:var(--r-xl);max-width:520px;max-height:92vh;animation:popIn .24s cubic-bezier(.34,1.56,.64,1)}
+  .modal::before{display:none}
+}
+@keyframes slideUp{from{transform:translateY(100%)}to{transform:translateY(0)}}
+@keyframes popIn{from{opacity:0;transform:scale(.92) translateY(12px)}to{opacity:1;transform:none}}
+.modal::-webkit-scrollbar{width:4px}.modal::-webkit-scrollbar-thumb{background:var(--border2);border-radius:2px}
+.modal-title{font-family:'Syne',sans-serif;font-size:clamp(18px,4.5vw,22px);font-weight:800;margin-bottom:3px;letter-spacing:-.3px}
+.modal-sub{color:var(--muted);font-size:12px;margin-bottom:14px;line-height:1.5}
+.detail-row{display:flex;gap:10px;font-size:12px;padding:8px 0;border-bottom:1px solid var(--border)}
+.detail-row:last-child{border-bottom:none}
+.detail-lbl{color:var(--muted);font-weight:700;text-transform:uppercase;letter-spacing:.5px;min-width:90px;flex-shrink:0;font-size:9px;padding-top:2px}
+.detail-val{color:var(--text);flex:1;word-break:break-word}
+.m-textarea { width:100%; padding:10px 12px; margin-top:10px; background:var(--surface2); border:1.5px solid var(--border2);
+  border-radius:var(--r-md); color:var(--text); font-family:'DM Sans',sans-serif; font-size:13px; outline:none; resize:vertical; min-height:72px; transition:border-color .2s; }
+.m-textarea:focus{border-color:var(--blue);box-shadow:0 0 0 3px var(--blue-lt)}
+.m-label{font-size:10px;font-weight:700;color:var(--text2);text-transform:uppercase;letter-spacing:.5px;margin-top:12px;display:block}
+.modal-acts{display:flex;gap:7px;margin-top:16px;flex-wrap:wrap}
+.proof-frame{width:100%;border-radius:var(--r-md);background:var(--surface2);border:1.5px solid var(--border2);overflow:hidden;margin:12px 0}
+.proof-img{width:100%;max-height:300px;object-fit:contain;display:block}
+.proof-fb{padding:22px;text-align:center;color:var(--muted);font-size:12px}
+.score-row{display:flex;align-items:center;gap:10px;flex-wrap:wrap;margin:10px 0}
+.score-inp { padding:9px 12px; border-radius:var(--r-md); border:1.5px solid var(--border2); background:var(--surface2);
+  color:var(--blue); font-family:'Syne',sans-serif; font-size:18px; font-weight:800; width:90px; outline:none; text-align:center; }
+.score-inp:focus{border-color:var(--blue);box-shadow:0 0 0 3px var(--blue-lt)}
+.prize-sel { flex:1; padding:9px 28px 9px 12px; border-radius:var(--r-md); border:1.5px solid var(--border2); background:var(--surface2);
+  color:var(--text); font-family:'DM Sans',sans-serif; font-size:13px; font-weight:600; outline:none; cursor:pointer;
+  -webkit-appearance:none; appearance:none; min-height:44px;
+  background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='10' height='6' fill='none'%3E%3Cpath d='M1 1l4 4 4-4' stroke='%2364748b' stroke-width='1.5' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");
+  background-repeat:no-repeat;background-position:right 10px center; }
 
-/* Donut */
-.donut-wrap { display: flex; align-items: center; gap: 18px; flex-wrap: wrap; }
-.donut-con { position: relative; width: 100px; height: 100px; flex-shrink: 0; }
-.donut-svg { transform: rotate(-90deg); }
-.donut-cen {
-  position: absolute; top: 50%; left: 50%;
-  transform: translate(-50%,-50%) rotate(90deg);
-  text-align: center;
-}
-.donut-pct { font-family: 'Syne', sans-serif; font-size: 20px; font-weight: 800; color: var(--text); line-height: 1; }
-.donut-lbl { font-size: 8px; color: var(--muted); font-weight: 700; text-transform: uppercase; letter-spacing: .5px; }
-.donut-legend { flex: 1; min-width: 120px; display: flex; flex-direction: column; gap: 9px; }
-.d-li { display: flex; align-items: center; gap: 8px; }
-.d-dot { width: 8px; height: 8px; border-radius: 50%; flex-shrink: 0; }
-.d-ll { font-size: 11px; color: var(--muted); flex: 1; }
-.d-lv { font-size: 13px; font-weight: 800; color: var(--text); }
+/* ══ REPORT ══ */
+.rpt-controls { display:flex; gap:8px; flex-wrap:wrap; align-items:flex-end; margin-bottom:16px; padding:14px;
+  background:var(--surface); border:1.5px solid var(--border2); border-radius:var(--r-lg); }
+.rpt-field{display:flex;flex-direction:column;gap:5px}
+.rpt-field label{font-size:9px;font-weight:800;text-transform:uppercase;letter-spacing:.6px;color:var(--muted)}
 
-/* Scope bars */
-.scope-bars { display: flex; flex-direction: column; gap: 11px; }
-.sb-row {}
-.sb-top { display: flex; justify-content: space-between; margin-bottom: 4px; }
-.sb-lbl { font-size: 11px; font-weight: 600; color: var(--text2); }
-.sb-val { font-size: 12px; font-weight: 800; color: var(--text); }
-.sb-bg { height: 7px; background: var(--surface3); border-radius: 4px; overflow: hidden; }
-.sb-fill { height: 100%; border-radius: 4px; width: 0; transition: width 1.3s ease; }
+/* ── Report stat strip ── */
+.rpt-stat-strip { display:grid; grid-template-columns:repeat(2,1fr); gap:8px; margin-bottom:16px; }
+@media(min-width:480px){.rpt-stat-strip{grid-template-columns:repeat(4,1fr)}}
+@media(min-width:900px){.rpt-stat-strip{grid-template-columns:repeat(8,1fr)}}
+.rsc { background:var(--surface); border:1.5px solid var(--border2); border-radius:var(--r-md);
+  padding:clamp(10px,2.5vw,14px) clamp(9px,2vw,12px); position:relative; overflow:hidden; }
+.rsc::after { content:''; position:absolute; top:0; left:0; right:0; height:3px; border-radius:var(--r-md) var(--r-md) 0 0; }
+.rs-blue::after{background:linear-gradient(90deg,var(--blue),var(--cyan))}
+.rs-green::after{background:linear-gradient(90deg,var(--green),var(--cyan))}
+.rs-gold::after{background:linear-gradient(90deg,var(--gold),var(--orange))}
+.rs-purple::after{background:linear-gradient(90deg,var(--purple),var(--blue))}
+.rs-cyan::after{background:linear-gradient(90deg,var(--cyan),var(--blue))}
+.rs-red::after{background:linear-gradient(90deg,var(--red),#9f1239)}
+.rs-orange::after{background:linear-gradient(90deg,var(--orange),var(--gold))}
+.rs-indigo::after{background:linear-gradient(90deg,var(--indigo),var(--purple))}
+.rs-icon{font-size:16px;margin-bottom:5px}
+.rs-val{font-family:'Syne',sans-serif;font-size:clamp(18px,4vw,24px);font-weight:800;line-height:1;margin-bottom:2px}
+.rs-blue .rs-val{color:var(--blue)}.rs-green .rs-val{color:var(--green)}.rs-gold .rs-val{color:var(--gold)}
+.rs-purple .rs-val{color:var(--purple)}.rs-cyan .rs-val{color:var(--cyan)}.rs-red .rs-val{color:var(--red)}
+.rs-indigo .rs-val{color:var(--indigo)}.rs-orange .rs-val{color:var(--orange)}
+.rs-lbl{font-size:9px;font-weight:600;color:var(--muted);text-transform:uppercase;letter-spacing:.6px}
+.rs-bar{height:2px;background:var(--surface3);border-radius:2px;margin-top:7px;overflow:hidden}
+.rs-bf{height:100%;border-radius:2px;width:0;transition:width 1.3s cubic-bezier(.4,0,.2,1)}
+.rs-blue .rs-bf{background:var(--blue)}.rs-green .rs-bf{background:var(--green)}
+.rs-gold .rs-bf{background:var(--gold)}.rs-purple .rs-bf{background:var(--purple)}
+.rs-cyan .rs-bf{background:var(--cyan)}.rs-red .rs-bf{background:var(--red)}
+.rs-indigo .rs-bf{background:var(--indigo)}.rs-orange .rs-bf{background:var(--orange)}
 
-/* ══════════════════════════════
-   FILTER ROW
-══════════════════════════════ */
-.filter-row {
-  display: flex; gap: 8px; margin-bottom: 14px;
-  flex-wrap: wrap; align-items: center;
-}
-.search-box {
-  display: flex; align-items: center; gap: 8px;
-  padding: 10px 13px;
-  background: var(--surface);
-  border: 1.5px solid var(--border2);
-  border-radius: var(--r-md); flex: 1; min-width: 200px;
-  transition: border-color .2s, box-shadow .2s;
-}
-.search-box:focus-within {
-  border-color: var(--blue);
-  box-shadow: 0 0 0 3px var(--blue-lt);
-}
-.search-box input {
-  border: none; background: transparent;
-  color: var(--text); font-family: 'DM Sans', sans-serif;
-  font-size: 14px; outline: none; flex: 1; min-width: 0;
-}
-.search-box input::placeholder { color: var(--muted2); font-size: 13px; }
-.search-icon { color: var(--muted); font-size: 15px; flex-shrink: 0; }
+/* Sub-tabs */
+.rtab-bar { display:flex; background:var(--surface); border:1.5px solid var(--border2); border-radius:var(--r-md);
+  padding:3px; margin-bottom:14px; overflow-x:auto; scrollbar-width:none; gap:3px; }
+.rtab-bar::-webkit-scrollbar{display:none}
+.rtab { padding:7px 13px; border:none; border-radius:7px; background:transparent; color:var(--muted); cursor:pointer;
+  font-family:'DM Sans',sans-serif; font-size:11px; font-weight:700; transition:all .18s; white-space:nowrap; flex-shrink:0;
+  letter-spacing:.2px; min-height:36px; display:flex; align-items:center; gap:4px; }
+.rtab.on{background:linear-gradient(135deg,var(--blue),var(--blue-dk));color:#fff;box-shadow:0 2px 10px rgba(37,99,235,.28)}
+.rtab:hover:not(.on){background:var(--surface2);color:var(--text)}
+.rpanel{display:none;animation:fadeUp .2s ease}.rpanel.on{display:block}
 
-.fsel {
-  padding: 10px 30px 10px 12px; border-radius: var(--r-md);
-  border: 1.5px solid var(--border2);
-  background: var(--surface);
-  color: var(--text); font-family: 'DM Sans', sans-serif;
-  font-size: 12px; font-weight: 600; outline: none;
-  cursor: pointer; min-height: 44px;
-  -webkit-appearance: none; appearance: none;
-  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='10' height='6' fill='none'%3E%3Cpath d='M1 1l4 4 4-4' stroke='%2364748b' stroke-width='1.5' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");
-  background-repeat: no-repeat;
-  background-position: right 11px center;
-  transition: border-color .2s;
-}
-.fsel:focus { border-color: var(--blue); box-shadow: 0 0 0 3px var(--blue-lt); }
+.rpt-section { background:var(--surface); border:1.5px solid var(--border2); border-radius:var(--r-lg);
+  padding:clamp(14px,3vw,20px); margin-bottom:14px; }
+.rpt-hdr { font-family:'Syne',sans-serif; font-size:clamp(15px,4vw,18px); font-weight:800; color:var(--text);
+  margin-bottom:14px; padding-bottom:10px; border-bottom:1.5px solid var(--border); letter-spacing:-.3px;
+  display:flex; align-items:center; justify-content:space-between; flex-wrap:wrap; gap:8px; }
+.rpt-kpis { display:grid; grid-template-columns:repeat(2,1fr); gap:8px; margin-bottom:14px; }
+@media(min-width:640px){.rpt-kpis{grid-template-columns:repeat(4,1fr)}}
+.rpt-kpi { background:var(--surface2); border:1.5px solid var(--border); border-radius:var(--r-md); padding:clamp(10px,3vw,14px); text-align:center; }
+.rpt-kpi-val { font-family:'Syne',sans-serif; font-size:clamp(24px,5.5vw,30px); font-weight:800; line-height:1; letter-spacing:-1px; }
+.rpt-kpi-lbl { font-size:9px; font-weight:700; text-transform:uppercase; letter-spacing:.6px; color:var(--muted); margin-top:4px; }
 
-/* ══════════════════════════════
-   TABLE CARD
-══════════════════════════════ */
-.tbl-card {
-  background: var(--surface);
-  border: 1.5px solid var(--border2);
-  border-radius: var(--r-xl);
-  overflow: hidden;
-  box-shadow: var(--sh);
-  margin-bottom: 14px;
-}
-.tbl-hdr {
-  display: flex; align-items: center; justify-content: space-between;
-  gap: 8px; padding: 13px 16px;
-  border-bottom: 1.5px solid var(--border);
-  background: var(--surface2); flex-wrap: wrap;
-}
-.tbl-hdr-title {
-  font-family: 'Syne', sans-serif;
-  font-size: clamp(13px, 3.2vw, 15px); font-weight: 700;
-  color: var(--text); letter-spacing: -.1px;
-}
-.tbl-scroll {
-  overflow-x: auto; -webkit-overflow-scrolling: touch;
-  scrollbar-width: thin; scrollbar-color: var(--border) transparent;
-}
-.tbl-scroll::-webkit-scrollbar { height: 4px; }
-.tbl-scroll::-webkit-scrollbar-thumb { background: var(--border2); border-radius: 2px; }
-table { width: 100%; border-collapse: collapse; min-width: 580px; }
-th {
-  padding: 10px 14px; text-align: left;
-  font-size: 9px; font-weight: 800; letter-spacing: .8px;
-  color: var(--muted); text-transform: uppercase;
-  background: var(--surface2); border-bottom: 1.5px solid var(--border);
-  white-space: nowrap;
-}
-td {
-  padding: 11px 14px; font-size: 12px;
-  border-bottom: 1px solid var(--border);
-  color: var(--text); vertical-align: middle;
-}
-tr:last-child td { border-bottom: none; }
-tr:hover td { background: rgba(37,99,235,.025); }
-.td-name { font-weight: 700; max-width: 110px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
-.td-event { font-weight: 600; max-width: 140px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
-.td-small { font-size: 10px; color: var(--muted); white-space: nowrap; }
-.tbl-empty { text-align: center; padding: 44px 20px; color: var(--muted); font-size: 13px; }
-.empty-icon { font-size: 36px; margin-bottom: 8px; }
+/* horizontal bar */
+.hbar-row{display:flex;align-items:center;gap:8px;margin-bottom:5px}
+.hbar-lbl{font-size:10px;font-weight:600;color:var(--text2);min-width:80px;text-align:right;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.hbar-track{flex:1;background:var(--surface2);border-radius:4px;height:18px;overflow:hidden}
+.hbar-fill{height:100%;border-radius:4px;display:flex;align-items:center;padding-left:7px;font-size:10px;font-weight:700;color:#fff;width:0;transition:width 1.2s cubic-bezier(.4,0,.2,1)}
+.hbar-num{font-size:11px;font-weight:700;min-width:28px;text-align:right}
 
-/* ══════════════════════════════
-   STUDENT CARDS
-══════════════════════════════ */
-.stu-card {
-  background: var(--surface);
-  border: 1.5px solid var(--border2);
-  border-radius: var(--r-lg);
-  padding: clamp(12px, 3vw, 16px);
-  margin-bottom: 10px;
-  transition: border-color .2s, box-shadow .2s, transform .2s;
-}
-.stu-card:hover { border-color: rgba(37,99,235,.3); box-shadow: var(--sh-md); transform: translateY(-1px); }
-.stu-top { display: flex; align-items: flex-start; gap: 12px; flex-wrap: wrap; }
-.stu-av {
-  width: 46px; height: 46px; border-radius: 13px;
-  background: linear-gradient(145deg, var(--blue), var(--blue-dk));
-  display: flex; align-items: center; justify-content: center;
-  font-family: 'Syne', sans-serif;
-  font-size: 20px; font-weight: 800; color: #fff; flex-shrink: 0;
-}
-.stu-info { flex: 1; min-width: 0; }
-.stu-name { font-family: 'Syne', sans-serif; font-size: 15px; font-weight: 700; letter-spacing: -.2px; }
-.stu-meta { font-size: 11px; color: var(--muted); margin-top: 3px; line-height: 1.7; }
-.stu-tags { display: flex; gap: 5px; flex-wrap: wrap; margin-top: 6px; }
-.stu-score {
-  font-family: 'Syne', sans-serif;
-  font-size: clamp(22px, 5vw, 28px);
-  font-weight: 800; color: var(--blue); line-height: 1; text-align: right; flex-shrink: 0;
-}
-.stu-score span { font-size: 10px; color: var(--muted); font-weight: 500; display: block; text-align: right; margin-top: 2px; }
-.stu-actions { display: flex; gap: 6px; margin-top: 12px; flex-wrap: wrap; }
-.stu-subs { margin-top: 12px; padding-top: 12px; border-top: 1.5px solid var(--border); }
-.subs-title { font-size: 10px; font-weight: 700; color: var(--muted); text-transform: uppercase; letter-spacing: .5px; margin-bottom: 8px; }
-.sub-item {
-  display: flex; align-items: center; gap: 10px;
-  padding: 10px 12px; border-radius: var(--r-md);
-  background: var(--surface2);
-  border: 1.5px solid var(--border);
-  margin-bottom: 6px; flex-wrap: wrap;
-}
-.sub-item:last-child { margin-bottom: 0; }
-.sub-info { flex: 1; min-width: 120px; }
-.sub-ev { font-size: 12px; font-weight: 700; }
-.sub-meta { font-size: 10px; color: var(--muted); margin-top: 2px; }
-.sub-acts { display: flex; gap: 5px; align-items: center; flex-shrink: 0; flex-wrap: wrap; }
+.rpt-tbl{width:100%;border-collapse:collapse;font-size:11px;min-width:480px}
+.rpt-tbl th { padding:9px 12px; text-align:left; font-size:9px; font-weight:800; letter-spacing:.7px; color:var(--muted); text-transform:uppercase; border-bottom:1.5px solid var(--border); white-space:nowrap; background:var(--surface2); }
+.rpt-tbl td{padding:9px 12px;border-bottom:1px solid var(--border);color:var(--text);vertical-align:middle}
+.rpt-tbl tr:last-child td{border-bottom:none}
+.rpt-tbl tr:hover td{background:rgba(37,99,235,.025)}
+.rpt-empty{text-align:center;padding:24px;color:var(--muted);font-size:12px}
 
-/* ══ Approval Tracker ══ */
-.appr-track { display: flex; align-items: center; margin: 10px 0 6px; }
-.at-step { display: flex; flex-direction: column; align-items: center; flex: 1; position: relative; }
-.at-step:not(:last-child)::after {
-  content: ''; position: absolute;
-  top: 18px; left: calc(50% + 18px);
-  width: calc(100% - 36px); height: 2.5px;
-  background: var(--border); border-radius: 2px; z-index: 0;
-  transition: background .4s;
-}
-.at-step.done:not(:last-child)::after { background: var(--green); }
-.at-step.rejected:not(:last-child)::after { background: var(--red); }
-.at-node {
-  width: 36px; height: 36px; border-radius: 50%;
-  display: flex; align-items: center; justify-content: center;
-  font-size: 14px; position: relative; z-index: 1;
-  border: 2.5px solid transparent; flex-shrink: 0; transition: all .25s;
-}
-.at-step.done     .at-node { background: var(--green-lt); border-color: rgba(5,150,105,.3); }
-.at-step.rejected .at-node { background: var(--red-lt); border-color: rgba(220,38,38,.3); }
-.at-step.pending  .at-node { background: var(--gold-lt); border-color: rgba(217,119,6,.3); animation: atPend 2s ease-in-out infinite; }
-.at-step.locked   .at-node { background: var(--surface2); border-color: var(--border); opacity: .5; }
-@keyframes atPend { 0%,100%{box-shadow:0 0 0 0 rgba(217,119,6,.3)}50%{box-shadow:0 0 0 6px rgba(217,119,6,0)} }
-.at-lbl { font-size: 9px; font-weight: 700; color: var(--text2); text-align: center; margin-top: 5px; white-space: nowrap; }
-.at-st { font-size: 9px; font-weight: 700; text-align: center; margin-top: 1px; }
-.at-step.done .at-st { color: var(--green); }
-.at-step.rejected .at-st { color: var(--red); }
-.at-step.pending  .at-st { color: var(--gold); }
-.at-step.locked   .at-st { color: var(--muted); }
+/* ══ TOAST ══ */
+#toast-box { position:fixed; bottom:max(calc(var(--bottom-h) + 12px),16px); right:max(12px,var(--sar));
+  z-index:9999; display:flex; flex-direction:column-reverse; gap:6px; max-width:min(320px,calc(100vw - 24px)); }
+@media(min-width:768px){#toast-box{bottom:16px}}
+.toast { padding:11px 14px; border-radius:var(--r-md); font-size:12px; font-weight:600; background:#fff;
+  border:1.5px solid var(--border2); box-shadow:var(--sh-lg); display:flex; align-items:center; gap:8px;
+  animation:slideIn .3s cubic-bezier(.34,1.56,.64,1); }
+.toast.success{border-left:3px solid var(--green)}.toast.error{border-left:3px solid var(--red)}.toast.info{border-left:3px solid var(--blue)}
+@keyframes slideIn{from{transform:translateX(110%);opacity:0}to{transform:none;opacity:1}}
+@keyframes slideOut{to{opacity:0;transform:translateX(30px)}}
 
-/* ══════════════════════════════
-   BADGES & BUTTONS
-══════════════════════════════ */
-.badge {
-  padding: 3px 9px; border-radius: 20px;
-  font-size: 10px; font-weight: 700;
-  display: inline-flex; align-items: center; gap: 3px;
-  white-space: nowrap;
-}
-.b-blue { background: rgba(37,99,235,.10); color: var(--blue-dk); }
-.b-green { background: rgba(5,150,105,.10); color: var(--green-dk); }
-.b-red { background: rgba(220,38,38,.10); color: var(--red-dk); }
-.b-cyan { background: rgba(8,145,178,.10); color: var(--cyan); }
-.b-orange { background: rgba(234,88,12,.10); color: var(--orange); }
-.b-purple { background: rgba(124,58,237,.10); color: var(--purple); }
-.b-grey { background: var(--surface3); color: var(--muted); }
-.b-gold { background: rgba(217,119,6,.10); color: var(--gold); }
-
-.btn {
-  padding: 0 clamp(10px, 2.5vw, 16px);
-  height: clamp(36px, 9vw, 42px);
-  border-radius: var(--r-md); border: none; cursor: pointer;
-  font-family: 'DM Sans', sans-serif;
-  font-size: clamp(11px, 2.8vw, 13px); font-weight: 600;
-  transition: all .18s;
-  display: inline-flex; align-items: center; gap: 5px;
-  white-space: nowrap; justify-content: center;
-  -webkit-user-select: none; user-select: none; flex-shrink: 0;
-  min-height: 44px; /* accessibility */
-}
-.btn:active { transform: scale(.96); }
-
-.btn-primary {
-  background: linear-gradient(135deg, var(--blue), var(--blue-dk));
-  color: #fff; box-shadow: 0 3px 14px rgba(37,99,235,.28);
-}
-.btn-primary:hover { transform: translateY(-1px); box-shadow: 0 5px 20px rgba(37,99,235,.38); }
-
-.btn-approve { background: var(--green-lt); color: var(--green-dk); border: 1.5px solid rgba(5,150,105,.22); }
-.btn-approve:hover { background: var(--green-md); }
-.btn-reject { background: var(--red-lt); color: var(--red-dk); border: 1.5px solid rgba(220,38,38,.22); }
-.btn-reject:hover { background: var(--red-md); }
-.btn-outline { background: var(--surface); color: var(--blue); border: 1.5px solid rgba(37,99,235,.25); }
-.btn-outline:hover { background: var(--blue-lt); }
-.btn-ghost { background: var(--surface2); color: var(--text2); border: 1.5px solid var(--border2); }
-.btn-ghost:hover { background: var(--surface3); }
-.btn-wa { background: rgba(5,150,105,.08); color: var(--green); border: 1.5px solid rgba(5,150,105,.2); }
-.btn-wa:hover { background: var(--green-lt); }
-.btn-call { background: rgba(37,99,235,.08); color: var(--blue); border: 1.5px solid rgba(37,99,235,.2); }
-.btn-report { background: rgba(124,58,237,.10); color: var(--purple); border: 1.5px solid rgba(124,58,237,.2); }
-.btn-sm { height: 36px; padding: 0 12px; font-size: 12px; min-height: 36px; }
-.btn-xs { height: 30px; padding: 0 10px; font-size: 11px; border-radius: 8px; min-height: 30px; }
-.btn:disabled { opacity: .55; cursor: not-allowed; transform: none !important; }
-
-/* ══════════════════════════════
-   MODALS
-══════════════════════════════ */
-.overlay {
-  display: none; position: fixed; inset: 0;
-  background: rgba(15,23,42,.35); z-index: 500;
-  backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px);
-  align-items: center; justify-content: center; padding: 16px;
-}
-.overlay.show { display: flex; }
-
-.modal {
-  background: #fff;
-  border: 1.5px solid var(--border2);
-  border-radius: var(--r-xl);
-  padding: clamp(18px, 4vw, 26px);
-  width: 100%; max-width: 520px; max-height: 92vh; overflow-y: auto;
-  box-shadow: 0 24px 64px rgba(37,99,235,.18);
-  animation: popIn .24s cubic-bezier(.34,1.56,.64,1);
-}
-@keyframes popIn {
-  from { opacity: 0; transform: scale(.92) translateY(12px); }
-  to { opacity: 1; transform: none; }
-}
-.modal::-webkit-scrollbar { width: 4px; }
-.modal::-webkit-scrollbar-thumb { background: var(--border2); border-radius: 2px; }
-
-.modal-title {
-  font-family: 'Syne', sans-serif;
-  font-size: clamp(18px, 4.5vw, 22px);
-  font-weight: 800; margin-bottom: 3px; letter-spacing: -.3px;
-}
-.modal-sub { color: var(--muted); font-size: 12px; margin-bottom: 14px; line-height: 1.5; }
-
-.detail-row {
-  display: flex; gap: 10px; font-size: 12px;
-  padding: 8px 0; border-bottom: 1px solid var(--border);
-}
-.detail-row:last-child { border-bottom: none; }
-.detail-lbl {
-  color: var(--muted); font-weight: 700;
-  text-transform: uppercase; letter-spacing: .5px;
-  min-width: 90px; flex-shrink: 0;
-  font-size: 9px; padding-top: 2px;
-}
-.detail-val { color: var(--text); flex: 1; word-break: break-word; }
-
-.m-textarea {
-  width: 100%; padding: 10px 12px; margin-top: 10px;
-  background: var(--surface2); border: 1.5px solid var(--border2);
-  border-radius: var(--r-md); color: var(--text);
-  font-family: 'DM Sans', sans-serif; font-size: 13px;
-  outline: none; resize: vertical; min-height: 72px;
-  transition: border-color .2s;
-}
-.m-textarea:focus { border-color: var(--blue); box-shadow: 0 0 0 3px var(--blue-lt); }
-.m-label { font-size: 10px; font-weight: 700; color: var(--text2); text-transform: uppercase; letter-spacing: .5px; margin-top: 12px; display: block; }
-.modal-acts { display: flex; gap: 7px; margin-top: 16px; flex-wrap: wrap; }
-
-/* Proof */
-.proof-frame {
-  width: 100%; border-radius: var(--r-md);
-  background: var(--surface2); border: 1.5px solid var(--border2);
-  overflow: hidden; margin: 12px 0;
-}
-.proof-img { width: 100%; max-height: 300px; object-fit: contain; display: block; }
-.proof-fb { padding: 22px; text-align: center; color: var(--muted); font-size: 12px; }
-.score-row { display: flex; align-items: center; gap: 10px; flex-wrap: wrap; margin: 10px 0; }
-.score-inp {
-  padding: 9px 12px; border-radius: var(--r-md);
-  border: 1.5px solid var(--border2); background: var(--surface2);
-  color: var(--blue); font-family: 'Syne', sans-serif;
-  font-size: 18px; font-weight: 800; width: 90px;
-  outline: none; text-align: center;
-}
-.score-inp:focus { border-color: var(--blue); box-shadow: 0 0 0 3px var(--blue-lt); }
-.prize-sel {
-  flex: 1; padding: 9px 28px 9px 12px; border-radius: var(--r-md);
-  border: 1.5px solid var(--border2); background: var(--surface2);
-  color: var(--text); font-family: 'DM Sans', sans-serif; font-size: 13px;
-  font-weight: 600; outline: none; cursor: pointer;
-  -webkit-appearance: none; appearance: none;
-  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='10' height='6' fill='none'%3E%3Cpath d='M1 1l4 4 4-4' stroke='%2364748b' stroke-width='1.5' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");
-  background-repeat: no-repeat; background-position: right 10px center;
-}
-
-/* ══════════════════════════════
-   REPORT
-══════════════════════════════ */
-.rpt-controls {
-  display: flex; gap: 8px; flex-wrap: wrap; align-items: flex-end;
-  margin-bottom: 16px; padding: 14px;
-  background: var(--surface);
-  border: 1.5px solid var(--border2);
-  border-radius: var(--r-lg);
-}
-.rpt-field { display: flex; flex-direction: column; gap: 5px; }
-.rpt-field label { font-size: 9px; font-weight: 800; text-transform: uppercase; letter-spacing: .6px; color: var(--muted); }
-
-.rpt-section {
-  background: var(--surface);
-  border: 1.5px solid var(--border2);
-  border-radius: var(--r-lg);
-  padding: clamp(14px, 3vw, 20px);
-  margin-bottom: 14px;
-}
-.rpt-hdr {
-  font-family: 'Syne', sans-serif;
-  font-size: clamp(16px, 4vw, 20px);
-  font-weight: 800; color: var(--text);
-  margin-bottom: 14px; padding-bottom: 10px;
-  border-bottom: 1.5px solid var(--border); letter-spacing: -.3px;
-}
-.rpt-kpis { display: grid; grid-template-columns: repeat(2,1fr); gap: 8px; margin-bottom: 14px; }
-@media (min-width: 640px) { .rpt-kpis { grid-template-columns: repeat(4,1fr); } }
-.rpt-kpi {
-  background: var(--surface2); border: 1.5px solid var(--border);
-  border-radius: var(--r-md); padding: clamp(10px, 3vw, 14px); text-align: center;
-}
-.rpt-kpi-val {
-  font-family: 'Syne', sans-serif;
-  font-size: clamp(24px, 5.5vw, 30px);
-  font-weight: 800; line-height: 1; letter-spacing: -1px;
-}
-.rpt-kpi-lbl { font-size: 9px; font-weight: 700; text-transform: uppercase; letter-spacing: .6px; color: var(--muted); margin-top: 4px; }
-.rpt-tbl { width: 100%; border-collapse: collapse; font-size: 11px; }
-.rpt-tbl th { padding: 9px 12px; text-align: left; font-size: 9px; font-weight: 800; letter-spacing: .7px; color: var(--muted); text-transform: uppercase; border-bottom: 1.5px solid var(--border); white-space: nowrap; background: var(--surface2); }
-.rpt-tbl td { padding: 9px 12px; border-bottom: 1px solid var(--border); color: var(--text); vertical-align: middle; }
-.rpt-tbl tr:last-child td { border-bottom: none; }
-.rpt-tbl tr:hover td { background: rgba(37,99,235,.025); }
-.rpt-empty { text-align: center; padding: 24px; color: var(--muted); font-size: 12px; }
-
-/* ══════════════════════════════
-   TOAST
-══════════════════════════════ */
-#toast-box {
-  position: fixed;
-  bottom: max(calc(var(--bottom-h) + 12px), 16px);
-  right: max(12px, var(--sar));
-  z-index: 9999;
-  display: flex; flex-direction: column-reverse; gap: 6px;
-  max-width: min(320px, calc(100vw - 24px));
-}
-@media (min-width: 768px) { #toast-box { bottom: 16px; } }
-.toast {
-  padding: 11px 14px; border-radius: var(--r-md);
-  font-size: 12px; font-weight: 600;
-  background: #fff; border: 1.5px solid var(--border2);
-  box-shadow: var(--sh-lg);
-  display: flex; align-items: center; gap: 8px;
-  animation: slideIn .3s cubic-bezier(.34,1.56,.64,1);
-}
-.toast.success { border-left: 3px solid var(--green); }
-.toast.error   { border-left: 3px solid var(--red); }
-.toast.info    { border-left: 3px solid var(--blue); }
-@keyframes slideIn { from { transform: translateX(110%); opacity: 0; } to { transform: none; opacity: 1; } }
-@keyframes slideOut { to { opacity: 0; transform: translateX(30px); } }
-
-/* ══ REVEAL ══ */
-.reveal { opacity: 0; transform: translateY(8px); transition: opacity .35s ease, transform .35s ease; }
-.reveal.vis { opacity: 1; transform: none; }
-
-/* ══ SCROLL HINT ══ */
-.scroll-hint {
-  text-align: center; font-size: 10px; color: var(--muted2);
-  padding: 6px; display: block;
-}
-@media (min-width: 640px) { .scroll-hint { display: none; } }
-
-/* ══════════════════════════════
-   FOCUS / PRINT / REDUCED MOTION
-══════════════════════════════ */
-:focus-visible { outline: 2px solid var(--blue); outline-offset: 2px; border-radius: 4px; }
-@media (prefers-reduced-motion: reduce) { *,*::before,*::after { animation-duration: .01ms !important; transition-duration: .01ms !important; } }
-@media print {
-  .top-nav, .bottom-nav, .desk-tabs, .page-acts, #toast-box, .btn, .logout-btn { display: none !important; }
-  body { background: #fff !important; color: #000 !important; }
-  .rpt-section { border: 1px solid #ccc !important; }
-  .rpt-tbl th { background: #e8f0fe !important; }
-}
-::-webkit-scrollbar { width: 6px; height: 6px; }
-::-webkit-scrollbar-thumb { background: rgba(37,99,235,.15); border-radius: 3px; }
+/* ══ MISC ══ */
+.reveal{opacity:0;transform:translateY(8px);transition:opacity .35s ease,transform .35s ease}.reveal.vis{opacity:1;transform:none}
+.scroll-hint{text-align:center;font-size:10px;color:var(--muted2);padding:6px;display:block}
+@media(min-width:640px){.scroll-hint{display:none}}
+:focus-visible{outline:2px solid var(--blue);outline-offset:2px;border-radius:4px}
+@media(prefers-reduced-motion:reduce){*,*::before,*::after{animation-duration:.01ms!important;transition-duration:.01ms!important}}
+@media print{.top-nav,.bottom-nav,.desk-tabs,.page-acts,#toast-box,.btn,.logout-btn{display:none!important}
+  body{background:#fff!important;color:#000!important}.rpt-section{border:1px solid #ccc!important}}
+::-webkit-scrollbar{width:6px;height:6px}::-webkit-scrollbar-thumb{background:rgba(37,99,235,.15);border-radius:3px}
 </style>
 </head>
 <body>
@@ -1026,8 +559,6 @@ tr:hover td { background: rgba(37,99,235,.025); }
 
 <!-- ══ LAYOUT ══ -->
 <div class="layout">
-
-  <!-- TOP NAV -->
   <header class="top-nav">
     <div class="nav-logo">👑</div>
     <div class="nav-brand">
@@ -1036,20 +567,13 @@ tr:hover td { background: rgba(37,99,235,.025); }
     </div>
     <div class="nav-right">
       <div class="live-badge"><div class="live-dot"></div><span>Live</span></div>
-      <div class="user-chip">
-        <div class="uav" id="uAv">C</div>
-        <span id="uName">—</span>
-      </div>
-      <button class="logout-btn" onclick="doLogout()">
-        <span>⏻</span><span class="lo-txt">Logout</span>
-      </button>
+      <div class="user-chip"><div class="uav" id="uAv">C</div><span id="uName">—</span></div>
+      <button class="logout-btn" onclick="doLogout()"><span>⏻</span><span class="lo-txt">Logout</span></button>
     </div>
   </header>
 
-  <!-- CONTENT -->
   <div class="content">
 
-    <!-- Page Header -->
     <div class="page-hdr reveal">
       <div>
         <h1 class="page-title">Chairperson <span>Portal</span></h1>
@@ -1062,7 +586,6 @@ tr:hover td { background: rgba(37,99,235,.025); }
       </div>
     </div>
 
-    <!-- Hero Banner -->
     <div class="hero reveal">
       <div class="hero-crown">👑</div>
       <div class="hero-inner">
@@ -1086,88 +609,31 @@ tr:hover td { background: rgba(37,99,235,.025); }
       </div>
     </div>
 
-    <!-- Flow Info -->
     <div class="flow-info reveal">
       <span style="font-size:18px;flex-shrink:0">📋</span>
       <span><strong>Approval Flow:</strong> Student submits → <strong>👑 Chairperson reviews FIRST</strong> → then HOD gives final approval → Student attends event → Uploads proof → Faculty verifies score.</span>
     </div>
 
-    <!-- Stat Grid -->
     <div class="stat-grid">
-      <div class="stat-card sc-blue reveal">
-        <div class="sc-icon">⏳</div>
-        <div class="sc-num" id="s1">0</div>
-        <div class="sc-lbl">Pending Chair</div>
-        <div class="sc-bar"><div class="sc-fill" id="b1"></div></div>
-      </div>
-      <div class="stat-card sc-green reveal">
-        <div class="sc-icon">👑</div>
-        <div class="sc-num" id="s2">0</div>
-        <div class="sc-lbl">Chair Approved</div>
-        <div class="sc-bar"><div class="sc-fill" id="b2"></div></div>
-      </div>
-      <div class="stat-card sc-cyan reveal">
-        <div class="sc-icon">✔</div>
-        <div class="sc-num" id="s3">0</div>
-        <div class="sc-lbl">Fully Approved</div>
-        <div class="sc-bar"><div class="sc-fill" id="b3"></div></div>
-      </div>
-      <div class="stat-card sc-purple reveal">
-        <div class="sc-icon">📋</div>
-        <div class="sc-num" id="s4">0</div>
-        <div class="sc-lbl">Submissions</div>
-        <div class="sc-bar"><div class="sc-fill" id="b4"></div></div>
-      </div>
-      <div class="stat-card sc-orange reveal">
-        <div class="sc-icon">📤</div>
-        <div class="sc-num" id="s5">0</div>
-        <div class="sc-lbl">No Submission</div>
-        <div class="sc-bar"><div class="sc-fill" id="b5"></div></div>
-      </div>
-      <div class="stat-card sc-red reveal">
-        <div class="sc-icon">✗</div>
-        <div class="sc-num" id="s6">0</div>
-        <div class="sc-lbl">Rejected</div>
-        <div class="sc-bar"><div class="sc-fill" id="b6"></div></div>
-      </div>
+      <div class="stat-card sc-blue reveal"><div class="sc-icon">⏳</div><div class="sc-num" id="s1">0</div><div class="sc-lbl">Pending Chair</div><div class="sc-bar"><div class="sc-fill" id="b1"></div></div></div>
+      <div class="stat-card sc-green reveal"><div class="sc-icon">👑</div><div class="sc-num" id="s2">0</div><div class="sc-lbl">Chair Approved</div><div class="sc-bar"><div class="sc-fill" id="b2"></div></div></div>
+      <div class="stat-card sc-cyan reveal"><div class="sc-icon">✔</div><div class="sc-num" id="s3">0</div><div class="sc-lbl">Fully Approved</div><div class="sc-bar"><div class="sc-fill" id="b3"></div></div></div>
+      <div class="stat-card sc-purple reveal"><div class="sc-icon">📋</div><div class="sc-num" id="s4">0</div><div class="sc-lbl">Submissions</div><div class="sc-bar"><div class="sc-fill" id="b4"></div></div></div>
+      <div class="stat-card sc-orange reveal"><div class="sc-icon">📤</div><div class="sc-num" id="s5">0</div><div class="sc-lbl">No Submission</div><div class="sc-bar"><div class="sc-fill" id="b5"></div></div></div>
+      <div class="stat-card sc-red reveal"><div class="sc-icon">✗</div><div class="sc-num" id="s6">0</div><div class="sc-lbl">Rejected</div><div class="sc-bar"><div class="sc-fill" id="b6"></div></div></div>
     </div>
 
-    <!-- Analytics Row -->
     <div class="analytics-row">
       <div class="card reveal">
-        <div class="card-hdr">
-          <div class="card-title">📈 Approval Pipeline</div>
-          <span class="badge b-grey" id="pipeTot">Total: 0</span>
-        </div>
+        <div class="card-hdr"><div class="card-title">📈 Approval Pipeline</div><span class="badge b-grey" id="pipeTot">Total: 0</span></div>
         <div class="pipeline">
-          <div class="pl-row">
-            <div class="pl-top"><span class="pl-name"><span class="pl-dot" style="background:var(--blue)"></span>Pending Chairperson</span><span class="pl-val" id="ppC" style="color:var(--blue)">0</span></div>
-            <div class="pl-bg"><div class="pl-fill" id="pbC" style="background:linear-gradient(90deg,var(--blue),var(--indigo))"></div></div>
-            <div class="pl-pct" id="pctC"></div>
-          </div>
-          <div class="pl-row">
-            <div class="pl-top"><span class="pl-name"><span class="pl-dot" style="background:var(--green)"></span>Chair Approved → Awaiting HOD</span><span class="pl-val" id="ppH" style="color:var(--green)">0</span></div>
-            <div class="pl-bg"><div class="pl-fill" id="pbH" style="background:linear-gradient(90deg,var(--green),var(--cyan))"></div></div>
-            <div class="pl-pct" id="pctH"></div>
-          </div>
-          <div class="pl-row">
-            <div class="pl-top"><span class="pl-name"><span class="pl-dot" style="background:var(--cyan)"></span>Fully Approved (HOD done)</span><span class="pl-val" id="ppA" style="color:var(--cyan)">0</span></div>
-            <div class="pl-bg"><div class="pl-fill" id="pbA" style="background:linear-gradient(90deg,var(--cyan),var(--blue))"></div></div>
-            <div class="pl-pct" id="pctA"></div>
-          </div>
-          <div class="pl-row">
-            <div class="pl-top"><span class="pl-name"><span class="pl-dot" style="background:var(--purple)"></span>Doc Verified</span><span class="pl-val" id="ppV" style="color:var(--purple)">0</span></div>
-            <div class="pl-bg"><div class="pl-fill" id="pbV" style="background:linear-gradient(90deg,var(--purple),var(--indigo))"></div></div>
-            <div class="pl-pct" id="pctV"></div>
-          </div>
-          <div class="pl-row">
-            <div class="pl-top"><span class="pl-name"><span class="pl-dot" style="background:var(--red)"></span>Rejected by Chair</span><span class="pl-val" id="ppR" style="color:var(--red)">0</span></div>
-            <div class="pl-bg"><div class="pl-fill" id="pbR" style="background:linear-gradient(90deg,var(--red),#9f1239)"></div></div>
-            <div class="pl-pct" id="pctR"></div>
-          </div>
+          <div class="pl-row"><div class="pl-top"><span class="pl-name"><span class="pl-dot" style="background:var(--blue)"></span>Pending Chairperson</span><span class="pl-val" id="ppC" style="color:var(--blue)">0</span></div><div class="pl-bg"><div class="pl-fill" id="pbC" style="background:linear-gradient(90deg,var(--blue),var(--indigo))"></div></div><div class="pl-pct" id="pctC"></div></div>
+          <div class="pl-row"><div class="pl-top"><span class="pl-name"><span class="pl-dot" style="background:var(--green)"></span>Chair Approved → Awaiting HOD</span><span class="pl-val" id="ppH" style="color:var(--green)">0</span></div><div class="pl-bg"><div class="pl-fill" id="pbH" style="background:linear-gradient(90deg,var(--green),var(--cyan))"></div></div><div class="pl-pct" id="pctH"></div></div>
+          <div class="pl-row"><div class="pl-top"><span class="pl-name"><span class="pl-dot" style="background:var(--cyan)"></span>Fully Approved (HOD done)</span><span class="pl-val" id="ppA" style="color:var(--cyan)">0</span></div><div class="pl-bg"><div class="pl-fill" id="pbA" style="background:linear-gradient(90deg,var(--cyan),var(--blue))"></div></div><div class="pl-pct" id="pctA"></div></div>
+          <div class="pl-row"><div class="pl-top"><span class="pl-name"><span class="pl-dot" style="background:var(--purple)"></span>Doc Verified</span><span class="pl-val" id="ppV" style="color:var(--purple)">0</span></div><div class="pl-bg"><div class="pl-fill" id="pbV" style="background:linear-gradient(90deg,var(--purple),var(--indigo))"></div></div><div class="pl-pct" id="pctV"></div></div>
+          <div class="pl-row"><div class="pl-top"><span class="pl-name"><span class="pl-dot" style="background:var(--red)"></span>Rejected by Chair</span><span class="pl-val" id="ppR" style="color:var(--red)">0</span></div><div class="pl-bg"><div class="pl-fill" id="pbR" style="background:linear-gradient(90deg,var(--red),#9f1239)"></div></div><div class="pl-pct" id="pctR"></div></div>
         </div>
       </div>
-
       <div class="card reveal">
         <div class="card-hdr"><div class="card-title">🍩 Status Breakdown</div></div>
         <div class="donut-wrap">
@@ -1190,14 +656,12 @@ tr:hover td { background: rgba(37,99,235,.025); }
           </div>
         </div>
       </div>
-
       <div class="card reveal">
         <div class="card-hdr"><div class="card-title">🌐 Event Scope</div></div>
         <div class="scope-bars" id="scopeBars"><div style="color:var(--muted);font-size:11px">Loading…</div></div>
       </div>
     </div>
 
-    <!-- DESKTOP TABS -->
     <div class="desk-tabs reveal">
       <button class="d-tab on" onclick="sw('pending')">⏳ Pending <span class="d-badge" id="dbPend" style="display:none">0</span></button>
       <button class="d-tab" onclick="sw('verify')">✔ Verify Docs <span class="d-badge" id="dbVer" style="display:none">0</span></button>
@@ -1210,13 +674,9 @@ tr:hover td { background: rgba(37,99,235,.025); }
     <!-- ── PENDING ── -->
     <div class="panel on" id="tab-pending">
       <div class="filter-row reveal">
-        <div class="search-box">
-          <span class="search-icon">🔍</span>
-          <input id="srchP" placeholder="Name, reg no, event…" oninput="renderPending()">
-        </div>
+        <div class="search-box"><span style="color:var(--muted)">🔍</span><input id="srchP" placeholder="Name, reg no, event…" oninput="renderPending()"></div>
         <select class="fsel" id="scopeF" onchange="renderPending()">
-          <option value="">All Scopes</option>
-          <option>International</option><option>National</option><option>State</option><option>College</option>
+          <option value="">All Scopes</option><option>International</option><option>National</option><option>State</option><option>College</option>
         </select>
       </div>
       <span class="scroll-hint">← Scroll table horizontally →</span>
@@ -1245,22 +705,15 @@ tr:hover td { background: rgba(37,99,235,.025); }
     <!-- ── VERIFY ── -->
     <div class="panel" id="tab-verify">
       <div class="filter-row reveal">
-        <div class="search-box">
-          <span class="search-icon">🔍</span>
-          <input id="srchV" placeholder="Name, reg no, event…" oninput="renderVerify()">
-        </div>
+        <div class="search-box"><span style="color:var(--muted)">🔍</span><input id="srchV" placeholder="Name, reg no, event…" oninput="renderVerify()"></div>
         <select class="fsel" id="verSF" onchange="renderVerify()">
-          <option value="">All Status</option>
-          <option value="Pending">Unverified</option>
-          <option value="Verified">Verified</option>
-          <option value="Rejected">Rejected</option>
+          <option value="">All Status</option><option value="Pending">Unverified</option><option value="Verified">Verified</option><option value="Rejected">Rejected</option>
         </select>
         <select class="fsel" id="verScopeF" onchange="renderVerify()">
-          <option value="">All Scopes</option>
-          <option>International</option><option>National</option><option>State</option><option>College</option>
+          <option value="">All Scopes</option><option>International</option><option>National</option><option>State</option><option>College</option>
         </select>
       </div>
-      <span class="scroll-hint">← Scroll table horizontally →</span>
+      <span class="scroll-hint">← Scroll →</span>
       <div class="tbl-card reveal">
         <div class="tbl-hdr">
           <div class="tbl-hdr-title">✔ Document Verification — Section <span id="verSecLbl">—</span></div>
@@ -1276,10 +729,7 @@ tr:hover td { background: rgba(37,99,235,.025); }
     <!-- ── STUDENTS ── -->
     <div class="panel" id="tab-students">
       <div class="filter-row reveal">
-        <div class="search-box">
-          <span class="search-icon">🔍</span>
-          <input id="srchS" placeholder="Student name or reg no…" oninput="renderStudents()">
-        </div>
+        <div class="search-box"><span style="color:var(--muted)">🔍</span><input id="srchS" placeholder="Student name or reg no…" oninput="renderStudents()"></div>
         <select class="fsel" id="stuFilter" onchange="renderStudents()">
           <option value="">All Students</option>
           <option value="pending">Needs Chair Approval</option>
@@ -1288,14 +738,12 @@ tr:hover td { background: rgba(37,99,235,.025); }
           <option value="unverified">Unverified Docs</option>
         </select>
       </div>
-      <div id="stuList" class="reveal">
-        <div class="tbl-empty"><div class="empty-icon">🎓</div>Loading students…</div>
-      </div>
+      <div id="stuList" class="reveal"><div class="tbl-empty"><div class="empty-icon">🎓</div>Loading students…</div></div>
     </div>
 
     <!-- ── APPROVED ── -->
     <div class="panel" id="tab-approved">
-      <span class="scroll-hint">← Scroll table horizontally →</span>
+      <span class="scroll-hint">← Scroll →</span>
       <div class="tbl-card reveal">
         <div class="tbl-hdr">
           <div class="tbl-hdr-title">👑 Approved by Chairperson</div>
@@ -1310,7 +758,7 @@ tr:hover td { background: rgba(37,99,235,.025); }
 
     <!-- ── REJECTED ── -->
     <div class="panel" id="tab-rejected">
-      <span class="scroll-hint">← Scroll table horizontally →</span>
+      <span class="scroll-hint">← Scroll →</span>
       <div class="tbl-card reveal">
         <div class="tbl-hdr">
           <div class="tbl-hdr-title">✗ Rejected by Chairperson</div>
@@ -1325,104 +773,148 @@ tr:hover td { background: rgba(37,99,235,.025); }
 
     <!-- ── REPORT ── -->
     <div class="panel" id="tab-report">
+
+      <!-- Filter controls -->
       <div class="rpt-controls reveal">
-        <div class="rpt-field">
-          <label>From Date</label>
-          <input type="date" class="fsel" id="rptFrom" onchange="genReport()">
+        <div style="display:flex;align-items:center;justify-content:space-between;width:100%;flex-wrap:wrap;gap:8px;margin-bottom:10px">
+          <div style="font-size:13px;font-weight:700;color:var(--blue);display:flex;align-items:center;gap:6px">
+            🔍 Report Filters — Section <span id="rptSecFilter" style="color:var(--text2)">—</span>
+          </div>
+          <div id="rptStatus2" style="font-size:11px;color:var(--muted);font-weight:600"></div>
         </div>
-        <div class="rpt-field">
-          <label>To Date</label>
-          <input type="date" class="fsel" id="rptTo" onchange="genReport()">
+        <div style="display:grid;grid-template-columns:repeat(2,1fr);gap:8px;width:100%;margin-bottom:10px" id="rptFilterGrid">
+          <style>@media(min-width:640px){#rptFilterGrid{grid-template-columns:repeat(4,1fr)}}</style>
+          <div class="rpt-field"><label>From Date</label><input type="date" class="fsel" id="rptFrom" onchange="genReport()"></div>
+          <div class="rpt-field"><label>To Date</label><input type="date" class="fsel" id="rptTo" onchange="genReport()"></div>
+          <div class="rpt-field"><label>Scope</label>
+            <select class="fsel" id="rptScope" onchange="genReport()">
+              <option value="">All Scopes</option><option>International</option><option>National</option><option>State</option><option>College</option>
+            </select>
+          </div>
+          <div class="rpt-field"><label>Doc Status</label>
+            <select class="fsel" id="rptDocStatus" onchange="genReport()">
+              <option value="">All</option><option value="Verified">Verified</option><option value="Pending">Unverified</option><option value="Rejected">Rejected</option>
+            </select>
+          </div>
         </div>
-        <div class="rpt-field">
-          <label>Scope</label>
-          <select class="fsel" id="rptScope" onchange="genReport()">
-            <option value="">All</option>
-            <option>International</option><option>National</option><option>State</option><option>College</option>
-          </select>
-        </div>
-        <div class="rpt-field">
-          <label>Status</label>
-          <select class="fsel" id="rptStatus" onchange="genReport()">
-            <option value="">All</option>
-            <option value="Verified">Verified</option>
-            <option value="Pending">Unverified</option>
-          </select>
-        </div>
-        <div style="display:flex;gap:7px;align-items:flex-end;margin-left:auto;flex-wrap:wrap">
-          <button class="btn btn-ghost btn-sm" onclick="clearRpt()">✕ Clear</button>
+        <div style="display:flex;gap:7px;align-items:center;flex-wrap:wrap">
+          <button class="btn btn-primary btn-sm" onclick="genReport()">⚡ Apply Filters</button>
+          <button class="btn btn-ghost btn-sm" onclick="clearRpt()">↺ Reset</button>
           <button class="btn btn-outline btn-sm" onclick="window.print()">🖨 Print</button>
           <button class="btn btn-report btn-sm" onclick="exportCSV()">⬇ CSV</button>
         </div>
       </div>
-      <div id="rptContent">
-        <div class="rpt-section reveal">
-          <div class="rpt-hdr">📊 Section <span id="rptSecTitle">—</span> — Class Report</div>
-          <div class="rpt-kpis">
-            <div class="rpt-kpi"><div class="rpt-kpi-val" style="color:var(--blue)" id="rS1">0</div><div class="rpt-kpi-lbl">Total Events</div></div>
-            <div class="rpt-kpi"><div class="rpt-kpi-val" style="color:var(--green)" id="rS2">0</div><div class="rpt-kpi-lbl">Verified</div></div>
-            <div class="rpt-kpi"><div class="rpt-kpi-val" style="color:var(--cyan)" id="rS3">0</div><div class="rpt-kpi-lbl">Participants</div></div>
-            <div class="rpt-kpi"><div class="rpt-kpi-val" style="color:var(--blue-dk)" id="rS4">0</div><div class="rpt-kpi-lbl">Total Score</div></div>
+
+      <!-- 8-stat strip -->
+      <div class="rpt-stat-strip" id="rptStatStrip">
+        <div class="rsc rs-blue"><div class="rs-icon">📋</div><div class="rs-val" id="rss1">—</div><div class="rs-lbl">Total Events</div><div class="rs-bar"><div class="rs-bf" id="rssb1"></div></div></div>
+        <div class="rsc rs-green"><div class="rs-icon">✅</div><div class="rs-val" id="rss2">—</div><div class="rs-lbl">Verified</div><div class="rs-bar"><div class="rs-bf" id="rssb2"></div></div></div>
+        <div class="rsc rs-purple"><div class="rs-icon">👥</div><div class="rs-val" id="rss3">—</div><div class="rs-lbl">Participants</div><div class="rs-bar"><div class="rs-bf" id="rssb3"></div></div></div>
+        <div class="rsc rs-gold"><div class="rs-icon">⭐</div><div class="rs-val" id="rss4">—</div><div class="rs-lbl">Total Score</div><div class="rs-bar"><div class="rs-bf" id="rssb4"></div></div></div>
+        <div class="rsc rs-cyan"><div class="rs-icon">🌍</div><div class="rs-val" id="rss5">—</div><div class="rs-lbl">International</div><div class="rs-bar"><div class="rs-bf" id="rssb5"></div></div></div>
+        <div class="rsc rs-indigo"><div class="rs-icon">🇮🇳</div><div class="rs-val" id="rss6">—</div><div class="rs-lbl">National</div><div class="rs-bar"><div class="rs-bf" id="rssb6"></div></div></div>
+        <div class="rsc rs-orange"><div class="rs-icon">🏆</div><div class="rs-val" id="rss7">—</div><div class="rs-lbl">Winners</div><div class="rs-bar"><div class="rs-bf" id="rssb7"></div></div></div>
+        <div class="rsc rs-red"><div class="rs-icon">⚠</div><div class="rs-val" id="rss8">—</div><div class="rs-lbl">No Submission</div><div class="rs-bar"><div class="rs-bf" id="rssb8"></div></div></div>
+      </div>
+
+      <!-- Sub-tabs -->
+      <div class="rtab-bar">
+        <button class="rtab on" onclick="rTab('rSummary')">📊 Summary</button>
+        <button class="rtab" onclick="rTab('rAll')">📋 All Records</button>
+        <button class="rtab" onclick="rTab('rTopPerf')">🏆 Top Performers</button>
+        <button class="rtab" onclick="rTab('rScope')">🌐 By Scope</button>
+        <button class="rtab" onclick="rTab('rNoSub')">⚠ No Submission</button>
+      </div>
+
+      <!-- SUMMARY panel -->
+      <div class="rpanel on" id="rSummary">
+        <div style="display:grid;grid-template-columns:1fr;gap:12px;margin-bottom:12px" id="rSumGrid">
+          <style>@media(min-width:640px){#rSumGrid{grid-template-columns:1fr 1fr}}@media(min-width:1100px){#rSumGrid{grid-template-columns:1fr 1fr 1fr}}</style>
+          <!-- Scope breakdown -->
+          <div class="rpt-section" style="margin-bottom:0">
+            <div class="rpt-hdr" style="font-size:13px">🌐 Events by Scope</div>
+            <div id="rptScopeChart"></div>
+          </div>
+          <!-- Verification rate -->
+          <div class="rpt-section" style="margin-bottom:0">
+            <div class="rpt-hdr" style="font-size:13px">✅ Verification Rate</div>
+            <div id="rptVerRate"></div>
+          </div>
+          <!-- Monthly trend -->
+          <div class="rpt-section" style="margin-bottom:0">
+            <div class="rpt-hdr" style="font-size:13px">📅 Monthly Trend</div>
+            <div id="rptMonthChart" style="display:flex;align-items:flex-end;gap:3px;height:80px"></div>
+            <div id="rptMonthLabels" style="display:flex;gap:3px;margin-top:4px"></div>
           </div>
         </div>
-        <div class="rpt-section reveal"><div class="rpt-hdr">🌐 Events by Scope</div><div id="rptScopeTable"></div></div>
-        <div class="rpt-section reveal">
-          <div class="rpt-hdr">🏆 Top Performers</div>
-          <div style="overflow-x:auto"><table class="rpt-tbl">
-            <thead><tr><th>#</th><th>Reg No</th><th>Name</th><th>Events</th><th>Verified</th><th>Score</th><th>Best Prize</th></tr></thead>
-            <tbody id="rptTopBody"><tr><td colspan="7" class="rpt-empty">No data</td></tr></tbody>
-          </table></div>
+        <!-- Highlights -->
+        <div class="rpt-section">
+          <div class="rpt-hdr" style="font-size:13px">🔆 Key Highlights</div>
+          <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:9px" id="rptHighlights"></div>
         </div>
-        <div class="rpt-section reveal">
-          <div class="rpt-hdr">📋 All Submissions <span id="rptAllCount" style="font-size:13px;font-weight:500;color:var(--muted)"></span></div>
+      </div>
+
+      <!-- ALL RECORDS panel -->
+      <div class="rpanel" id="rAll">
+        <div class="rpt-section">
+          <div class="rpt-hdr">
+            📋 All Submissions
+            <span style="font-size:12px;font-weight:500;color:var(--muted)" id="rptAllCount"></span>
+          </div>
+          <span class="scroll-hint">← Scroll →</span>
           <div style="overflow-x:auto"><table class="rpt-tbl">
             <thead><tr><th>Reg No</th><th>Name</th><th>Event</th><th>Date</th><th>Scope</th><th>College</th><th>Prize</th><th>Score</th><th>Status</th></tr></thead>
-            <tbody id="rptAllBody"><tr><td colspan="9" class="rpt-empty">No data</td></tr></tbody>
-          </table></div>
-        </div>
-        <div class="rpt-section reveal">
-          <div class="rpt-hdr">⚠ Students with No Submissions</div>
-          <div style="overflow-x:auto"><table class="rpt-tbl">
-            <thead><tr><th>Reg No</th><th>Name</th><th>Year</th><th>Phone</th><th>Action</th></tr></thead>
-            <tbody id="rptNSBody"><tr><td colspan="5" class="rpt-empty">All students have submitted!</td></tr></tbody>
+            <tbody id="rptAllBody"></tbody>
           </table></div>
         </div>
       </div>
-    </div>
+
+      <!-- TOP PERFORMERS panel -->
+      <div class="rpanel" id="rTopPerf">
+        <div class="rpt-section">
+          <div class="rpt-hdr">🏆 Top Performers</div>
+          <span class="scroll-hint">← Scroll →</span>
+          <div style="overflow-x:auto"><table class="rpt-tbl">
+            <thead><tr><th>#</th><th>Reg No</th><th>Name</th><th>Events</th><th>Verified</th><th>Int'l</th><th>Natl</th><th>Score</th><th>Best Prize</th></tr></thead>
+            <tbody id="rptTopBody"></tbody>
+          </table></div>
+        </div>
+      </div>
+
+      <!-- SCOPE panel -->
+      <div class="rpanel" id="rScope">
+        <div class="rpt-section">
+          <div class="rpt-hdr">🌐 Scope-wise Breakdown</div>
+          <div id="rptScopeTable"></div>
+        </div>
+      </div>
+
+      <!-- NO SUBMISSION panel -->
+      <div class="rpanel" id="rNoSub">
+        <div class="rpt-section">
+          <div class="rpt-hdr">⚠ Students with No Submissions</div>
+          <span class="scroll-hint">← Scroll →</span>
+          <div style="overflow-x:auto"><table class="rpt-tbl">
+            <thead><tr><th>Reg No</th><th>Name</th><th>Year</th><th>Phone</th><th>Action</th></tr></thead>
+            <tbody id="rptNSBody"></tbody>
+          </table></div>
+        </div>
+      </div>
+
+    </div><!-- /tab-report -->
 
   </div><!-- /.content -->
 
-  <!-- BOTTOM NAV (mobile) -->
+  <!-- BOTTOM NAV -->
   <nav class="bottom-nav" aria-label="Main navigation">
-    <button class="bn-item on" onclick="sw('pending')" id="bn-pending">
-      <span class="bn-icon">⏳</span>
-      <span class="bn-badge" id="bnPend" style="display:none">0</span>
-      <span class="bn-lbl">Pending</span>
-    </button>
-    <button class="bn-item" onclick="sw('verify')" id="bn-verify">
-      <span class="bn-icon">✔</span>
-      <span class="bn-badge" id="bnVer" style="display:none">0</span>
-      <span class="bn-lbl">Verify</span>
-    </button>
-    <button class="bn-item" onclick="sw('students')" id="bn-students">
-      <span class="bn-icon">🎓</span>
-      <span class="bn-lbl">Students</span>
-    </button>
-    <button class="bn-item" onclick="sw('approved')" id="bn-approved">
-      <span class="bn-icon">✅</span>
-      <span class="bn-lbl">Approved</span>
-    </button>
-    <button class="bn-item" onclick="sw('rejected')" id="bn-rejected">
-      <span class="bn-icon">✗</span>
-      <span class="bn-lbl">Rejected</span>
-    </button>
-    <button class="bn-item" onclick="sw('report')" id="bn-report">
-      <span class="bn-icon">📊</span>
-      <span class="bn-lbl">Report</span>
-    </button>
+    <button class="bn-item on" onclick="sw('pending')" id="bn-pending"><span class="bn-icon">⏳</span><span class="bn-badge" id="bnPend" style="display:none">0</span><span class="bn-lbl">Pending</span></button>
+    <button class="bn-item" onclick="sw('verify')" id="bn-verify"><span class="bn-icon">✔</span><span class="bn-badge" id="bnVer" style="display:none">0</span><span class="bn-lbl">Verify</span></button>
+    <button class="bn-item" onclick="sw('students')" id="bn-students"><span class="bn-icon">🎓</span><span class="bn-lbl">Students</span></button>
+    <button class="bn-item" onclick="sw('approved')" id="bn-approved"><span class="bn-icon">✅</span><span class="bn-lbl">Approved</span></button>
+    <button class="bn-item" onclick="sw('rejected')" id="bn-rejected"><span class="bn-icon">✗</span><span class="bn-lbl">Rejected</span></button>
+    <button class="bn-item" onclick="sw('report')" id="bn-report"><span class="bn-icon">📊</span><span class="bn-lbl">Report</span></button>
   </nav>
-
-</div><!-- /.layout -->
+</div>
 
 <script>
 /* ══════════════════════════
@@ -1433,19 +925,21 @@ const GAS_URL = 'https://script.google.com/macros/s/AKfycbyZXP5hovUYJ2EfheJhZaYt
 let CU = null, SEC = '';
 let PEND = [], APPD = [], REJD = [], STUS = [], FINS = [];
 let SCOPE_MAP = {};
+let DATA_LOADED = false;  /* FIX: track if data is ready */
 
 const TABS = ['pending','verify','students','approved','rejected','report'];
 const SB = { International:'b-blue', National:'b-cyan', State:'b-green', College:'b-grey' };
 const SC = { International:'var(--blue)', National:'var(--cyan)', State:'var(--green)', College:'var(--muted)' };
+const RPT_COLORS = ['#2563eb','#059669','#d97706','#0284c7','#7c3aed','#dc2626','#0891b2','#ea580c'];
 
 /* ══ UTILITIES ══ */
 const G = id => document.getElementById(id);
 const T = (id, v) => { const e = G(id); if (e) e.textContent = v; };
 const W = (id, p) => { const e = G(id); if (e) e.style.width = Math.min(100, Math.max(0, p)) + '%'; };
-const fD = d => d ? new Date(d).toLocaleDateString('en-IN', { day:'2-digit', month:'short', year:'numeric' }) : '—';
-const fDT = d => d ? new Date(d).toLocaleString('en-IN', { day:'2-digit', month:'short', hour:'2-digit', minute:'2-digit' }) : '—';
+const fD  = d => d ? new Date(d).toLocaleDateString('en-IN', { day:'2-digit', month:'short', year:'numeric' }) : '—';
+const fDT = d => d ? new Date(d).toLocaleString('en-IN',    { day:'2-digit', month:'short', hour:'2-digit', minute:'2-digit' }) : '—';
 const esc = s => (s||'').replace(/'/g,"\\'").replace(/"/g,'\\"');
-const js = o => JSON.stringify(o).replace(/"/g,'&quot;');
+const js  = o => JSON.stringify(o).replace(/"/g,'&quot;');
 const closeModal = id => G(id).classList.remove('show');
 const waLink = (name, msg) => encodeURIComponent(`Hi ${name},\n\n${msg}\n\n— ECE Dept, Chairperson`);
 
@@ -1461,32 +955,34 @@ async function api(action, params = {}) {
 function toast(msg, type = 'info') {
   const box = G('toast-box'), el = document.createElement('div');
   el.className = 'toast ' + type;
-  const icons = { success:'✅', error:'❌', info:'⚡' };
-  el.innerHTML = `<span>${icons[type]||'ℹ'}</span><span>${msg}</span>`;
+  el.innerHTML = `<span>${{success:'✅',error:'❌',info:'⚡'}[type]||'ℹ'}</span><span>${msg}</span>`;
   box.appendChild(el);
   setTimeout(() => { el.style.animation = 'slideOut .35s ease forwards'; setTimeout(() => el.remove(), 350); }, 3800);
 }
 
-/* close overlay on backdrop */
 document.querySelectorAll('.overlay').forEach(o =>
   o.addEventListener('click', e => { if (e.target === e.currentTarget) e.target.classList.remove('show'); })
 );
 
 /* ══ TABS ══ */
 function sw(name) {
-  // Desktop tabs
   document.querySelectorAll('.d-tab').forEach((t, i) => t.classList.toggle('on', TABS[i] === name));
-  // Bottom nav
   TABS.forEach(t => { const b = G('bn-'+t); if (b) b.classList.toggle('on', t === name); });
-  // Panels
   document.querySelectorAll('.panel').forEach(p => p.classList.remove('on'));
   const panel = G('tab-' + name);
-  if (panel) { panel.classList.add('on'); }
-  if (name === 'report') genReport();
+  if (panel) panel.classList.add('on');
+  /* FIX: only call genReport if data is loaded */
+  if (name === 'report' && DATA_LOADED) genReport();
   if (name === 'verify') renderVerify();
-  // scroll to content
-  const content = document.querySelector('.content');
-  if (content) content.scrollTo({ top: 0, behavior: 'smooth' });
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+
+/* Sub-tabs inside Report */
+const RTABS = ['rSummary','rAll','rTopPerf','rScope','rNoSub'];
+function rTab(name) {
+  document.querySelectorAll('.rtab').forEach((t,i) => t.classList.toggle('on', RTABS[i] === name));
+  document.querySelectorAll('.rpanel').forEach(p => p.classList.remove('on'));
+  const el = G(name); if (el) el.classList.add('on');
 }
 
 /* ══ INIT ══ */
@@ -1506,18 +1002,17 @@ function splashMsg(msg) {
   sp.querySelector('.spl-prog').style.display = 'none';
 }
 
-/* ══ SETUP ══ */
 function setupPortal(user) {
   CU = user;
   T('uName', CU.Name || 'Chairperson');
   G('uAv').textContent = (CU.Name || 'C')[0].toUpperCase();
-  SEC = String(CU.Section || CU.section ||
-    (() => { const k = Object.keys(CU).find(x => x.trim().toLowerCase() === 'section'); return k ? CU[k] : ''; })() || '').trim();
-
+  SEC = String(
+    CU.Section || CU.section ||
+    (() => { const k = Object.keys(CU).find(x => x.trim().toLowerCase() === 'section'); return k ? CU[k] : ''; })() || ''
+  ).trim();
   const sp = G('splash');
   sp.classList.add('fade');
   setTimeout(() => sp.classList.add('gone'), 520);
-
   if (!SEC) {
     T('pgSub', `Logged in as ${CU.Name} — Section not assigned.`);
     toast('Section not assigned in USERS sheet.', 'error');
@@ -1525,6 +1020,7 @@ function setupPortal(user) {
   }
   T('pgSub', `Section ${SEC} · ${CU.Name} · 1st Approval Authority`);
   T('hbSec', 'Sec ' + SEC); T('secLbl', SEC); T('verSecLbl', SEC);
+  T('rptSecFilter', SEC);
   loadAll();
   setTimeout(initReveal, 100);
 }
@@ -1532,94 +1028,134 @@ function setupPortal(user) {
 /* ══ LOAD ALL ══ */
 async function loadAll() {
   if (!SEC) { toast('Section not set', 'error'); return; }
+  DATA_LOADED = false;
   toast('Loading Section ' + SEC + '…', 'info');
 
-  const [chairPendRes, userRes, dashRes, analRes, histRes] = await Promise.all([
-    api('getSectionDashboard', { section: SEC }),
+  const [pendRes, userRes, dashRes, analRes, histRes] = await Promise.all([
+    api('getPendingApprovals', { role:'Chairperson', section: SEC }),
     api('getUsers', { role:'Student', section: SEC }),
     api('getFacultyDashboard', { section: SEC }),
     api('getAnalytics', { section: SEC }),
     api('getChairHistory', { section: SEC })
   ]);
 
-  let allPA = [];
-  if (chairPendRes.success) {
-    const allPARes = await api('getPendingApprovals', { role:'Chairperson', section: SEC });
-    if (allPARes.success) PEND = allPARes.data || [];
-    else PEND = chairPendRes.pending || [];
-    PEND = PEND.filter(r => String(r.Section||'').trim() === SEC);
+  /* ── PENDING ── */
+  if (pendRes.success) {
+    PEND = (pendRes.data || []).filter(r => String(r.Section||'').trim() === SEC);
+  } else if (dashRes.success) {
+    PEND = (dashRes.pending || []).filter(r => String(r.Section||'').trim() === SEC);
+  } else {
+    PEND = [];
   }
 
-  if (analRes.success && analRes.submissions?.length) FINS = analRes.submissions.filter(f => String(f.Section||'').trim() === SEC);
-  else if (dashRes.success && dashRes.recentSubmissions?.length) FINS = dashRes.recentSubmissions;
-  else { const a = await api('getAnalytics',{}); FINS = (a.success ? a.submissions||[] : []).filter(f => String(f.Section||'').trim() === SEC); }
+  /* ── FINAL SUBMISSIONS ── FIX: prefer analRes, fall back gracefully */
+  if (analRes.success && Array.isArray(analRes.submissions) && analRes.submissions.length) {
+    FINS = analRes.submissions.filter(f => String(f.Section||'').trim() === SEC);
+  } else if (analRes.success && Array.isArray(analRes.data) && analRes.data.length) {
+    FINS = analRes.data.filter(f => String(f.Section||'').trim() === SEC);
+  } else if (dashRes.success && dashRes.recentSubmissions?.length) {
+    FINS = dashRes.recentSubmissions.filter(f => String(f.Section||'').trim() === SEC);
+  } else {
+    /* FIX: last resort — fetch all submissions without section filter */
+    const fallback = await api('getAnalytics', {});
+    FINS = fallback.success
+      ? ((fallback.submissions || fallback.data || []).filter(f => String(f.Section||'').trim() === SEC))
+      : [];
+  }
 
-  if (dashRes.success && dashRes.students?.length) STUS = dashRes.students;
-  else if (userRes.success && userRes.data?.length) STUS = userRes.data.map(u => enrich(u));
-  else { const a = await api('getUsers',{role:'Student'}); STUS = (a.success ? a.data||[] : []).filter(u => String(u.Section||'').trim() === SEC).map(u => enrich(u)); }
+  /* ── STUDENTS ── FIX: always run enrich() */
+  let rawStudents = [];
+  if (dashRes.success && dashRes.students?.length) {
+    rawStudents = dashRes.students;
+  } else if (userRes.success && userRes.data?.length) {
+    rawStudents = userRes.data;
+  } else {
+    const a = await api('getUsers', { role:'Student' });
+    rawStudents = (a.success ? (a.data||[]) : []).filter(u => String(u.Section||'').trim() === SEC);
+  }
+  STUS = rawStudents.map(u => enrich(u));  /* FIX: always enrich */
 
-  if (histRes.success) { APPD = histRes.approved||[]; REJD = histRes.rejected||[]; }
-  else { APPD = []; REJD = []; }
+  /* ── APPROVED / REJECTED HISTORY ── */
+  if (histRes.success && (histRes.approved?.length || histRes.rejected?.length)) {
+    APPD = (histRes.approved || []).filter(r => String(r.Section||'').trim() === SEC);
+    REJD = (histRes.rejected || []).filter(r => String(r.Section||'').trim() === SEC);
+  } else {
+    /* FIX: build from getPendingApprovals (returns only pending), 
+       try getSectionDashboard for chairApproved and rejected */
+    const secDash = await api('getSectionDashboard', { section: SEC });
+    if (secDash.success) {
+      APPD = (secDash.chairApproved || secDash.fullyApproved || []);
+      REJD = (secDash.chairRejected || secDash.hodRejected || []);
+    } else {
+      APPD = []; REJD = [];
+    }
+  }
 
+  /* ── SCOPE MAP ── */
   SCOPE_MAP = {};
   FINS.forEach(f => { const k = f.Scope||'Other'; SCOPE_MAP[k] = (SCOPE_MAP[k]||0) + 1; });
 
-  updateStats(); renderAll();
+  DATA_LOADED = true;  /* FIX: mark data ready */
+
+  updateStats();
+  renderAll();
   setTimeout(initReveal, 80);
-  toast(`✅ ${PEND.length} pending · ${FINS.length} submissions`, 'success');
+  toast(`✅ ${PEND.length} pending · ${FINS.length} submissions · ${STUS.length} students`, 'success');
 }
 
+/* FIX: enrich uses FINS at call time (after FINS is populated) */
 function enrich(u) {
-  const sf = FINS.filter(f => String(f.RegNo).trim() === String(u.RegNo).trim());
-  const sp = PEND.filter(p => String(p.RegNo).trim() === String(u.RegNo).trim());
-  return { ...u, submissionCount: sf.length, totalScore: sf.reduce((t,f) => t+(Number(f.Score)||0),0), pendingCount: sp.length };
+  const rn = String(u.RegNo||'').trim();
+  const sf = FINS.filter(f => String(f.RegNo||'').trim() === rn);
+  const sp = PEND.filter(p => String(p.RegNo||'').trim() === rn);
+  return { ...u,
+    submissionCount: sf.length,
+    totalScore: sf.reduce((t,f) => t+(Number(f.Score)||0), 0),
+    pendingCount: sp.length
+  };
 }
 
 /* ══ UPDATE STATS ══ */
 function updateStats() {
   const chairApproved = APPD.length;
-  const fullyApproved = APPD.filter(r => r.HODStatus === 'Approved' || r.Status === 'Fully Approved').length;
-  const ver = FINS.filter(f => f.Status === 'Verified').length;
+  const fullyApproved = APPD.filter(r => r.HODStatus==='Approved' || r.Status==='Fully Approved').length;
+  const ver = FINS.filter(f => f.Status==='Verified').length;
   const noSub = Math.max(0, STUS.length - new Set(FINS.map(f => f.RegNo)).size);
   const total = Math.max(PEND.length + chairApproved + REJD.length, 1);
   const rate = Math.round(chairApproved / Math.max(chairApproved + REJD.length, 1) * 100);
 
-  T('hbPend', PEND.length); T('hbApp', chairApproved); T('hbVer', ver); T('hbStu', STUS.length); T('hbRate', rate + '%');
-  T('s1', PEND.length); T('s2', chairApproved); T('s3', fullyApproved); T('s4', FINS.length); T('s5', noSub); T('s6', REJD.length);
-  T('lgA', chairApproved); T('lgF', fullyApproved); T('lgP', PEND.length); T('lgR', REJD.length); T('lgNS', noSub);
+  T('hbPend',PEND.length); T('hbApp',chairApproved); T('hbVer',ver); T('hbStu',STUS.length); T('hbRate',rate+'%');
+  T('s1',PEND.length); T('s2',chairApproved); T('s3',fullyApproved); T('s4',FINS.length); T('s5',noSub); T('s6',REJD.length);
+  T('lgA',chairApproved); T('lgF',fullyApproved); T('lgP',PEND.length); T('lgR',REJD.length); T('lgNS',noSub);
+  const awaitHOD = APPD.filter(r => r.HODStatus!=='Approved' && r.HODStatus!=='Rejected').length;
+  T('ppC',PEND.length); T('ppH',awaitHOD); T('ppA',fullyApproved); T('ppV',ver); T('ppR',REJD.length);
+  T('pipeTot', 'Total: '+(PEND.length+chairApproved+REJD.length));
+  T('dPct', rate+'%');
 
-  const awaitHOD = APPD.filter(r => r.HODStatus !== 'Approved' && r.HODStatus !== 'Rejected').length;
-  T('ppC', PEND.length); T('ppH', awaitHOD); T('ppA', fullyApproved); T('ppV', ver); T('ppR', REJD.length);
-  T('pipeTot', 'Total: ' + (PEND.length + chairApproved + REJD.length));
-  T('dPct', rate + '%');
-
-  // badges
-  const setPend = (el, n) => { const e = G(el); if(e){e.textContent=n||'';e.style.display=n?'flex':'none';} };
-  setPend('dbPend', PEND.length); setPend('bnPend', PEND.length);
-  const unver = FINS.filter(f => f.Status !== 'Verified' && f.Status !== 'Rejected').length;
-  setPend('dbVer', unver); setPend('bnVer', unver);
+  const setPend = (el, n) => { const e=G(el); if(e){e.textContent=n||'';e.style.display=n?'flex':'none';} };
+  setPend('dbPend',PEND.length); setPend('bnPend',PEND.length);
+  const unver = FINS.filter(f => f.Status!=='Verified'&&f.Status!=='Rejected').length;
+  setPend('dbVer',unver); setPend('bnVer',unver);
 
   setTimeout(() => {
-    const p = v => Math.min(100, v / total * 100);
+    const p = v => Math.min(100, v/total*100);
     W('b1',p(PEND.length)); W('b2',p(chairApproved)); W('b3',p(fullyApproved));
     W('b4',p(FINS.length)); W('b5',p(noSub)); W('b6',p(REJD.length));
-    const pc = v => Math.round(v / total * 100) + '%';
+    const pc = v => Math.round(v/total*100)+'%';
     T('pctC',pc(PEND.length)); T('pctH',pc(awaitHOD)); T('pctA',pc(fullyApproved)); T('pctV',pc(ver)); T('pctR',pc(REJD.length));
     W('pbC',p(PEND.length)); W('pbH',p(awaitHOD)); W('pbA',p(fullyApproved)); W('pbV',p(ver)); W('pbR',p(REJD.length));
-
     const c = 239;
-    const setD = (id, v) => { const e = G(id); if(e) e.style.strokeDashoffset = c*(1-Math.min(1,v/total)); };
+    const setD = (id, v) => { const e=G(id); if(e) e.style.strokeDashoffset=c*(1-Math.min(1,v/total)); };
     setD('dA',chairApproved); setD('dV',ver); setD('dP',PEND.length); setD('dR',REJD.length);
-
     const mx = Math.max(...Object.values(SCOPE_MAP), 1);
     G('scopeBars').innerHTML = Object.keys(SCOPE_MAP).length
-      ? Object.entries(SCOPE_MAP).sort((a,b) => b[1]-a[1]).map(([scope,n]) => `
+      ? Object.entries(SCOPE_MAP).sort((a,b)=>b[1]-a[1]).map(([scope,n])=>`
         <div class="sb-row">
           <div class="sb-top"><span class="sb-lbl">${scope}</span><span class="sb-val">${n}</span></div>
           <div class="sb-bg"><div class="sb-fill" data-w="${n/mx*100}" style="background:${SC[scope]||'var(--blue)'};width:0"></div></div>
         </div>`).join('')
       : '<div style="color:var(--muted);font-size:11px">No submissions yet</div>';
-    setTimeout(() => document.querySelectorAll('.sb-fill').forEach(el => { el.style.width = (el.dataset.w||0) + '%'; }), 200);
+    setTimeout(()=>document.querySelectorAll('.sb-fill').forEach(el=>{el.style.width=(el.dataset.w||0)+'%';}),200);
   }, 200);
 }
 
@@ -1627,12 +1163,11 @@ function renderAll() { renderPending(); renderVerify(); renderStudents(); render
 
 /* ══ PENDING ══ */
 function renderPending() {
-  const q = (G('srchP')?.value||'').toLowerCase();
-  const sc = G('scopeF')?.value||'';
+  const q = (G('srchP')?.value||'').toLowerCase(), sc = G('scopeF')?.value||'';
   let f = [...PEND];
-  if (sc) f = f.filter(r => r.Scope === sc);
+  if (sc) f = f.filter(r => r.Scope===sc);
   if (q) f = f.filter(r => (r.Name||'').toLowerCase().includes(q)||(r.RegNo||'').toLowerCase().includes(q)||(r.EventName||'').toLowerCase().includes(q));
-  T('pendBadge', f.length + ' records');
+  T('pendBadge', f.length+' records');
   G('pendTbl').innerHTML = f.length ? f.map(r => `
     <tr id="row_${r.ID}">
       <td class="mono">${r.RegNo||'—'}</td>
@@ -1653,19 +1188,18 @@ function renderPending() {
     </tr>`).join('')
     : `<tr><td colspan="9" class="tbl-empty"><div class="empty-icon">🎉</div>No pending approvals for Section ${SEC}</td></tr>`;
 
-  const awaitHOD = APPD.filter(r => r.HODStatus !== 'Approved' && r.HODStatus !== 'Rejected');
-  T('awaitHodBadge', awaitHOD.length + ' records');
+  const awaitHOD = APPD.filter(r => r.HODStatus!=='Approved'&&r.HODStatus!=='Rejected');
+  T('awaitHodBadge', awaitHOD.length+' records');
   G('awaitHodTbl').innerHTML = awaitHOD.length ? awaitHOD.map(r => `
     <tr>
-      <td class="mono">${r.RegNo||'—'}</td>
-      <td class="td-name">${r.Name||'—'}</td>
+      <td class="mono">${r.RegNo||'—'}</td><td class="td-name">${r.Name||'—'}</td>
       <td class="td-event">${r.EventName||'—'}</td>
       <td><span class="badge ${SB[r.Scope]||'b-grey'}">${r.Scope||'—'}</span></td>
       <td class="td-small">${fD(r.EventDate)}</td>
       <td style="color:var(--green-dk);font-size:10px;white-space:nowrap">${fDT(r.ChairDate)}</td>
-      <td><span class="badge ${r.HODStatus==='Pending'||!r.HODStatus?'b-orange':r.HODStatus==='Approved'?'b-green':'b-red'}">${r.HODStatus||'Pending'}</span></td>
+      <td><span class="badge ${!r.HODStatus||r.HODStatus==='Pending'?'b-orange':r.HODStatus==='Approved'?'b-green':'b-red'}">${r.HODStatus||'Pending'}</span></td>
       <td><div style="display:flex;gap:4px">${r.Phone?`
-        <a href="https://wa.me/91${r.Phone}?text=${waLink(r.Name,'✅ Your event approved by Chairperson! Awaiting HOD approval now.')}" target="_blank" class="btn btn-wa btn-xs">💬</a>
+        <a href="https://wa.me/91${r.Phone}?text=${waLink(r.Name,'✅ Approved by Chairperson! Awaiting HOD approval now.')}" target="_blank" class="btn btn-wa btn-xs">💬</a>
         <a href="tel:${r.Phone}" class="btn btn-call btn-xs">📞</a>`:'—'}</div></td>
     </tr>`).join('')
     : '<tr><td colspan="8" class="tbl-empty">No items awaiting HOD</td></tr>';
@@ -1673,22 +1207,17 @@ function renderPending() {
 
 /* ══ VERIFY ══ */
 function renderVerify() {
-  const q = (G('srchV')?.value||'').toLowerCase();
-  const sf = G('verSF')?.value||'';
-  const sc = G('verScopeF')?.value||'';
-  let f = [...FINS];
-  if (sf) f = f.filter(r => r.Status === sf);
-  if (sc) f = f.filter(r => r.Scope === sc);
-  if (q) f = f.filter(r => (r.Name||r.StudentName||'').toLowerCase().includes(q)||(r.RegNo||'').toLowerCase().includes(q)||(r.EventName||'').toLowerCase().includes(q));
-  T('verBadge', f.length + ' records');
+  const q=(G('srchV')?.value||'').toLowerCase(), sf=G('verSF')?.value||'', sc=G('verScopeF')?.value||'';
+  let f=[...FINS];
+  if(sf)f=f.filter(r=>r.Status===sf); if(sc)f=f.filter(r=>r.Scope===sc);
+  if(q)f=f.filter(r=>(r.Name||r.StudentName||'').toLowerCase().includes(q)||(r.RegNo||'').toLowerCase().includes(q)||(r.EventName||'').toLowerCase().includes(q));
+  T('verBadge',f.length+' records');
   G('verTbl').innerHTML = f.length ? f.map(r => {
-    const sName = r.Name||r.StudentName||'—';
-    const st = r.Status||'Pending';
-    const sb = st==='Verified'?'b-green':st==='Rejected'?'b-red':'b-orange';
-    const hasProof = r.ProofLink && r.ProofLink.length > 4;
+    const sName=r.Name||r.StudentName||'—', st=r.Status||'Pending';
+    const sb=st==='Verified'?'b-green':st==='Rejected'?'b-red':'b-orange';
+    const hasProof=r.ProofLink&&r.ProofLink.length>4;
     return `<tr id="vrow_${r.ID}">
-      <td class="mono">${r.RegNo||'—'}</td>
-      <td class="td-name">${sName}</td>
+      <td class="mono">${r.RegNo||'—'}</td><td class="td-name">${sName}</td>
       <td class="td-event">${r.EventName||'—'}</td>
       <td><span class="badge ${SB[r.Scope]||'b-grey'}">${r.Scope||'—'}</span></td>
       <td class="td-small">${r.Prize||'—'}</td>
@@ -1705,13 +1234,12 @@ function renderVerify() {
 
 /* ══ APPROVED ══ */
 function renderApproved() {
-  T('appBadge', APPD.length + ' records');
+  T('appBadge', APPD.length+' records');
   G('appTbl').innerHTML = APPD.length ? APPD.map(r => {
-    const docSt = FINS.find(f => f.RegNo===r.RegNo && f.EventName===r.EventName)?.Status||'—';
-    const hodSt = r.HODStatus||'Pending';
+    const docSt=FINS.find(f=>f.RegNo===r.RegNo&&f.EventName===r.EventName)?.Status||'—';
+    const hodSt=r.HODStatus||'Pending';
     return `<tr>
-      <td class="mono">${r.RegNo||'—'}</td>
-      <td class="td-name">${r.Name||'—'}</td>
+      <td class="mono">${r.RegNo||'—'}</td><td class="td-name">${r.Name||'—'}</td>
       <td class="td-event">${r.EventName||'—'}</td>
       <td><span class="badge ${SB[r.Scope]||'b-grey'}">${r.Scope||'—'}</span></td>
       <td class="td-small">${r.CollegeName||'—'}</td>
@@ -1719,7 +1247,7 @@ function renderApproved() {
       <td><span class="badge ${hodSt==='Approved'?'b-green':hodSt==='Rejected'?'b-red':'b-orange'}">${hodSt==='Approved'?'✅ HOD OK':hodSt==='Rejected'?'❌ HOD Rej':'⏳ HOD Pending'}</span></td>
       <td><span class="badge ${docSt==='Verified'?'b-green':docSt==='Rejected'?'b-red':docSt==='Pending'?'b-orange':'b-grey'}">${docSt}</span></td>
       <td><div style="display:flex;gap:4px">${r.Phone?`
-        <a href="https://wa.me/91${r.Phone}?text=${waLink(r.Name,'✅ Your pre-approval has been approved by Chairperson! Awaiting HOD now.')}" target="_blank" class="btn btn-wa btn-xs">💬</a>
+        <a href="https://wa.me/91${r.Phone}?text=${waLink(r.Name,'✅ Your pre-approval has been approved by Chairperson!')}" target="_blank" class="btn btn-wa btn-xs">💬</a>
         <a href="tel:${r.Phone}" class="btn btn-call btn-xs">📞</a>`:'—'}</div></td>
     </tr>`;
   }).join('') : '<tr><td colspan="9" class="tbl-empty">No approvals yet</td></tr>';
@@ -1727,17 +1255,16 @@ function renderApproved() {
 
 /* ══ REJECTED ══ */
 function renderRejected() {
-  T('rejBadge', REJD.length + ' records');
+  T('rejBadge', REJD.length+' records');
   G('rejTbl').innerHTML = REJD.length ? REJD.map(r => `
     <tr>
-      <td class="mono">${r.RegNo||'—'}</td>
-      <td class="td-name">${r.Name||'—'}</td>
+      <td class="mono">${r.RegNo||'—'}</td><td class="td-name">${r.Name||'—'}</td>
       <td class="td-event">${r.EventName||'—'}</td>
       <td><span class="badge ${SB[r.Scope]||'b-grey'}">${r.Scope||'—'}</span></td>
       <td class="td-small" style="max-width:140px;overflow:hidden;text-overflow:ellipsis">${r.Remarks||r.ChairRemarks||'—'}</td>
       <td style="color:var(--red-dk);font-size:10px;white-space:nowrap">${fDT(r.ChairDate)}</td>
       <td><div style="display:flex;gap:4px">${r.Phone?`
-        <a href="https://wa.me/91${r.Phone}?text=${waLink(r.Name,'Your pre-approval was not approved by Chairperson. Please contact the department.')}" target="_blank" class="btn btn-wa btn-xs">💬</a>
+        <a href="https://wa.me/91${r.Phone}?text=${waLink(r.Name,'Your pre-approval was not approved. Please contact the department.')}" target="_blank" class="btn btn-wa btn-xs">💬</a>
         <a href="tel:${r.Phone}" class="btn btn-call btn-xs">📞</a>`:'—'}</div></td>
     </tr>`).join('')
     : '<tr><td colspan="7" class="tbl-empty">No rejections</td></tr>';
@@ -1745,57 +1272,41 @@ function renderRejected() {
 
 /* ══ STUDENTS ══ */
 function renderStudents() {
-  const q = (G('srchS')?.value||'').toLowerCase();
-  const fil = G('stuFilter')?.value||'';
-  let data = [...STUS];
-  if (q) data = data.filter(s => (s.Name||'').toLowerCase().includes(q)||(s.RegNo||'').toLowerCase().includes(q));
-  if (fil==='pending') data = data.filter(s => PEND.some(p => String(p.RegNo).trim()===String(s.RegNo).trim()));
-  if (fil==='submitted') data = data.filter(s => s.submissionCount>0);
-  if (fil==='none') data = data.filter(s => s.submissionCount===0);
-  if (fil==='unverified') data = data.filter(s => FINS.some(f => f.RegNo===s.RegNo&&f.Status!=='Verified'&&f.Status!=='Rejected'));
-  if (!data.length) { G('stuList').innerHTML = `<div class="tbl-empty"><div class="empty-icon">🔍</div>No students found for Section ${SEC}</div>`; return; }
+  const q=(G('srchS')?.value||'').toLowerCase(), fil=G('stuFilter')?.value||'';
+  let data=[...STUS];
+  if(q)data=data.filter(s=>(s.Name||'').toLowerCase().includes(q)||(s.RegNo||'').toLowerCase().includes(q));
+  if(fil==='pending')data=data.filter(s=>PEND.some(p=>String(p.RegNo).trim()===String(s.RegNo).trim()));
+  if(fil==='submitted')data=data.filter(s=>s.submissionCount>0);
+  if(fil==='none')data=data.filter(s=>s.submissionCount===0);
+  if(fil==='unverified')data=data.filter(s=>FINS.some(f=>f.RegNo===s.RegNo&&f.Status!=='Verified'&&f.Status!=='Rejected'));
+  if(!data.length){G('stuList').innerHTML=`<div class="tbl-empty"><div class="empty-icon">🔍</div>No students found for Section ${SEC}</div>`;return;}
 
   G('stuList').innerHTML = data.map(s => {
-    const sf = FINS.filter(f => String(f.RegNo).trim()===String(s.RegNo).trim());
-    const sp = PEND.filter(p => String(p.RegNo).trim()===String(s.RegNo).trim());
-    const appRec = APPD.filter(a => String(a.RegNo).trim()===String(s.RegNo).trim());
-    const hasPend = sp.length>0;
-    const noSub = sf.length===0;
-    const unverDocs = sf.filter(f => f.Status!=='Verified'&&f.Status!=='Rejected').length;
-    const scoreColor = s.totalScore>=20?'var(--gold)':s.totalScore>=10?'var(--blue)':s.totalScore>=5?'var(--green)':'var(--muted)';
-
-    const stuPA = [...sp,...appRec,...REJD.filter(r=>String(r.RegNo).trim()===String(s.RegNo).trim())];
+    const sf=FINS.filter(f=>String(f.RegNo).trim()===String(s.RegNo).trim());
+    const sp=PEND.filter(p=>String(p.RegNo).trim()===String(s.RegNo).trim());
+    const appRec=APPD.filter(a=>String(a.RegNo).trim()===String(s.RegNo).trim());
+    const hasPend=sp.length>0, noSub=sf.length===0;
+    const unverDocs=sf.filter(f=>f.Status!=='Verified'&&f.Status!=='Rejected').length;
+    const scoreColor=s.totalScore>=20?'var(--gold)':s.totalScore>=10?'var(--blue)':s.totalScore>=5?'var(--green)':'var(--muted)';
+    const stuPA=[...sp,...appRec,...REJD.filter(r=>String(r.RegNo).trim()===String(s.RegNo).trim())];
     const trackerHtml = stuPA.length ? `
       <div style="margin-top:10px;margin-bottom:8px">
         <div style="font-size:9px;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:.5px;margin-bottom:8px">Approval Status</div>
-        ${stuPA.slice(0,3).map(p => {
-          const cSt = p.ChairStatus||'Pending', hSt = p.HODStatus||'Pending';
-          const chairCls = cSt==='Approved'?'done':cSt==='Rejected'?'rejected':'pending';
-          const hodCls = cSt!=='Approved'?'locked':(hSt==='Approved'?'done':hSt==='Rejected'?'rejected':'pending');
+        ${stuPA.slice(0,3).map(p=>{
+          const cSt=p.ChairStatus||'Pending',hSt=p.HODStatus||'Pending';
+          const cCls=cSt==='Approved'?'done':cSt==='Rejected'?'rejected':'pending';
+          const hCls=cSt!=='Approved'?'locked':(hSt==='Approved'?'done':hSt==='Rejected'?'rejected':'pending');
           return `<div style="margin-bottom:10px">
             <div style="font-size:11px;font-weight:700;margin-bottom:6px;color:var(--text)">${p.EventName||'—'}</div>
             <div class="appr-track">
               <div class="at-step done"><div class="at-node">📝</div><div class="at-lbl">Submitted</div><div class="at-st">Done</div></div>
-              <div class="at-step ${chairCls}">
-                <div class="at-node">${cSt==='Approved'?'✅':cSt==='Rejected'?'❌':'⏳'}</div>
-                <div class="at-lbl">1️⃣ Chair</div>
-                <div class="at-st">${cSt==='Approved'?'Approved':cSt==='Rejected'?'Rejected':'Pending'}</div>
-              </div>
-              <div class="at-step ${hodCls}">
-                <div class="at-node">${cSt!=='Approved'?'🔒':hSt==='Approved'?'✅':hSt==='Rejected'?'❌':'⏳'}</div>
-                <div class="at-lbl">2️⃣ HOD</div>
-                <div class="at-st">${cSt!=='Approved'?'Locked':hSt==='Approved'?'Approved':hSt==='Rejected'?'Rejected':'Pending'}</div>
-              </div>
-              <div class="at-step ${((hSt==='Approved'&&cSt==='Approved')||p.Status==='Fully Approved')?'done':'locked'}">
-                <div class="at-node">${((hSt==='Approved'&&cSt==='Approved')||p.Status==='Fully Approved')?'🎉':'🔒'}</div>
-                <div class="at-lbl">Attend</div>
-                <div class="at-st">${((hSt==='Approved'&&cSt==='Approved')||p.Status==='Fully Approved')?'Ready':'Locked'}</div>
-              </div>
+              <div class="at-step ${cCls}"><div class="at-node">${cSt==='Approved'?'✅':cSt==='Rejected'?'❌':'⏳'}</div><div class="at-lbl">1️⃣ Chair</div><div class="at-st">${cSt}</div></div>
+              <div class="at-step ${hCls}"><div class="at-node">${cSt!=='Approved'?'🔒':hSt==='Approved'?'✅':hSt==='Rejected'?'❌':'⏳'}</div><div class="at-lbl">2️⃣ HOD</div><div class="at-st">${cSt!=='Approved'?'Locked':hSt}</div></div>
+              <div class="at-step ${(hSt==='Approved'&&cSt==='Approved')?'done':'locked'}"><div class="at-node">${(hSt==='Approved'&&cSt==='Approved')?'🎉':'🔒'}</div><div class="at-lbl">Attend</div><div class="at-st">${(hSt==='Approved'&&cSt==='Approved')?'Ready':'Locked'}</div></div>
             </div>
           </div>`;
         }).join('')}
       </div>` : '';
-
     return `<div class="stu-card">
       <div class="stu-top">
         <div class="stu-av">${(s.Name||'?')[0].toUpperCase()}</div>
@@ -1836,7 +1347,7 @@ function renderStudents() {
   }).join('');
 }
 
-/* ══ APPROVAL MODAL ══ */
+/* ══ MODALS ══ */
 function openApprovalModal(r) {
   T('amTitle', r.EventName||'Pre-Approval Review');
   T('amSub', `Student: ${r.Name||'—'} (${r.RegNo||'—'}) · Section ${r.Section||SEC}`);
@@ -1844,70 +1355,111 @@ function openApprovalModal(r) {
   G('amDets').innerHTML = [
     ['Student',r.Name||'—'],['Reg No',r.RegNo||'—'],['Section',r.Section||SEC],['Year',r.Year||'—'],
     ['Event',r.EventName||'—'],['Date',fD(r.EventDate)],['College',r.CollegeName||'—'],
-    ['City / State',(r.City||'—')+(r.State?', '+r.State:'')],['Venue',r.Venue||'—'],
-    ['Description',r.Description||'—'],['Submitted',fDT(r.SubmittedAt)],
-    ['Phone',r.Phone||'—'],['Scope',r.Scope||'—'],
+    ['City/State',(r.City||'—')+(r.State?', '+r.State:'')],['Venue',r.Venue||'—'],
+    ['Description',r.Description||'—'],['Submitted',fDT(r.SubmittedAt)],['Phone',r.Phone||'—'],['Scope',r.Scope||'—'],
     ['Chair Status','<span class="badge b-orange">⏳ Awaiting Your Approval (1st)</span>'],
     ['HOD Status','<span class="badge b-grey">🔒 Locked (acts after Chair)</span>'],
-  ].map(([l,v]) => `<div class="detail-row"><span class="detail-lbl">${l}</span><span class="detail-val">${v}</span></div>`).join('');
+  ].map(([l,v])=>`<div class="detail-row"><span class="detail-lbl">${l}</span><span class="detail-val">${v}</span></div>`).join('');
   G('amApprove').onclick = () => { const rem=G('amRem').value; closeModal('modApproval'); doApprove(r.ID,r.Name,r.Phone||'',rem); };
   G('amReject').onclick  = () => { const rem=G('amRem').value; closeModal('modApproval'); doReject(r.ID,rem); };
   G('modApproval').classList.add('show');
 }
 
-/* ══ VERIFY MODAL ══ */
 function openVerifyModal(r) {
-  const sName = r.StudentName||r.Name||'—';
-  T('vmTitle', 'Verify: '+r.EventName);
-  T('vmSub', `Student: ${sName} (${r.RegNo}) · Scope: ${r.Scope||'—'}`);
-  G('vmScore').value = r.Score||''; G('vmPrize').value = r.Prize||''; G('vmRem').value = '';
-  G('vmDets').innerHTML = [
-    ['Student',sName],['Reg No',r.RegNo||'—'],['Event',r.EventName||'—'],
+  const sName=r.StudentName||r.Name||'—';
+  T('vmTitle','Verify: '+r.EventName); T('vmSub',`Student: ${sName} (${r.RegNo}) · Scope: ${r.Scope||'—'}`);
+  G('vmScore').value=r.Score||''; G('vmPrize').value=r.Prize||''; G('vmRem').value='';
+  G('vmDets').innerHTML=[['Student',sName],['Reg No',r.RegNo||'—'],['Event',r.EventName||'—'],
     ['Date',fD(r.EventDate)],['College',r.CollegeName||'—'],['Scope',r.Scope||'—'],
-    ['Prize',r.Prize||'—'],['Score',(r.Score||0)+' pts'],['Status',r.Status||'Pending'],
-  ].map(([l,v]) => `<div class="detail-row"><span class="detail-lbl">${l}</span><span class="detail-val">${v}</span></div>`).join('');
-  const pf = G('vmProof'); pf.innerHTML = '';
-  if (r.ProofLink && r.ProofLink.length>4) {
-    const link = r.ProofLink.trim();
-    const isImg = /\.(jpg|jpeg|png|gif|webp)/i.test(link)||link.includes('googleusercontent');
-    if (isImg) pf.innerHTML = `<img class="proof-img" src="${link}" onerror="this.parentElement.innerHTML='<div class=\\"proof-fb\\">⚠ Cannot load. <a href=\\"${link}\\" target=\\"_blank\\" style=\\"color:var(--blue)\\">Open →</a></div>'" alt="Proof">`;
-    else if (/\.pdf/i.test(link)) pf.innerHTML = `<iframe src="${link}" style="width:100%;height:280px;border:none"></iframe>`;
-    else pf.innerHTML = `<div class="proof-fb">📎 <a href="${link}" target="_blank" style="color:var(--blue);font-weight:700">Open Proof Document →</a></div>`;
-  } else pf.innerHTML = '<div class="proof-fb">⚠ No proof uploaded</div>';
-  const id = r.ID||r.SubmissionID||'';
-  G('vmVerify').onclick = () => { const sc=Number(G('vmScore').value)||0,pr=G('vmPrize').value,rm=G('vmRem').value; closeModal('modVerify'); doVerify(id,r.RegNo,sc,pr,rm,'Verified'); };
-  G('vmReject').onclick  = () => { const rm=G('vmRem').value||''; closeModal('modVerify'); doVerify(id,r.RegNo,0,'',rm,'Rejected'); };
+    ['Prize',r.Prize||'—'],['Score',(r.Score||0)+' pts'],['Status',r.Status||'Pending']
+  ].map(([l,v])=>`<div class="detail-row"><span class="detail-lbl">${l}</span><span class="detail-val">${v}</span></div>`).join('');
+  const pf=G('vmProof'); pf.innerHTML='';
+  if(r.ProofLink&&r.ProofLink.length>4){
+    const link=r.ProofLink.trim();
+    const isImg=/\.(jpg|jpeg|png|gif|webp)/i.test(link)||link.includes('googleusercontent');
+    if(isImg)pf.innerHTML=`<img class="proof-img" src="${link}" onerror="this.parentElement.innerHTML='<div class=\\"proof-fb\\">⚠ Cannot load. <a href=\\"${link}\\" target=\\"_blank\\" style=\\"color:var(--blue)\\">Open →</a></div>'" alt="Proof">`;
+    else if(/\.pdf/i.test(link))pf.innerHTML=`<iframe src="${link}" style="width:100%;height:280px;border:none"></iframe>`;
+    else pf.innerHTML=`<div class="proof-fb">📎 <a href="${link}" target="_blank" style="color:var(--blue);font-weight:700">Open Proof →</a></div>`;
+  } else pf.innerHTML='<div class="proof-fb">⚠ No proof uploaded</div>';
+  const id=r.ID||r.SubmissionID||'';
+  G('vmVerify').onclick=()=>{const sc=Number(G('vmScore').value)||0,pr=G('vmPrize').value,rm=G('vmRem').value;closeModal('modVerify');doVerify(id,r.RegNo,sc,pr,rm,'Verified');};
+  G('vmReject').onclick =()=>{const rm=G('vmRem').value||'';closeModal('modVerify');doVerify(id,r.RegNo,0,'',rm,'Rejected');};
   G('modVerify').classList.add('show');
 }
 
-async function doVerify(id,regNo,score,prize,remarks,status) {
+async function doVerify(id,regNo,score,prize,remarks,status){
   toast(status==='Verified'?'✔ Verifying…':'✗ Rejecting…','info');
-  const d = await api('verifySubmission',{id,regNo,score,prize,status,remarks,verifiedBy:CU?.Email||''});
-  toast(d.message||(status==='Verified'?'Verified!':'Rejected.'), d.success?'success':'error');
-  if (!d.success) return;
-  const idx = FINS.findIndex(f => f.ID===id);
-  if (idx>-1) FINS[idx] = {...FINS[idx],Status:status,Score:score||FINS[idx].Score,Prize:prize||FINS[idx].Prize};
-  updateStats(); renderVerify(); renderStudents(); renderApproved();
-  if (status==='Verified') {
-    const stu = STUS.find(s => s.RegNo===regNo);
-    if (stu?.Phone) setTimeout(() => window.open(`https://wa.me/91${stu.Phone}?text=${waLink(stu.Name,'✅ Your event submission has been VERIFIED and score updated on ECE-EMS!')}`, '_blank'), 700);
+  const d=await api('verifySubmission',{id,regNo,score,prize,status,remarks,verifiedBy:CU?.Email||''});
+  toast(d.message||(status==='Verified'?'Verified!':'Rejected.'),d.success?'success':'error');
+  if(!d.success)return;
+  const idx=FINS.findIndex(f=>f.ID===id);
+  if(idx>-1)FINS[idx]={...FINS[idx],Status:status,Score:score||FINS[idx].Score,Prize:prize||FINS[idx].Prize};
+  updateStats();renderVerify();renderStudents();renderApproved();
+  if(status==='Verified'){
+    const stu=STUS.find(s=>s.RegNo===regNo);
+    if(stu?.Phone)setTimeout(()=>window.open(`https://wa.me/91${stu.Phone}?text=${waLink(stu.Name,'✅ Your event submission has been VERIFIED and score updated!')}`, '_blank'),700);
   }
 }
 
-async function quickReject(id) {
-  const rem = prompt('Reason for rejection (optional):') || '';
-  doVerify(id,'',0,'',rem,'Rejected');
+async function quickReject(id){const rem=prompt('Reason for rejection:')||'';doVerify(id,'',0,'',rem,'Rejected');}
+
+/* ══ APPROVE / REJECT ══ */
+async function doApprove(id,name,phone,remarks){
+  toast('Approving…','info');
+  const d=await api('chairApprove',{id,status:'Approved',approvedBy:CU?.Email||'',remarks});
+  toast(d.message||'Approved!',d.success?'success':'error');
+  if(!d.success)return;
+  const rec=PEND.find(r=>r.ID===id);
+  if(rec){APPD.push({...rec,ChairDate:new Date().toISOString(),ChairStatus:'Approved',HODStatus:rec.HODStatus||'Pending'});PEND=PEND.filter(r=>r.ID!==id);}
+  const row=G('row_'+id);
+  if(row){row.style.transition='opacity .4s';row.style.opacity='.3';setTimeout(()=>row.remove(),400);}
+  if(phone){const msg=`✅ Your event pre-approval has been APPROVED by the Chairperson!\n\nEvent: ${rec?.EventName||'Your event'}\n\nYour request will now go to HOD for final approval.\n\n— Chairperson, ECE Dept`;
+    setTimeout(()=>window.open(`https://wa.me/91${phone}?text=${encodeURIComponent(msg)}`,'_blank'),700);}
+  updateStats();renderAll();
 }
 
-/* ══ VIEW STUDENT ══ */
-async function viewStudent(regNo, name) {
-  T('smTitle', name); T('smSub', 'Reg: '+regNo+' · Section '+SEC);
-  G('smContent').innerHTML = '<div style="height:180px;background:var(--surface2);border-radius:10px;animation:shimmer 1.4s infinite"></div>';
+async function doReject(id,remarks){
+  const d=await api('chairApprove',{id,status:'Rejected',approvedBy:CU?.Email||'',remarks});
+  toast(d.message||'Rejected.',d.success?'success':'error');
+  if(!d.success)return;
+  const rec=PEND.find(r=>r.ID===id);
+  if(rec){REJD.push({...rec,ChairDate:new Date().toISOString(),ChairStatus:'Rejected',Remarks:remarks});PEND=PEND.filter(r=>r.ID!==id);}
+  updateStats();renderAll();
+}
+
+function promptReject(id){const rem=prompt('Reason for rejection (optional):')||'';doReject(id,rem);}
+
+async function approveAll(){
+  if(!PEND.length){toast('No pending requests','info');return;}
+  if(!confirm(`Approve all ${PEND.length} pending requests for Section ${SEC}?`))return;
+  let cnt=0;
+  for(const r of[...PEND]){
+    const d=await api('chairApprove',{id:r.ID,status:'Approved',approvedBy:CU?.Email||'',remarks:'Bulk approved by Chairperson'});
+    if(d.success){APPD.push({...r,ChairDate:new Date().toISOString(),ChairStatus:'Approved',HODStatus:r.HODStatus||'Pending'});PEND=PEND.filter(p=>p.ID!==r.ID);cnt++;}
+  }
+  toast(`👑 Approved ${cnt} requests`,'success');
+  updateStats();renderAll();
+}
+
+async function bulkRemind(){
+  const ns=STUS.filter(s=>s.submissionCount===0&&s.Phone);
+  if(!ns.length){toast('All students have submissions!','info');return;}
+  if(!confirm(`Send reminder to ${ns.length} students with no submissions?`))return;
+  for(const s of ns.slice(0,5)){
+    setTimeout(()=>window.open(`https://wa.me/91${s.Phone}?text=${waLink(s.Name,'Please submit your event participation proof on the ECE-EMS portal. Your score depends on verification.')}`,'_blank'),500);
+    api('sendReminder',{regNo:s.RegNo,message:'Bulk reminder sent',type:'WhatsApp'});
+  }
+  toast(`Reminders sent to ${Math.min(5,ns.length)} students`,'success');
+}
+
+async function viewStudent(regNo,name){
+  T('smTitle',name);T('smSub','Reg: '+regNo+' · Section '+SEC);
+  G('smContent').innerHTML='<div style="height:180px;background:var(--surface2);border-radius:10px"></div>';
   G('modStu').classList.add('show');
-  const d = await api('getStudentData',{regNo});
-  if (!d.success) { G('smContent').innerHTML = `<div class="tbl-empty">Failed: ${d.message}</div>`; return; }
-  const pa = d.preApprovals||[], fi = d.finals||[];
-  G('smContent').innerHTML = `
+  const d=await api('getStudentData',{regNo});
+  if(!d.success){G('smContent').innerHTML=`<div class="tbl-empty">Failed: ${d.message}</div>`;return;}
+  const pa=d.preApprovals||[],fi=d.finals||[];
+  G('smContent').innerHTML=`
     <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-bottom:14px">
       <div style="background:var(--blue-lt);border-radius:10px;padding:12px;text-align:center">
         <div style="font-family:'Syne',sans-serif;font-size:26px;font-weight:800;color:var(--blue)">${d.totalScore}</div>
@@ -1923,18 +1475,15 @@ async function viewStudent(regNo, name) {
       </div>
     </div>
     <div style="font-size:9px;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:.5px;margin-bottom:8px">📋 Pre-Approval History</div>
-    ${pa.length ? pa.map(r=>{
-      const cSt=r.ChairStatus||'Pending', hSt=r.HODStatus||'Pending';
-      return `<div style="padding:10px;background:var(--surface2);border:1.5px solid var(--border);border-radius:10px;margin-bottom:6px">
-        <div style="font-weight:700;font-size:12px">${r.EventName||'—'}</div>
-        <div style="font-size:10px;color:var(--muted);margin-top:2px">${fD(r.EventDate)} · ${r.CollegeName||'—'}${r.City?', '+r.City:''}</div>
-        <div style="display:flex;gap:5px;margin-top:6px;flex-wrap:wrap">
-          <span class="badge ${cSt==='Approved'?'b-green':cSt==='Rejected'?'b-red':'b-blue'}">1️⃣ Chair: ${cSt}</span>
-          <span class="badge ${hSt==='Approved'?'b-green':hSt==='Rejected'?'b-red':cSt==='Approved'?'b-orange':'b-grey'}">2️⃣ HOD: ${cSt!=='Approved'?'🔒 Locked':hSt}</span>
-        </div>
-      </div>`;}).join('') : '<div style="color:var(--muted);font-size:11px;padding:10px">No pre-approvals</div>'}
+    ${pa.length?pa.map(r=>{const cSt=r.ChairStatus||'Pending',hSt=r.HODStatus||'Pending';return`<div style="padding:10px;background:var(--surface2);border:1.5px solid var(--border);border-radius:10px;margin-bottom:6px">
+      <div style="font-weight:700;font-size:12px">${r.EventName||'—'}</div>
+      <div style="font-size:10px;color:var(--muted);margin-top:2px">${fD(r.EventDate)} · ${r.CollegeName||'—'}${r.City?', '+r.City:''}</div>
+      <div style="display:flex;gap:5px;margin-top:6px;flex-wrap:wrap">
+        <span class="badge ${cSt==='Approved'?'b-green':cSt==='Rejected'?'b-red':'b-blue'}">1️⃣ Chair: ${cSt}</span>
+        <span class="badge ${hSt==='Approved'?'b-green':hSt==='Rejected'?'b-red':cSt==='Approved'?'b-orange':'b-grey'}">2️⃣ HOD: ${cSt!=='Approved'?'🔒 Locked':hSt}</span>
+      </div></div>`;}).join(''):'<div style="color:var(--muted);font-size:11px;padding:10px">No pre-approvals</div>'}
     <div style="font-size:9px;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:.5px;margin:10px 0 8px">📄 Final Submissions</div>
-    ${fi.length ? fi.map(f=>`<div style="padding:10px;background:var(--surface2);border:1.5px solid var(--border);border-radius:10px;margin-bottom:6px">
+    ${fi.length?fi.map(f=>`<div style="padding:10px;background:var(--surface2);border:1.5px solid var(--border);border-radius:10px;margin-bottom:6px">
       <div style="display:flex;align-items:center;justify-content:space-between;gap:8px;flex-wrap:wrap">
         <div style="font-weight:700;font-size:12px;flex:1">${f.EventName||'—'}</div>
         <span class="badge ${f.Status==='Verified'?'b-green':f.Status==='Pending'?'b-orange':'b-red'}">${f.Status||'—'}</span>
@@ -1944,102 +1493,74 @@ async function viewStudent(regNo, name) {
         <span class="badge b-blue"><strong>${f.Score||0}</strong> pts</span>
         ${f.ProofLink?`<a href="${f.ProofLink}" target="_blank" class="btn btn-outline btn-xs">🔗 Proof</a>`:'<span class="badge b-red" style="font-size:9px">No proof</span>'}
         ${f.Status!=='Verified'?`<button class="btn btn-outline btn-xs" onclick='closeModal("modStu");openVerifyModal(${js({...f,StudentName:name})})'>✔ Verify</button>`:''}</div>
-    </div>`).join('') : '<div style="background:var(--orange-lt);border-radius:9px;padding:14px;text-align:center;font-size:11px;color:var(--orange)">⚠️ No final submissions yet</div>'}`;
+    </div>`).join(''):'<div style="background:var(--orange-lt);border-radius:9px;padding:14px;text-align:center;font-size:11px;color:var(--orange)">⚠️ No final submissions yet</div>'}`;
 }
 
-/* ══ APPROVE / REJECT ══ */
-async function doApprove(id, name, phone, remarks) {
-  toast('Approving…','info');
-  const d = await api('chairApprove',{id,status:'Approved',approvedBy:CU?.Email||'',remarks});
-  toast(d.message||'Approved!', d.success?'success':'error');
-  if (!d.success) return;
-  const rec = PEND.find(r => r.ID===id);
-  if (rec) { APPD.push({...rec,ChairDate:new Date().toISOString(),ChairStatus:'Approved',HODStatus:rec.HODStatus||'Pending'}); PEND = PEND.filter(r => r.ID!==id); }
-  const row = G('row_'+id);
-  if (row) { row.style.transition='opacity .4s'; row.style.opacity='.3'; setTimeout(()=>row.remove(),400); }
-  if (phone) {
-    const msg = `✅ Your event pre-approval has been APPROVED by the Chairperson!\n\nEvent: ${rec?.EventName||'Your event'}\n\nYour request will now go to HOD for final approval.\n\n— Chairperson, ECE Dept`;
-    setTimeout(() => window.open(`https://wa.me/91${phone}?text=${encodeURIComponent(msg)}`, '_blank'), 700);
-  }
-  updateStats(); renderAll();
+/* ══════════════════════════════
+   REPORT — FIXED genReport()
+══════════════════════════════
+   FIX 1: No date filter by default (blank = show all)
+   FIX 2: Does NOT re-filter by section (FINS already section-filtered)
+   FIX 3: Guards against empty FINS gracefully
+   FIX 4: All sections of report render even with 0 data
+══════════════════════════════ */
+function getFilteredData() {
+  const from  = G('rptFrom')?.value  || '';
+  const to    = G('rptTo')?.value    || '';
+  const scope = G('rptScope')?.value || '';
+  const docSt = G('rptDocStatus')?.value || '';
+
+  let data = [...FINS];  /* FIX: FINS is already section-filtered */
+  if (from) data = data.filter(f => f.EventDate && f.EventDate >= from);
+  if (to)   data = data.filter(f => f.EventDate && f.EventDate <= to + 'T23:59:59');
+  if (scope) data = data.filter(f => f.Scope === scope);
+  if (docSt) data = data.filter(f => f.Status === docSt);
+  return data;
 }
 
-async function doReject(id, remarks) {
-  const d = await api('chairApprove',{id,status:'Rejected',approvedBy:CU?.Email||'',remarks});
-  toast(d.message||'Rejected.', d.success?'success':'error');
-  if (!d.success) return;
-  const rec = PEND.find(r => r.ID===id);
-  if (rec) { REJD.push({...rec,ChairDate:new Date().toISOString(),ChairStatus:'Rejected',Remarks:remarks}); PEND = PEND.filter(r => r.ID!==id); }
-  updateStats(); renderAll();
-}
-
-function promptReject(id) { const rem = prompt('Reason for rejection (optional):') || ''; doReject(id,rem); }
-
-async function approveAll() {
-  if (!PEND.length) { toast('No pending requests','info'); return; }
-  if (!confirm(`Approve all ${PEND.length} pending requests for Section ${SEC}?`)) return;
-  let cnt = 0;
-  for (const r of [...PEND]) {
-    const d = await api('chairApprove',{id:r.ID,status:'Approved',approvedBy:CU?.Email||'',remarks:'Bulk approved by Chairperson'});
-    if (d.success) { APPD.push({...r,ChairDate:new Date().toISOString(),ChairStatus:'Approved',HODStatus:r.HODStatus||'Pending'}); PEND=PEND.filter(p=>p.ID!==r.ID); cnt++; }
-  }
-  toast(`👑 Approved ${cnt} requests`, 'success');
-  updateStats(); renderAll();
-}
-
-async function bulkRemind() {
-  const ns = STUS.filter(s => s.submissionCount===0 && s.Phone);
-  if (!ns.length) { toast('All students have submissions!','info'); return; }
-  if (!confirm(`Send reminder to ${ns.length} students with no submissions?`)) return;
-  for (const s of ns.slice(0,5)) {
-    setTimeout(() => window.open(`https://wa.me/91${s.Phone}?text=${waLink(s.Name,'Please submit your event participation proof on the ECE-EMS portal. Your score depends on verification.')}`, '_blank'), 500);
-    api('sendReminder',{regNo:s.RegNo,message:'Bulk reminder sent',type:'WhatsApp'});
-  }
-  toast(`Reminders sent to ${Math.min(5,ns.length)} students`, 'success');
-}
-
-/* ══ REPORT ══ */
 function genReport() {
-  const from=G('rptFrom')?.value||'', to=G('rptTo')?.value||'', scope=G('rptScope')?.value||'', status=G('rptStatus')?.value||'';
-  T('rptSecTitle', SEC);
-  let data = [...FINS];
-  if (from) data = data.filter(f => { const d=f.EventDate; return d&&new Date(d)>=new Date(from); });
-  if (to)   data = data.filter(f => { const d=f.EventDate; return d&&new Date(d)<=new Date(to+'T23:59:59'); });
-  if (scope)  data = data.filter(f => f.Scope===scope);
-  if (status) data = data.filter(f => f.Status===status);
-  const ver = data.filter(f => f.Status==='Verified').length;
-  const partSet = new Set(data.map(f => f.RegNo));
-  const totalScore = data.reduce((t,f) => t+(Number(f.Score)||0), 0);
-  T('rS1',data.length); T('rS2',ver); T('rS3',partSet.size); T('rS4',totalScore);
-  T('rptAllCount','('+data.length+' records)');
+  if (!DATA_LOADED) { toast('Data still loading…', 'info'); return; }
 
-  const sm = {};
-  data.forEach(f => { const k=f.Scope||'Other'; if(!sm[k])sm[k]={count:0,verified:0,score:0}; sm[k].count++; if(f.Status==='Verified')sm[k].verified++; sm[k].score+=(Number(f.Score)||0); });
-  G('rptScopeTable').innerHTML = Object.keys(sm).length ? `
-    <div style="overflow-x:auto"><table class="rpt-tbl"><thead><tr><th>Scope</th><th>Events</th><th>Verified</th><th>Score</th><th>Rate</th></tr></thead>
-    <tbody>${Object.entries(sm).sort((a,b)=>b[1].count-a[1].count).map(([s,v])=>`<tr>
-      <td><span class="badge ${SB[s]||'b-grey'}">${s}</span></td>
-      <td style="font-weight:700">${v.count}</td>
-      <td style="color:var(--green-dk);font-weight:700">${v.verified}</td>
-      <td style="color:var(--blue);font-weight:700">${v.score}</td>
-      <td style="color:var(--cyan)">${Math.round(v.verified/v.count*100)}%</td>
-    </tr>`).join('')}</tbody></table></div>` : '<div class="rpt-empty">No data for selected filters</div>';
+  const data = getFilteredData();
+  const total = data.length;
 
-  const pm = {};
-  data.forEach(f => { const rn=f.RegNo; if(!pm[rn])pm[rn]={RegNo:rn,Name:f.Name||'—',events:0,verified:0,score:0,bestPrize:''}; pm[rn].events++; if(f.Status==='Verified')pm[rn].verified++; pm[rn].score+=(Number(f.Score)||0); const pp={'1st Prize':10,'2nd Prize':8,'3rd Prize':6,'Participated':1}; if((pp[f.Prize]||0)>(pp[pm[rn].bestPrize]||0))pm[rn].bestPrize=f.Prize; });
-  G('rptTopBody').innerHTML = Object.values(pm).sort((a,b)=>b.score-a.score).slice(0,15).map((p,i) => `<tr>
-    <td style="font-weight:800;color:${i===0?'var(--gold)':i===1?'var(--muted)':i===2?'var(--cyan)':'var(--text2)'}">${i+1}</td>
-    <td class="mono">${p.RegNo}</td>
-    <td style="font-weight:700">${p.Name}</td>
-    <td style="font-weight:700">${p.events}</td>
-    <td style="color:var(--green-dk);font-weight:700">${p.verified}</td>
-    <td style="color:var(--blue);font-weight:800">${p.score}</td>
-    <td><span class="badge ${p.bestPrize==='1st Prize'?'b-gold':p.bestPrize?'b-green':'b-grey'}">${p.bestPrize||'—'}</span></td>
-  </tr>`).join('') || '<tr><td colspan="7" class="rpt-empty">No data</td></tr>';
+  /* Update status line */
+  const fs = G('rptStatus2');
+  if (fs) fs.textContent = `Showing ${total} of ${FINS.length} records`;
 
-  G('rptAllBody').innerHTML = data.map(f => `<tr>
+  /* ── 8-stat strip ── */
+  const ver   = data.filter(f => f.Status==='Verified').length;
+  const parts = new Set(data.map(f => f.RegNo)).size;
+  const score = data.reduce((t,f) => t+(Number(f.Score)||0), 0);
+  const intl  = data.filter(f => f.Scope==='International').length;
+  const natl  = data.filter(f => f.Scope==='National').length;
+  const wins  = data.filter(f => ['Winner','1st Prize','2nd Prize','3rd Prize'].includes(f.Prize)).length;
+  const subRegs = new Set(FINS.map(f => f.RegNo));
+  const noSub = STUS.filter(s => !subRegs.has(s.RegNo)).length;
+
+  const stripData = [
+    {id:'rss1',val:total,bf:'rssb1',pct:100},
+    {id:'rss2',val:ver,bf:'rssb2',pct:total?ver/total*100:0},
+    {id:'rss3',val:parts,bf:'rssb3',pct:STUS.length?parts/STUS.length*100:0},
+    {id:'rss4',val:score,bf:'rssb4',pct:Math.min(100,score/Math.max(total*20,1)*100)},
+    {id:'rss5',val:intl,bf:'rssb5',pct:total?intl/total*100:0},
+    {id:'rss6',val:natl,bf:'rssb6',pct:total?natl/total*100:0},
+    {id:'rss7',val:wins,bf:'rssb7',pct:total?wins/total*100:0},
+    {id:'rss8',val:noSub,bf:'rssb8',pct:STUS.length?noSub/STUS.length*100:0},
+  ];
+  stripData.forEach(({id,val,bf,pct}) => {
+    T(id, val);
+    setTimeout(() => W(bf, pct), 300);
+  });
+
+  /* ── SUMMARY ── */
+  _renderSummary(data, total, ver, score);
+
+  /* ── ALL RECORDS ── */
+  T('rptAllCount', '(' + total + ' records)');
+  G('rptAllBody').innerHTML = total ? data.map(f => `<tr>
     <td class="mono">${f.RegNo||'—'}</td>
-    <td style="font-weight:600">${f.Name||'—'}</td>
+    <td style="font-weight:600;max-width:100px;overflow:hidden;text-overflow:ellipsis">${f.Name||'—'}</td>
     <td style="max-width:130px;overflow:hidden;text-overflow:ellipsis">${f.EventName||'—'}</td>
     <td class="td-small">${fD(f.EventDate)}</td>
     <td><span class="badge ${SB[f.Scope]||'b-grey'}">${f.Scope||'—'}</span></td>
@@ -2047,62 +1568,198 @@ function genReport() {
     <td>${f.Prize?`<span class="badge ${f.Prize.includes('1st')?'b-gold':'b-green'}">${f.Prize}</span>`:'—'}</td>
     <td style="font-weight:800;color:var(--blue)">${f.Score||0}</td>
     <td><span class="badge ${f.Status==='Verified'?'b-green':f.Status==='Rejected'?'b-red':'b-orange'}">${f.Status||'Pending'}</span></td>
-  </tr>`).join('') || '<tr><td colspan="9" class="rpt-empty">No submissions</td></tr>';
+  </tr>`).join('') : '<tr><td colspan="9" class="rpt-empty">No submissions match the current filters</td></tr>';
 
-  const subRegs = new Set(data.map(f => f.RegNo));
-  const noSub = STUS.filter(s => !subRegs.has(s.RegNo));
-  G('rptNSBody').innerHTML = noSub.length ? noSub.map(s => `<tr>
+  /* ── TOP PERFORMERS ── */
+  const pm = {};
+  data.forEach(f => {
+    const rn=f.RegNo;
+    if(!pm[rn])pm[rn]={RegNo:rn,Name:f.Name||'—',events:0,verified:0,intl:0,natl:0,score:0,bestPrize:''};
+    const x=pm[rn]; x.events++; x.score+=(Number(f.Score)||0);
+    if(f.Status==='Verified')x.verified++;
+    if(f.Scope==='International')x.intl++;
+    if(f.Scope==='National')x.natl++;
+    const pp={'1st Prize':10,'2nd Prize':8,'3rd Prize':6,'Winner':10,'Participated':1};
+    if((pp[f.Prize]||0)>(pp[x.bestPrize]||0))x.bestPrize=f.Prize;
+  });
+  const sorted=Object.values(pm).sort((a,b)=>b.score-a.score);
+  G('rptTopBody').innerHTML = sorted.length ? sorted.slice(0,20).map((p,i) => `<tr>
+    <td style="font-weight:800;font-size:15px">${i===0?'🥇':i===1?'🥈':i===2?'🥉':'#'+(i+1)}</td>
+    <td class="mono">${p.RegNo}</td>
+    <td style="font-weight:700">${p.Name}</td>
+    <td style="font-weight:700">${p.events}</td>
+    <td style="color:var(--green-dk);font-weight:700">${p.verified}</td>
+    <td style="color:var(--purple);font-weight:700">${p.intl||'—'}</td>
+    <td style="color:var(--cyan);font-weight:700">${p.natl||'—'}</td>
+    <td style="color:var(--blue);font-weight:800">${p.score}</td>
+    <td><span class="badge ${p.bestPrize==='1st Prize'||p.bestPrize==='Winner'?'b-gold':p.bestPrize?'b-green':'b-grey'}">${p.bestPrize||'—'}</span></td>
+  </tr>`).join('') : '<tr><td colspan="9" class="rpt-empty">No data</td></tr>';
+
+  /* ── SCOPE TABLE ── */
+  const sm={};
+  data.forEach(f=>{const k=f.Scope||'Other';if(!sm[k])sm[k]={count:0,verified:0,score:0,wins:0};sm[k].count++;
+    if(f.Status==='Verified')sm[k].verified++;sm[k].score+=(Number(f.Score)||0);
+    if(['Winner','1st Prize','2nd Prize','3rd Prize'].includes(f.Prize))sm[k].wins++;});
+  G('rptScopeTable').innerHTML = Object.keys(sm).length ? `
+    <div style="overflow-x:auto"><table class="rpt-tbl">
+    <thead><tr><th>Scope</th><th>Events</th><th>Verified</th><th>Winners</th><th>Score</th><th>Ver. Rate</th></tr></thead>
+    <tbody>${Object.entries(sm).sort((a,b)=>b[1].count-a[1].count).map(([s,v])=>`<tr>
+      <td><span class="badge ${SB[s]||'b-grey'}">${s}</span></td>
+      <td style="font-weight:700">${v.count}</td>
+      <td style="color:var(--green-dk);font-weight:700">${v.verified}</td>
+      <td style="color:var(--gold);font-weight:700">${v.wins||'—'}</td>
+      <td style="color:var(--blue);font-weight:700">${v.score}</td>
+      <td><div style="display:flex;align-items:center;gap:6px">
+        <div style="flex:1;height:6px;background:var(--surface3);border-radius:3px;overflow:hidden;min-width:50px">
+          <div style="height:100%;width:${Math.round(v.verified/v.count*100)}%;background:var(--green);border-radius:3px"></div>
+        </div>
+        <span style="font-size:10px;font-weight:700;color:var(--muted)">${Math.round(v.verified/v.count*100)}%</span>
+      </div></td>
+    </tr>`).join('')}</tbody></table></div>`
+    : '<div class="rpt-empty">No scope data for selected filters</div>';
+
+  /* ── NO SUBMISSION ── */
+  const noSubList = STUS.filter(s => !subRegs.has(s.RegNo));
+  G('rptNSBody').innerHTML = noSubList.length ? noSubList.map(s => `<tr>
     <td class="mono">${s.RegNo||'—'}</td>
     <td style="font-weight:700">${s.Name||'—'}</td>
     <td>${s.Year||'—'}</td>
     <td class="mono">${s.Phone||'—'}</td>
     <td>${s.Phone?`<a href="https://wa.me/91${s.Phone}?text=${waLink(s.Name,'Please submit your event proof on ECE-EMS portal.')}" target="_blank" class="btn btn-wa btn-xs">💬 Remind</a>`:'—'}</td>
   </tr>`).join('') : '<tr><td colspan="5" class="rpt-empty">🎉 All students have submitted!</td></tr>';
+
+  setTimeout(initReveal, 60);
+}
+
+/* ── Summary helpers ── */
+function _renderSummary(data, total, ver, score) {
+  /* Scope chart */
+  const sm = {};
+  data.forEach(f => { const k=f.Scope||'Other'; sm[k]=(sm[k]||0)+1; });
+  const maxSc = Math.max(...Object.values(sm), 1);
+  const scopeColors = {International:'var(--blue)',National:'var(--cyan)',State:'var(--green)',College:'var(--muted)',Other:'var(--purple)'};
+  G('rptScopeChart').innerHTML = Object.keys(sm).length ? Object.entries(sm).sort((a,b)=>b[1]-a[1]).map(([scope,n]) => {
+    const pct = Math.round(n/total*100);
+    const col = scopeColors[scope] || 'var(--blue)';
+    return `<div class="hbar-row">
+      <div class="hbar-lbl">${scope}</div>
+      <div class="hbar-track"><div class="hbar-fill" style="width:${Math.round(n/maxSc*100)}%;background:${col}">${n}</div></div>
+      <div class="hbar-num" style="color:${col}">${pct}%</div>
+    </div>`;
+  }).join('') : '<div style="color:var(--muted);font-size:11px">No data</div>';
+
+  /* Verification rate */
+  const vr = total ? Math.round(ver/total*100) : 0;
+  const pend = data.filter(f => f.Status==='Pending').length;
+  const rej  = data.filter(f => f.Status==='Rejected').length;
+  G('rptVerRate').innerHTML = `
+    <div style="display:flex;align-items:center;gap:14px">
+      <div style="position:relative;width:70px;height:70px;flex-shrink:0">
+        <svg viewBox="0 0 70 70" style="transform:rotate(-90deg)">
+          <circle cx="35" cy="35" r="28" fill="none" stroke="var(--surface3)" stroke-width="10"/>
+          <circle cx="35" cy="35" r="28" fill="none" stroke="${vr>=80?'var(--green)':vr>=50?'var(--gold)':'var(--red)'}"
+            stroke-width="10" stroke-dasharray="${2*Math.PI*28}" stroke-dashoffset="${2*Math.PI*28*(1-vr/100)}"
+            stroke-linecap="round" style="transition:stroke-dashoffset 1.2s ease"/>
+        </svg>
+        <div style="position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);text-align:center">
+          <div style="font-family:'Syne',sans-serif;font-size:16px;font-weight:800;color:${vr>=80?'var(--green)':vr>=50?'var(--gold)':'var(--red)'}">${vr}%</div>
+        </div>
+      </div>
+      <div style="flex:1">
+        <div style="display:flex;justify-content:space-between;font-size:11px;margin-bottom:6px"><span style="color:var(--green);font-weight:700">✅ Verified</span><span style="font-weight:800">${ver}</span></div>
+        <div style="display:flex;justify-content:space-between;font-size:11px;margin-bottom:6px"><span style="color:var(--gold);font-weight:700">⏳ Pending</span><span style="font-weight:800">${pend}</span></div>
+        <div style="display:flex;justify-content:space-between;font-size:11px"><span style="color:var(--red);font-weight:700">✗ Rejected</span><span style="font-weight:800">${rej}</span></div>
+      </div>
+    </div>`;
+
+  /* Monthly trend */
+  const now = new Date();
+  const months = [];
+  for (let i=5; i>=0; i--) {
+    const d = new Date(now.getFullYear(), now.getMonth()-i, 1);
+    months.push({ label: d.toLocaleString('en-IN',{month:'short'})+'\''+d.getFullYear().toString().slice(2), year:d.getFullYear(), month:d.getMonth(), count:0, ver:0 });
+  }
+  data.forEach(f => {
+    if (!f.EventDate) return;
+    const d = new Date(f.EventDate); if (isNaN(d)) return;
+    const m = months.find(x => x.year===d.getFullYear()&&x.month===d.getMonth());
+    if (m) { m.count++; if(f.Status==='Verified')m.ver++; }
+  });
+  const maxM = Math.max(...months.map(m=>m.count), 1);
+  G('rptMonthChart').innerHTML = months.map(m => {
+    const h = Math.max(3, Math.round((m.count/maxM)*76));
+    const hv = m.count>0 ? Math.round((m.ver/m.count)*h) : 0;
+    return `<div style="flex:1;display:flex;flex-direction:column;align-items:center;gap:2px">
+      <div style="font-size:9px;font-weight:700;color:var(--muted)">${m.count||''}</div>
+      <div style="width:100%;border-radius:4px 4px 0 0;height:${h}px;background:var(--blue-lt);position:relative;overflow:hidden">
+        <div style="position:absolute;bottom:0;left:0;right:0;height:${hv}px;background:var(--green);transition:height .8s ease"></div>
+      </div>
+    </div>`;
+  }).join('');
+  G('rptMonthLabels').innerHTML = months.map(m =>
+    `<div style="flex:1;text-align:center;font-size:8px;color:var(--muted);font-weight:600">${m.label}</div>`
+  ).join('');
+
+  /* Highlights */
+  const stuData = {};
+  data.forEach(f=>{const rn=f.RegNo;if(!stuData[rn])stuData[rn]={name:f.Name||'—',score:0};stuData[rn].score+=(Number(f.Score)||0);});
+  const top = Object.entries(stuData).sort((a,b)=>b[1].score-a[1].score)[0];
+  const avgScore = total ? Math.round(score/total) : 0;
+  const intlCount = data.filter(f=>f.Scope==='International').length;
+  const winCount = data.filter(f=>['Winner','1st Prize'].includes(f.Prize)).length;
+  const highlights = [
+    {icon:'👑',lbl:'Top Scorer',val:top?`${top[1].name} (${top[1].score} pts)`:'—',col:'var(--gold)'},
+    {icon:'📊',lbl:'Avg Score/Event',val:avgScore+' pts',col:'var(--blue)'},
+    {icon:'✅',lbl:'Verification Rate',val:vr+'%',col:vr>=80?'var(--green)':vr>=50?'var(--gold)':'var(--red)'},
+    {icon:'🌍',lbl:'International',val:intlCount+' events',col:'var(--purple)'},
+    {icon:'🏆',lbl:'Prize Winners',val:winCount,col:'var(--gold)'},
+    {icon:'👥',lbl:'Participants',val:new Set(data.map(f=>f.RegNo)).size+' students',col:'var(--cyan)'},
+  ];
+  G('rptHighlights').innerHTML = highlights.map(h => `
+    <div style="background:var(--surface2);border:1.5px solid var(--border);border-radius:10px;padding:11px 12px;display:flex;align-items:center;gap:9px">
+      <div style="font-size:20px">${h.icon}</div>
+      <div><div style="font-size:9px;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:.5px;margin-bottom:2px">${h.lbl}</div>
+      <div style="font-size:13px;font-weight:700;color:${h.col}">${h.val}</div></div>
+    </div>`).join('');
 }
 
 function clearRpt() {
-  G('rptFrom').value=''; G('rptTo').value=''; G('rptScope').value=''; G('rptStatus').value='';
-  genReport();
+  G('rptFrom').value=''; G('rptTo').value=''; G('rptScope').value=''; G('rptDocStatus').value='';
+  if (DATA_LOADED) genReport();
 }
 
 function exportCSV() {
-  const from=G('rptFrom')?.value||'',to=G('rptTo')?.value||'',scope=G('rptScope')?.value||'',status=G('rptStatus')?.value||'';
-  let data=[...FINS];
-  if(from)data=data.filter(f=>{const d=f.EventDate;return d&&new Date(d)>=new Date(from);});
-  if(to)data=data.filter(f=>{const d=f.EventDate;return d&&new Date(d)<=new Date(to+'T23:59:59');});
-  if(scope)data=data.filter(f=>f.Scope===scope);
-  if(status)data=data.filter(f=>f.Status===status);
-  const headers=['RegNo','Name','EventName','EventDate','Scope','CollegeName','City','Prize','Score','Status'];
-  const csv=[headers.join(','),...data.map(f=>headers.map(h=>`"${(f[h]||'').toString().replace(/"/g,'""')}"`).join(','))].join('\n');
-  const a=Object.assign(document.createElement('a'),{href:URL.createObjectURL(new Blob([csv],{type:'text/csv'})),download:`ECE_Chair_Sec${SEC}_${new Date().toLocaleDateString('en-IN').replace(/\//g,'-')}.csv`});
+  const data = getFilteredData();
+  if (!data.length) { toast('No data to export','error'); return; }
+  const headers = ['RegNo','Name','EventName','EventDate','Scope','CollegeName','City','Prize','Score','Status'];
+  const csv = [headers.join(','), ...data.map(f =>
+    headers.map(h => `"${(f[h]||'').toString().replace(/"/g,'""')}"`).join(',')
+  )].join('\n');
+  const a = Object.assign(document.createElement('a'), {
+    href: URL.createObjectURL(new Blob([csv],{type:'text/csv'})),
+    download: `ECE_Chair_Sec${SEC}_${new Date().toLocaleDateString('en-IN').replace(/\//g,'-')}.csv`
+  });
   a.click(); URL.revokeObjectURL(a.href);
   toast('CSV exported!','success');
 }
 
 /* ══ LOGOUT ══ */
-function doLogout() {
-  if (!confirm('Logout from Chairperson Portal?')) return;
-  localStorage.removeItem('ems_user'); sessionStorage.removeItem('ems_user');
+function doLogout(){
+  if(!confirm('Logout from Chairperson Portal?'))return;
+  localStorage.removeItem('ems_user');sessionStorage.removeItem('ems_user');
   location.replace('index.html');
 }
 
 /* ══ REVEAL ══ */
-function initReveal() {
-  const obs = new IntersectionObserver(entries => {
-    entries.forEach((e,i) => { if (e.isIntersecting) { setTimeout(()=>e.target.classList.add('vis'),i*45); obs.unobserve(e.target); } });
-  }, { threshold: 0.04 });
-  document.querySelectorAll('.reveal:not(.vis)').forEach(el => obs.observe(el));
-}
-
-/* ══ DEFAULT DATES ══ */
-function setDefaultDates() {
-  const now = new Date(), firstDay = new Date(now.getFullYear(), now.getMonth(), 1);
-  if (G('rptFrom')) G('rptFrom').value = firstDay.toISOString().slice(0,10);
-  if (G('rptTo'))   G('rptTo').value   = now.toISOString().slice(0,10);
+function initReveal(){
+  const obs=new IntersectionObserver(entries=>{
+    entries.forEach((e,i)=>{if(e.isIntersecting){setTimeout(()=>e.target.classList.add('vis'),i*45);obs.unobserve(e.target);}});
+  },{threshold:0.04});
+  document.querySelectorAll('.reveal:not(.vis)').forEach(el=>obs.observe(el));
 }
 
 /* ══ START ══ */
-setDefaultDates();
+/* FIX: NO default dates — blank means show all records */
 init();
 </script>
 </body>
