@@ -387,7 +387,23 @@ tr:hover td{background:var(--blt);}
 .pv-sig{text-align:center;font-size:7px;color:#64748b;}
 .pv-sig-line{border-top:1px solid #334155;padding-top:3px;margin-top:18px;font-weight:700;color:#1e293b;font-size:7.5px;}
 
-/* INSTITUTION INFO */
+/* BENCHMARK CONFIG */
+.bm-grid{display:flex;flex-direction:column;gap:4px;margin-bottom:8px;}
+.bm-row{display:grid;grid-template-columns:20px 1fr auto 52px;align-items:center;gap:6px;padding:5px 8px;background:var(--surface2);border:1.5px solid var(--border);border-radius:8px;transition:border-color .15s;}
+.bm-row:hover{border-color:var(--blue);}
+.bm-icon{font-size:13px;text-align:center;}
+.bm-label{font-size:9.5px;font-weight:600;color:var(--text2);}
+.bm-inp-wrap{display:flex;align-items:center;gap:4px;}
+.bm-inp{width:58px;padding:3px 6px;background:var(--surface);border:1.5px solid var(--border2);border-radius:6px;color:var(--text);font-family:'Plus Jakarta Sans',sans-serif;font-size:11px;font-weight:700;outline:none;text-align:right;transition:border-color .15s;}
+.bm-inp:focus{border-color:var(--blue);}
+.bm-unit{font-size:8.5px;color:var(--muted);font-weight:600;min-width:28px;}
+.bm-status-preview{width:46px;text-align:right;}
+.bm-pill{display:inline-flex;align-items:center;padding:2px 6px;border-radius:20px;font-size:8px;font-weight:700;white-space:nowrap;}
+.bm-met{background:rgba(5,150,105,.12);color:#059669;border:1px solid rgba(5,150,105,.25);}
+.bm-near{background:rgba(217,119,6,.12);color:#d97706;border:1px solid rgba(217,119,6,.25);}
+.bm-below{background:rgba(220,38,38,.12);color:#dc2626;border:1px solid rgba(220,38,38,.25);}
+.bm-legend{display:flex;align-items:center;gap:4px;font-size:9px;color:var(--muted);font-weight:600;margin-bottom:4px;}
+.bm-leg-dot{width:8px;height:8px;border-radius:50%;display:inline-block;}
 .inst-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:10px;}
 @media(min-width:600px){.inst-grid{grid-template-columns:repeat(3,1fr);}}
 .inst-fgrp{display:flex;flex-direction:column;gap:3px;}
@@ -450,6 +466,78 @@ tr:hover td{background:var(--blt);}
           <label class="pdf-option"><input type="checkbox" id="pdf-allrec"><div class="pdf-option-info"><div class="pdf-option-title">📋 Complete Records Table</div><div class="pdf-option-desc">All events listed (may be long)</div></div></label>
           <label class="pdf-option"><input type="checkbox" id="pdf-naacmetrics"><div class="pdf-option-info"><div class="pdf-option-title">🔢 NAAC / NBA Metrics</div><div class="pdf-option-desc">Criteria 5.3.1, 5.3.2 values</div></div></label>
           <label class="pdf-option"><input type="checkbox" id="pdf-signatures" checked><div class="pdf-option-info"><div class="pdf-option-title">✍ Signature Block</div><div class="pdf-option-desc">Faculty / HOD / Principal lines</div></div></label>
+        </div>
+
+        <!-- BENCHMARK CONFIGURATION -->
+        <div class="pdf-section-hdr" style="margin-top:12px;">🎯 Benchmark Targets <span style="font-size:8px;color:var(--muted);font-weight:500;text-transform:none;letter-spacing:0;">(used in KPI status column)</span></div>
+        <div class="bm-grid" id="bmGrid">
+          <!-- Row 1 -->
+          <div class="bm-row">
+            <div class="bm-icon">👥</div>
+            <div class="bm-label">Min. Unique Students</div>
+            <div class="bm-inp-wrap"><input class="bm-inp" id="bm-students" type="number" value="50" min="1" oninput="updatePreview()"/><span class="bm-unit">students</span></div>
+            <div class="bm-status-preview" id="bms-students"></div>
+          </div>
+          <div class="bm-row">
+            <div class="bm-icon">🌍</div>
+            <div class="bm-label">Int'l Events / Year</div>
+            <div class="bm-inp-wrap"><input class="bm-inp" id="bm-intl" type="number" value="5" min="0" oninput="updatePreview()"/><span class="bm-unit">events</span></div>
+            <div class="bm-status-preview" id="bms-intl"></div>
+          </div>
+          <div class="bm-row">
+            <div class="bm-icon">🇮🇳</div>
+            <div class="bm-label">National Events / Year</div>
+            <div class="bm-inp-wrap"><input class="bm-inp" id="bm-natl" type="number" value="10" min="0" oninput="updatePreview()"/><span class="bm-unit">events</span></div>
+            <div class="bm-status-preview" id="bms-natl"></div>
+          </div>
+          <div class="bm-row">
+            <div class="bm-icon">🏆</div>
+            <div class="bm-label">Min. Winners / Year</div>
+            <div class="bm-inp-wrap"><input class="bm-inp" id="bm-wins" type="number" value="5" min="0" oninput="updatePreview()"/><span class="bm-unit">wins</span></div>
+            <div class="bm-status-preview" id="bms-wins"></div>
+          </div>
+          <div class="bm-row">
+            <div class="bm-icon">✅</div>
+            <div class="bm-label">Verification Rate</div>
+            <div class="bm-inp-wrap"><input class="bm-inp" id="bm-ver" type="number" value="80" min="0" max="100" oninput="updatePreview()"/><span class="bm-unit">%</span></div>
+            <div class="bm-status-preview" id="bms-ver"></div>
+          </div>
+          <div class="bm-row">
+            <div class="bm-icon">🎖</div>
+            <div class="bm-label">Win Rate</div>
+            <div class="bm-inp-wrap"><input class="bm-inp" id="bm-winrate" type="number" value="20" min="0" max="100" oninput="updatePreview()"/><span class="bm-unit">%</span></div>
+            <div class="bm-status-preview" id="bms-winrate"></div>
+          </div>
+          <div class="bm-row">
+            <div class="bm-icon">⭐</div>
+            <div class="bm-label">Min. Total Score</div>
+            <div class="bm-inp-wrap"><input class="bm-inp" id="bm-score" type="number" value="100" min="0" oninput="updatePreview()"/><span class="bm-unit">pts</span></div>
+            <div class="bm-status-preview" id="bms-score"></div>
+          </div>
+          <div class="bm-row">
+            <div class="bm-icon">📋</div>
+            <div class="bm-label">Min. Total Events</div>
+            <div class="bm-inp-wrap"><input class="bm-inp" id="bm-events" type="number" value="20" min="0" oninput="updatePreview()"/><span class="bm-unit">events</span></div>
+            <div class="bm-status-preview" id="bms-events"></div>
+          </div>
+          <div class="bm-row">
+            <div class="bm-icon">💰</div>
+            <div class="bm-label">Min. Cash Prize Won</div>
+            <div class="bm-inp-wrap"><input class="bm-inp" id="bm-cash" type="number" value="5000" min="0" oninput="updatePreview()"/><span class="bm-unit">Rs.</span></div>
+            <div class="bm-status-preview" id="bms-cash"></div>
+          </div>
+          <div class="bm-row">
+            <div class="bm-icon">🏫</div>
+            <div class="bm-label">State Events / Year</div>
+            <div class="bm-inp-wrap"><input class="bm-inp" id="bm-state" type="number" value="15" min="0" oninput="updatePreview()"/><span class="bm-unit">events</span></div>
+            <div class="bm-status-preview" id="bms-state"></div>
+          </div>
+        </div>
+        <!-- Benchmark legend -->
+        <div class="bm-legend">
+          <span class="bm-leg-dot" style="background:#059669;"></span><span>Met</span>
+          <span class="bm-leg-dot" style="background:#d97706;margin-left:8px;"></span><span>Near</span>
+          <span class="bm-leg-dot" style="background:#dc2626;margin-left:8px;"></span><span>Below</span>
         </div>
 
         <!-- PAGE OPTIONS -->
@@ -1685,7 +1773,56 @@ function exportDailyCSV(){
 }
 function dlCSV(content,filename){const a=document.createElement('a');a.href='data:text/csv;charset=utf-8,'+encodeURIComponent(content);a.download=filename;a.click();}
 
-/* ══ PDF FORMAT STATE ══ */
+/* ══ BENCHMARK HELPER ══ */
+function getBenchmarks(){
+  const n=id=>Math.max(0,Number(G(id)?.value)||0);
+  return{
+    students:n('bm-students'),intl:n('bm-intl'),natl:n('bm-natl'),
+    wins:n('bm-wins'),ver:n('bm-ver'),winrate:n('bm-winrate'),
+    score:n('bm-score'),events:n('bm-events'),cash:n('bm-cash'),state:n('bm-state')
+  };
+}
+function bmStatus(actual,target){
+  const r=actual/Math.max(target,1);
+  if(r>=1)return{cls:'bm-met',lbl:'✓ Met'};
+  if(r>=0.75)return{cls:'bm-near',lbl:'~ Near'};
+  return{cls:'bm-below',lbl:'✗ Below'};
+}
+function refreshBmPills(){
+  if(!FILTERED.length)return;
+  const D=FILTERED,total=D.length||1;
+  const BM=getBenchmarks();
+  const uniq=new Set(D.map(r=>r.RegNo)).size;
+  const intl=D.filter(r=>r.Scope==='International').length;
+  const natl=D.filter(r=>r.Scope==='National').length;
+  const state=D.filter(r=>r.Scope==='State').length;
+  const wins=D.filter(r=>['Winner','1st Prize'].includes(r.Prize)).length;
+  const cash=D.reduce((s,r)=>s+Number(r.Amount||0),0);
+  const score=D.reduce((s,r)=>s+Number(r.Score||0),0);
+  const ver=D.filter(r=>r.Status==='Verified').length;
+  const vr=Math.round(ver/total*100);
+  const wr=Math.round(wins/total*100);
+  const checks=[
+    ['bms-students',uniq,BM.students],
+    ['bms-intl',intl,BM.intl],
+    ['bms-natl',natl,BM.natl],
+    ['bms-wins',wins,BM.wins],
+    ['bms-ver',vr,BM.ver],
+    ['bms-winrate',wr,BM.winrate],
+    ['bms-score',score,BM.score],
+    ['bms-events',total,BM.events],
+    ['bms-cash',cash,BM.cash],
+    ['bms-state',state,BM.state],
+  ];
+  checks.forEach(([id,actual,target])=>{
+    const el=G(id);if(!el)return;
+    const s=bmStatus(actual,target);
+    el.innerHTML=`<span class="bm-pill ${s.cls}">${s.lbl}</span>`;
+    // also highlight row border
+    const row=el.closest('.bm-row');
+    if(row){row.style.borderColor=s.cls==='bm-met'?'rgba(5,150,105,.35)':s.cls==='bm-near'?'rgba(217,119,6,.35)':'rgba(220,38,38,.35)';}
+  });
+}
 let PDF_FMT='naac';
 function setPdfFmt(el){
   PDF_FMT=el.dataset.fmt;
@@ -1713,9 +1850,11 @@ function getTheme(){
 function showPDFModal(){
   if(!FILTERED.length){toast('Generate a report first','error');return;}
   G('pdfModal').style.display='block';
+  refreshBmPills();
   updatePreview();
 }
 function updatePreview(){
+  refreshBmPills();
   const D=FILTERED,total=D.length||1;
   const theme=getTheme();
   const college=G('instCollege').value||'KCET';
@@ -1781,6 +1920,42 @@ function updatePreview(){
       <table class="pv-table"><thead><tr style="background:#047857;">
         <th>Rank</th><th>Reg No</th><th>Name</th><th>Sec/Yr</th><th>Events</th><th>Score</th>
       </tr></thead><tbody>${topStu.map((s,i)=>`<tr><td>${i+1}</td><td>${s.RegNo}</td><td><b>${s.Name}</b></td><td>${s.Section}/${s.Year}</td><td>${s.events}</td><td><b style="color:#059669;">${s.score}</b></td></tr>`).join('')}</tbody></table>
+    </div>`:''}
+    <!-- BENCHMARK PREVIEW -->
+    ${G('pdf-naacmetrics')?.checked?`<div class="pv-section">
+      <div class="pv-section-title" style="border-color:${aBg};color:${aBg};">NAAC / NBA Key Performance Indicators</div>
+      <table class="pv-table"><thead><tr style="background:${hBg};">
+        <th>Indicator</th><th>Actual</th><th>Benchmark</th><th>Status</th>
+      </tr></thead><tbody>${(()=>{
+        const BM=getBenchmarks();
+        const rows=[
+          ['Total Participations',total,'>='+BM.events],
+          ['Unique Students',uniq,'>='+BM.students],
+          ['International Events',intl,'>='+BM.intl+'/yr'],
+          ['National Events',natl,'>='+BM.natl+'/yr'],
+          ['State Events',state,'>='+BM.state+'/yr'],
+          ['Winners',wins,'>='+BM.wins],
+          ['Verification Rate',vr+'%','>='+BM.ver+'%'],
+          ['Win Rate',Math.round(wins/total*100)+'%','>='+BM.winrate+'%'],
+          ['Total Score',score,'>='+BM.score+' pts'],
+          ['Cash Prizes','Rs.'+Math.round(cash),'>=Rs.'+BM.cash],
+        ];
+        return rows.map(([l,v,b],i)=>{
+          const actuals=[total,uniq,intl,natl,state,wins,vr,Math.round(wins/total*100),score,cash];
+          const targets=[BM.events,BM.students,BM.intl,BM.natl,BM.state,BM.wins,BM.ver,BM.winrate,BM.score,BM.cash];
+          const ratio=actuals[i]/Math.max(targets[i],1);
+          const sc=ratio>=1?'#059669':ratio>=0.75?'#d97706':'#dc2626';
+          const sl=ratio>=1?'Met':ratio>=0.75?'Near':'Below';
+          return`<tr><td>${l}</td><td style="font-weight:700;text-align:center;">${v}</td><td style="color:#64748b;text-align:center;">${b}</td><td style="text-align:center;"><span style="background:${sc};color:#fff;padding:1.5px 6px;border-radius:10px;font-size:7px;font-weight:700;">${sl}</span></td></tr>`;
+        }).join('');
+      })()}</tbody></table>
+      <div style="margin-top:7px;"><div style="font-size:7px;color:#64748b;font-weight:700;margin-bottom:4px;text-transform:uppercase;letter-spacing:.4px;">Attainment at a Glance</div>
+        ${(()=>{
+          const BM=getBenchmarks();
+          const items=[['Int\'l',intl,BM.intl],['National',natl,BM.natl],['State',state,BM.state],['Winners',wins,BM.wins],['Ver.%',vr,BM.ver],['Score',score,BM.score]];
+          return items.map(([l,a,t])=>{const r=Math.min(1,a/Math.max(t,1));const c=r>=1?'#059669':r>=0.75?'#d97706':'#dc2626';return`<div style="display:flex;align-items:center;gap:4px;margin-bottom:3px;"><div style="font-size:7px;color:#64748b;width:38px;">${l}</div><div style="flex:1;height:5px;background:#e2e8f0;border-radius:3px;overflow:hidden;"><div style="height:100%;width:${Math.round(r*100)}%;background:${c};border-radius:3px;"></div></div><span style="font-size:7px;font-weight:700;color:${c};min-width:24px;text-align:right;">${Math.round(r*100)}%</span></div>`;}).join('');
+        })()}
+      </div>
     </div>`:''}
     <!-- SIGNATURES -->
     ${G('pdf-signatures')?.checked?`<div class="pv-sig-row">
@@ -1994,24 +2169,135 @@ function generatePDF(){
     y=doc.lastAutoTable.finalY+8;
   }
 
-  // NAAC METRICS TABLE
+  // NAAC METRICS TABLE — benchmark-driven
   if(G('pdf-naacmetrics')?.checked){
     chkY(20);sLine('NAAC / NBA KEY PERFORMANCE INDICATORS',TH);
-    doc.autoTable({startY:y,head:[['Indicator','Value','Benchmark','Status']],
-      body:[
-        ['Student Participation Rate',uniq+' students','>=60% of strength',uniq>=60?'Good':'Review'],
-        ['International Achievements',intl+' events','>=5/year',intl>=5?'Met':'Below'],
-        ['National Achievements',natl+' events','>=10/year',natl>=10?'Met':'Below'],
-        ['Verification Rate',vr+'%','>=80%',vr>=80?'Excellent':vr>=50?'Good':'Needs Attention'],
-        ['Win Rate',Math.round(wins/total*100)+'%','>=20%',wins/total>=0.2?'Met':'Below'],
-        ['Cumulative Score',score+' pts','-','Tracking'],
-        ['Cash Prizes Earned',inr(cash),'-','Tracking'],
-        ['Sponsored Events',D.filter(r=>r.Sponsored==='Sponsored').length+' events','-','Tracking'],
-      ],
-      styles:{fontSize:8,cellPadding:3},headStyles:{fillColor:TH,textColor:255,fontStyle:'bold',fontSize:7.5},
-      columnStyles:{2:{textColor:[107,126,184]},3:{fontStyle:'bold'}},
-      alternateRowStyles:{fillColor:TL},margin:{left:ml,right:mr}});
+    const BM=getBenchmarks();
+    const bmRows=[
+      {
+        indicator:'Total Event Participations',
+        value:total,display:total+' events',
+        bm:BM.events,bmDisp:'>='+BM.events+' events',
+        actual:total,target:BM.events
+      },
+      {
+        indicator:'Unique Student Participants',
+        value:uniq,display:uniq+' students',
+        bm:BM.students,bmDisp:'>='+BM.students+' students',
+        actual:uniq,target:BM.students
+      },
+      {
+        indicator:'International Level Achievements',
+        value:intl,display:intl+' events',
+        bm:BM.intl,bmDisp:'>='+BM.intl+'/year',
+        actual:intl,target:BM.intl
+      },
+      {
+        indicator:'National Level Achievements',
+        value:natl,display:natl+' events',
+        bm:BM.natl,bmDisp:'>='+BM.natl+'/year',
+        actual:natl,target:BM.natl
+      },
+      {
+        indicator:'State Level Achievements',
+        value:state,display:state+' events',
+        bm:BM.state,bmDisp:'>='+BM.state+'/year',
+        actual:state,target:BM.state
+      },
+      {
+        indicator:'Prize / Award Winners',
+        value:wins,display:wins+' winners',
+        bm:BM.wins,bmDisp:'>='+BM.wins+' wins',
+        actual:wins,target:BM.wins
+      },
+      {
+        indicator:'Verification Rate',
+        value:vr,display:vr+'%',
+        bm:BM.ver,bmDisp:'>='+BM.ver+'%',
+        actual:vr,target:BM.ver,isPct:true
+      },
+      {
+        indicator:'Win Rate (Wins / Total Events)',
+        value:Math.round(wins/total*100),display:Math.round(wins/total*100)+'%',
+        bm:BM.winrate,bmDisp:'>='+BM.winrate+'%',
+        actual:Math.round(wins/total*100),target:BM.winrate,isPct:true
+      },
+      {
+        indicator:'Cumulative Achievement Score',
+        value:score,display:score+' pts',
+        bm:BM.score,bmDisp:'>='+BM.score+' pts',
+        actual:score,target:BM.score
+      },
+      {
+        indicator:'Total Cash Prizes Earned',
+        value:cash,display:inr(cash),
+        bm:BM.cash,bmDisp:'>='+inr(BM.cash),
+        actual:cash,target:BM.cash
+      },
+    ];
+    // Compute status & color for each row
+    const getStatus=(actual,target)=>{
+      const ratio=actual/Math.max(target,1);
+      if(ratio>=1)return{label:'Met',r:5,g:102,b:69};
+      if(ratio>=0.75)return{label:'Near Target',r:180,g:100,b:10};
+      return{label:'Below',r:185,g:28,b:28};
+    };
+    const tableBody=bmRows.map(r=>{
+      const st=getStatus(r.actual,r.target);
+      return[r.indicator,r.display,r.bmDisp,st.label];
+    });
+    doc.autoTable({
+      startY:y,
+      head:[['Indicator','Actual Value','Benchmark Target','Status']],
+      body:tableBody,
+      styles:{fontSize:8.5,cellPadding:3},
+      headStyles:{fillColor:TH,textColor:255,fontStyle:'bold',fontSize:8},
+      columnStyles:{
+        0:{cellWidth:72},
+        1:{fontStyle:'bold',halign:'center',cellWidth:28},
+        2:{textColor:[80,100,160],halign:'center',cellWidth:32},
+        3:{fontStyle:'bold',halign:'center',cellWidth:22}
+      },
+      alternateRowStyles:{fillColor:TL},
+      margin:{left:ml,right:mr},
+      didDrawCell:(data)=>{
+        if(data.section==='body'&&data.column.index===3){
+          const val=bmRows[data.row.index];
+          if(!val)return;
+          const st=getStatus(val.actual,val.target);
+          const cellX=data.cell.x,cellY=data.cell.y,cellW=data.cell.width,cellH=data.cell.height;
+          doc.setFillColor(st.r,st.g,st.b);doc.setDrawColor(st.r,st.g,st.b);
+          const pw=cellW-6,ph=cellH-4,px=cellX+3,py=cellY+2;
+          doc.roundedRect(px,py,pw,ph,1.5,1.5,'F');
+          doc.setTextColor(255,255,255);doc.setFont('helvetica','bold');doc.setFontSize(7.5);
+          doc.text(st.label,px+pw/2,py+ph/1.6,{align:'center'});
+          doc.setTextColor(...(theme.txt||[40,40,80]));
+        }
+      }
+    });
     y=doc.lastAutoTable.finalY+8;
+
+    // BENCHMARK SUMMARY BAR — visual attainment
+    chkY(36);
+    sLine('BENCHMARK ATTAINMENT SUMMARY',TH);
+    const barH=6,barGap=9,barX=ml+70,barMaxW=cw-75;
+    bmRows.forEach((row,i)=>{
+      const ratio=Math.min(1,row.actual/Math.max(row.target,1));
+      const by=y+i*(barH+barGap);
+      const st=getStatus(row.actual,row.target);
+      // label
+      doc.setFont('helvetica','normal');doc.setFontSize(7);doc.setTextColor(60,80,100);
+      doc.text(row.indicator.substring(0,34),ml,by+barH/1.4);
+      // track
+      doc.setFillColor(226,232,240);doc.roundedRect(barX,by,barMaxW,barH,2,2,'F');
+      // fill
+      doc.setFillColor(st.r,st.g,st.b);
+      doc.roundedRect(barX,by,Math.max(barMaxW*ratio,3),barH,2,2,'F');
+      // pct label
+      doc.setFont('helvetica','bold');doc.setFontSize(7);doc.setTextColor(st.r,st.g,st.b);
+      doc.text(Math.round(ratio*100)+'%',barX+barMaxW+3,by+barH/1.4);
+    });
+    y+=bmRows.length*(barH+barGap)+6;
   }
 
   // DAILY
